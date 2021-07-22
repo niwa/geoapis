@@ -6,23 +6,22 @@ channels:
   - defaults
 dependencies:
   - pyproj=3.0.1 # note library version has caused issues
+  - pip
+  - gdal
   - geopandas
+  - requests
+  - boto3
+  - rioxarray
+  - pdal
+  - python-pdal
+  - matplotlib
   - ipykernel
   - ipython
   - ipython_genutils
   - jupyter_client
   - jupyter_core
-  - pip
-  - requests
-  - boto3
-  - rioxarray
-  - scipy
-  - wheel
-  - pdal
-  - python-pdal
-  - matplotlib
-  - laspy
   - spyder
   - spyder-kernels
+  - pytest
 
 prefix: C:\ProgramData\Anaconda3\envs\geofabrics
