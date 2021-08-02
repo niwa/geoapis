@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # GeoFabrics
 
 ## Build Status
@@ -23,3 +24,7 @@ Maintainer: Rose Pearson @rosepearson rose.pearson@niwa.co.nz
 
 ## License
 [GNU GPL](https://github.com/rosepearson/GeoFabrics/LICENSE)
+=======
+# geoapis
+A Python package for simply downloading publicly available web-hosted geo-spatial data
+>>>>>>> e2279d64d51fd3f43184564064d2dded76d1903a
