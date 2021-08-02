@@ -17,7 +17,7 @@ setuptools.setup(
     keywords='APIs, LiDAR, vector, Geospatial data',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/rosepearson/GeoFabrics',
+    url='https://github.com/niwa/geoapis',
     project_urls={
         'Documentation': 'https://github.com/niwa/geoapis',
         'Bug Reports':

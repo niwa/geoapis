@@ -13,8 +13,7 @@ import geopandas
 import shutil
 import numpy
 
-from src.geofabrics import lidar_fetch
-from src.geofabrics import geometry
+from src.geoapis import lidar_fetch
 
 
 class OpenTopographyTest(unittest.TestCase):
@@ -68,9 +67,8 @@ class OpenTopographyTest(unittest.TestCase):
 
         # create a catchment_geometry
         catchment_dir = pathlib.Path(str(catchment_dir) + ".zip")
-        catchment_geometry = geometry.CatchmentGeometry(catchment_dir,
-                                                        instructions['instructions']['projection'],
-                                                        instructions['instructions']['grid_params']['resolution'])
+        catchment_geometry = geopandas.read_file(catchment_dir)
+        catchment_geometry.to_crs(instructions['instructions']['projection'])
         catchment_geometry.land = catchment_dir  # all land
 
         # Run pipeline - download files

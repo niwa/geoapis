@@ -10,7 +10,6 @@ import requests
 import shapely
 import shapely.geometry
 import geopandas
-from . import geometry
 
 
 class Linz:
@@ -26,7 +25,7 @@ class Linz:
     WFS_PATH_API_START = "/services;key="
     WFS_PATH_API_END = "/wfs"
 
-    def __init__(self, key: str, catchment_geometry: geometry.CatchmentGeometry, verbose: bool = False):
+    def __init__(self, key: str, catchment_geometry, verbose: bool = False):
         """ Load in vector information from LINZ. Specify the layer to import during run.
         """
 
@@ -61,10 +60,10 @@ class Linz:
             "request": "GetFeature",
             "typeNames": f"layer-{layer}",
             "outputFormat": "json",
-            "SRSName": f"EPSG:{self.catchment_geometry.crs}",
+            "SRSName": f"{self.catchment_geometry.crs.to_string()}",
             "cql_filter": f"bbox({geometry_type}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
                           f"{bounds['miny'].min()}, {bounds['minx'].min()}, " +
-                          f"'urn:ogc:def:crs:EPSG:{self.catchment_geometry.crs}')"
+                          f"'urn:ogc:def:crs:{self.catchment_geometry.crs.to_string()}')"
         }
 
         response = requests.get(data_url, params=api_query, stream=True)
@@ -76,7 +75,7 @@ class Linz:
         """ Get a list of features within the catchment boundary """
 
         # radius in metres
-        catchment_bounds = self.catchment_geometry.catchment.geometry.bounds
+        catchment_bounds = self.catchment_geometry.geometry.bounds
         feature_collection = self.query_vector_wfs(catchment_bounds, layer, geometry_type)
 
         # Cycle through each feature getting name and coordinates
@@ -86,7 +85,7 @@ class Linz:
             shapely_geometry = shapely.geometry.shape(feature['geometry'])
 
             # check intersection of tile and catchment in LINZ CRS
-            if self.catchment_geometry.catchment.intersects(shapely_geometry).any():
+            if self.catchment_geometry.intersects(shapely_geometry).any():
 
                 # convert any one Polygon MultiPolygons to a straight Polygon
                 if (shapely_geometry.geometryType() == 'MultiPolygon' and len(shapely_geometry) == 1):

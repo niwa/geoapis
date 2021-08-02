@@ -35,7 +35,7 @@ class OpenTopography:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " + \
         "Chrome/91.0.4472.124 Safari/537.36"
 
-    def __init__(self, catchment_geometry: geometry.CatchmentGeometry, cache_path: typing.Union[str, pathlib.Path],
+    def __init__(self, catchment_geometry, cache_path: typing.Union[str, pathlib.Path],
                  redownload_files: bool = False, download_limit_gbytes: typing.Union[int, float] = 100,
                  verbose: bool = False):
         """ Load in LiDAR with relevant processing chain.
@@ -88,7 +88,7 @@ class OpenTopography:
         """ Function to check for data in search region using the otCatalogue API
         https://portal.opentopography.org/apidocs/#/Public/getOtCatalog """
 
-        catchment_bounds = self.catchment_geometry.catchment.geometry.to_crs(self.OT_CRS).bounds
+        catchment_bounds = self.catchment_geometry.geometry.to_crs(self.OT_CRS).bounds
         api_query = {
             "productFormat": "PointCloud",
             "minx": catchment_bounds['minx'].min(),

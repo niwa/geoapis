@@ -14,8 +14,7 @@ import shutil
 import dotenv
 import os
 
-from src.geofabrics import vector_fetch
-from src.geofabrics import geometry
+from src.geoapis import vector_fetch
 
 
 class LinzVectorsTest(unittest.TestCase):
@@ -71,9 +70,8 @@ class LinzVectorsTest(unittest.TestCase):
 
         # cconvert catchment file to zipfile
         catchment_dir = pathlib.Path(str(catchment_dir) + ".zip")
-        catchment_geometry = geometry.CatchmentGeometry(catchment_dir,
-                                                        cls.instructions['instructions']['projection'],
-                                                        cls.instructions['instructions']['grid_params']['resolution'])
+        catchment_geometry = geopandas.read_file(catchment_dir)
+        catchment_geometry.to_crs(cls.instructions['instructions']['projection'])
         catchment_geometry.land = catchment_dir  # all land
 
         # Run pipeline - download files
