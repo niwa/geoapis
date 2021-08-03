@@ -18,10 +18,8 @@ jobs:
 
     steps:
 
-    - name: Checkout github repo including lfs files
+    - name: Checkout github repo
       uses: actions/checkout@v2
-      with:
-        lfs: true
 
     - name: Cache conda
       uses: actions/cache@v2
