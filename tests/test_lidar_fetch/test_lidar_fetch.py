@@ -67,12 +67,11 @@ class OpenTopographyTest(unittest.TestCase):
 
         # create a catchment_geometry
         catchment_dir = pathlib.Path(str(catchment_dir) + ".zip")
-        catchment_geometry = geopandas.read_file(catchment_dir)
-        catchment_geometry.to_crs(instructions['instructions']['projection'])
-        catchment_geometry.land = catchment_dir  # all land
+        catchment_polygon = geopandas.read_file(catchment_dir)
+        catchment_polygon.to_crs(instructions['instructions']['projection'])
 
         # Run pipeline - download files
-        runner = lidar_fetch.OpenTopography(catchment_geometry, cls.cache_dir, verbose=True)
+        runner = lidar_fetch.OpenTopography(catchment_polygon, cls.cache_dir, verbose=True)
         runner.run()
 
     @classmethod

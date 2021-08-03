@@ -12,6 +12,7 @@ import boto3
 import botocore
 import botocore.client
 import typing
+import geopandas
 from . import geometry
 
 
@@ -35,15 +36,15 @@ class OpenTopography:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " + \
         "Chrome/91.0.4472.124 Safari/537.36"
 
-    def __init__(self, catchment_geometry, cache_path: typing.Union[str, pathlib.Path],
-                 redownload_files: bool = False, download_limit_gbytes: typing.Union[int, float] = 100,
-                 verbose: bool = False):
+    def __init__(self, catchment_polygon: geopandas.geodataframe.GeoDataFrame,
+                 cache_path: typing.Union[str, pathlib.Path], redownload_files: bool = False,
+                 download_limit_gbytes: typing.Union[int, float] = 100, verbose: bool = False):
         """ Load in LiDAR with relevant processing chain.
 
         Note in case of multiple datasets could select by name, spatial extent, or most recent. download_size is in GB.
         """
 
-        self.catchment_geometry = catchment_geometry
+        self.catchment_polygon = catchment_polygon
         self.cache_path = pathlib.Path(cache_path)
         self.redownload_files_bool = redownload_files
         self.download_limit_gbytes = download_limit_gbytes
@@ -88,7 +89,7 @@ class OpenTopography:
         """ Function to check for data in search region using the otCatalogue API
         https://portal.opentopography.org/apidocs/#/Public/getOtCatalog """
 
-        catchment_bounds = self.catchment_geometry.geometry.to_crs(self.OT_CRS).bounds
+        catchment_bounds = self.catchment_polygon.geometry.to_crs(self.OT_CRS).bounds
         api_query = {
             "productFormat": "PointCloud",
             "minx": catchment_bounds['minx'].min(),
@@ -126,7 +127,7 @@ class OpenTopography:
             client.download_file(self.OT_BUCKET, file_prefix, str(local_file_path))
 
         # load in tile information
-        tile_info = geometry.TileInfo(local_file_path, self.catchment_geometry)
+        tile_info = geometry.TileInfo(local_file_path, self.catchment_polygon)
 
         return tile_info.tile_names
 

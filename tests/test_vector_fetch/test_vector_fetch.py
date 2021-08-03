@@ -70,14 +70,12 @@ class LinzVectorsTest(unittest.TestCase):
 
         # cconvert catchment file to zipfile
         catchment_dir = pathlib.Path(str(catchment_dir) + ".zip")
-        catchment_geometry = geopandas.read_file(catchment_dir)
-        catchment_geometry.to_crs(cls.instructions['instructions']['projection'])
-        catchment_geometry.land = catchment_dir  # all land
+        catchment_polygon = geopandas.read_file(catchment_dir)
+        catchment_polygon.to_crs(cls.instructions['instructions']['projection'])
 
         # Run pipeline - download files
         cls.runner = vector_fetch.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                       catchment_geometry, verbose=True)
-        cls.catchment_geometry = catchment_geometry
+                                       catchment_polygon, verbose=True)
 
     @classmethod
     def tearDownClass(cls):

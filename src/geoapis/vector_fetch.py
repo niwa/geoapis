@@ -18,19 +18,19 @@ class Linz:
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
     The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the catchment_geometry are returned. """
+    in the catchment_polygon are returned. """
 
     SCHEME = "https"
     NETLOC_API = "data.linz.govt.nz"
     WFS_PATH_API_START = "/services;key="
     WFS_PATH_API_END = "/wfs"
 
-    def __init__(self, key: str, catchment_geometry, verbose: bool = False):
+    def __init__(self, key: str, catchment_polygon: geopandas.geodataframe.GeoDataFrame, verbose: bool = False):
         """ Load in vector information from LINZ. Specify the layer to import during run.
         """
 
         self.key = key
-        self.catchment_geometry = catchment_geometry
+        self.catchment_polygon = catchment_polygon
         self.verbose = verbose
 
     def run(self, layer: int, geometry_type: str):
@@ -60,10 +60,10 @@ class Linz:
             "request": "GetFeature",
             "typeNames": f"layer-{layer}",
             "outputFormat": "json",
-            "SRSName": f"{self.catchment_geometry.crs.to_string()}",
+            "SRSName": f"{self.catchment_polygon.crs.to_string()}",
             "cql_filter": f"bbox({geometry_type}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
                           f"{bounds['miny'].min()}, {bounds['minx'].min()}, " +
-                          f"'urn:ogc:def:crs:{self.catchment_geometry.crs.to_string()}')"
+                          f"'urn:ogc:def:crs:{self.catchment_polygon.crs.to_string()}')"
         }
 
         response = requests.get(data_url, params=api_query, stream=True)
@@ -75,7 +75,7 @@ class Linz:
         """ Get a list of features within the catchment boundary """
 
         # radius in metres
-        catchment_bounds = self.catchment_geometry.geometry.bounds
+        catchment_bounds = self.catchment_polygon.geometry.bounds
         feature_collection = self.query_vector_wfs(catchment_bounds, layer, geometry_type)
 
         # Cycle through each feature getting name and coordinates
@@ -85,7 +85,7 @@ class Linz:
             shapely_geometry = shapely.geometry.shape(feature['geometry'])
 
             # check intersection of tile and catchment in LINZ CRS
-            if self.catchment_geometry.intersects(shapely_geometry).any():
+            if self.catchment_polygon.intersects(shapely_geometry).any():
 
                 # convert any one Polygon MultiPolygons to a straight Polygon
                 if (shapely_geometry.geometryType() == 'MultiPolygon' and len(shapely_geometry) == 1):
@@ -96,7 +96,7 @@ class Linz:
         # Convert to a geopandas dataframe
         if len(features) > 0:
             features = geopandas.GeoDataFrame(index=list(range(len(features))), geometry=features,
-                                              crs=self.catchment_geometry.crs)
+                                              crs=self.catchment_polygon.crs)
         else:
             features = None
 
