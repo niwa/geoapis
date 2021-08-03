@@ -2,7 +2,7 @@
 
 ## Build Status
 
-![Linux](https://github.com/rosepearson/geoapis/actions/workflows/linux-test.yml/badge.svg)
+![Linux](https://github.com/niwa/geoapis/actions/workflows/linux-test.yml/badge.svg)
 
 ## Introduction
 
