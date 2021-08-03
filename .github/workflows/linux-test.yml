@@ -34,7 +34,7 @@ jobs:
     - name: Install package dependencies with setup-miniconda@v2
       uses: conda-incubator/setup-miniconda@v2
       with:
-        activate-environment: geofabrics
+        activate-environment: geoapis
         environment-file: environment.yml
         auto-activate-base: false
         channels: conda-forge
