@@ -6,7 +6,7 @@
 
 ## Introduction
 
-*_geoapis_* is a Python package for simply downloading publicly available web-hosted geo-spatial data. It currently supports downloading LiDAR data from OpenTopography, and vector data from the LINZ Data Service. 
+**_geoapis_** is a Python package for simply downloading publicly available web-hosted geo-spatial data. It currently supports downloading LiDAR data from OpenTopography, and vector data from the LINZ Data Service. 
 
 ### Wiki
 For detailed instructions on installation, usage, and testing please check out the repo [wiki](https://github.com/niwa/geoapis/wiki). 
