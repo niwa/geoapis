@@ -14,11 +14,11 @@ import shutil
 import dotenv
 import os
 
-from src.geoapis import vector_fetch
+from src.geoapis import vector
 
 
 class LinzVectorsTest(unittest.TestCase):
-    """ A class to test the basic vector_fetch class Linz functionality by downloading files from
+    """ A class to test the basic vector.Linz functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
@@ -36,7 +36,7 @@ class LinzVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_fetch/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
@@ -74,8 +74,8 @@ class LinzVectorsTest(unittest.TestCase):
         catchment_polygon.to_crs(cls.instructions['instructions']['projection'])
 
         # Run pipeline - download files
-        cls.runner = vector_fetch.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                       catchment_polygon, verbose=True)
+        cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
+                                 catchment_polygon, verbose=True)
 
     @classmethod
     def tearDownClass(cls):

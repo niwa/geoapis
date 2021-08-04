@@ -13,11 +13,11 @@ import geopandas
 import shutil
 import numpy
 
-from src.geoapis import lidar_fetch
+from src.geoapis import lidar
 
 
 class OpenTopographyTest(unittest.TestCase):
-    """ A class to test the basic lidar_fetch class OpenTopography functionality by downloading files from
+    """ A class to test the basic lidar.OpenTopography functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
@@ -38,7 +38,7 @@ class OpenTopographyTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_lidar_fetch/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_lidar/instruction.json")
         with open(file_path, 'r') as file_pointer:
             instructions = json.load(file_pointer)
 
@@ -71,7 +71,7 @@ class OpenTopographyTest(unittest.TestCase):
         catchment_polygon.to_crs(instructions['instructions']['projection'])
 
         # Run pipeline - download files
-        runner = lidar_fetch.OpenTopography(catchment_polygon, cls.cache_dir, verbose=True)
+        runner = lidar.OpenTopography(catchment_polygon, cls.cache_dir, verbose=True)
         runner.run()
 
     @classmethod
