@@ -2,7 +2,7 @@
   {
     "projection": 2193,
     "data_paths": {
-      "local_cache": "tests/test_lidar_fetch/data"
+      "local_cache": "tests/test_lidar/data"
     }
   }
 }
