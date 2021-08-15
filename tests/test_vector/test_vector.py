@@ -27,8 +27,12 @@ class LinzVectorsTest(unittest.TestCase):
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    LAND = {"area": 150539169542.39142, "geometryType": 'Polygon', 'length': 6006036.039821969}
-    BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146}
+    LAND = {"area": 150539169542.39142, "geometryType": 'Polygon', 'length': 6006036.039821969,
+            'columns': ['geometry', 'name', 'macronated', 'grp_macron', 'TARGET_FID', 'grp_ascii', 'grp_name',
+                        'name_ascii']}
+    BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146,
+                           'columns': ['geometry', 'fidn', 'valdco', 'verdat', 'inform', 'ninfom', 'ntxtds',
+                                       'scamin', 'txtdsc', 'sordat', 'sorind', 'hypcat']}
 
     @classmethod
     def setUpClass(cls):
@@ -97,7 +101,9 @@ class LinzVectorsTest(unittest.TestCase):
                          f"`{land.geometry.length.sum()}` differs from the expected {self.LAND['length']}")
         self.assertEqual(land.loc[0].geometry.geometryType(), self.LAND['geometryType'], "The geometryType of the " +
                          f"returned land polygon `{land.loc[0].geometry.geometryType()}` differs from the expected " +
-                         f"{self.LAND['length']}")
+                         f"{self.LAND['geometryType']}")
+        self.assertEqual(list(land.columns), self.LAND['columns'], "The columns of the returned land polygon " +
+                         f"`{list(land.columns)}` differ from the expected {self.LAND['columns']}")
 
     def test_bathymetry(self):
         """ A test to check expected bathyemtry contours are loaded """
@@ -117,6 +123,9 @@ class LinzVectorsTest(unittest.TestCase):
                          "The geometryType of the returned land polygon " +
                          f"`{bathymetry_contours.loc[0].geometry.geometryType()}` differs from the expected " +
                          f"{self.BATHYMETRY_CONTOURS['length']}")
+        self.assertEqual(list(bathymetry_contours.columns), self.BATHYMETRY_CONTOURS['columns'], "The columns of the" +
+                         f" returned land polygon `{list(bathymetry_contours.columns)}` differ from the expected " +
+                         f"{self.BATHYMETRY_CONTOURS['columns']}")
 
 
 if __name__ == '__main__':
