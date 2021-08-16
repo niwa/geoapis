@@ -27,7 +27,7 @@ class LinzVectorsTest(unittest.TestCase):
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    LAND = {"area": 150539169542.39142, "geometryType": 'Polygon', 'length': 6006036.039821969,
+    LAND = {"area": 150539169542.3913, "geometryType": 'Polygon', 'length': 6006036.039821965,
             'columns': ['geometry', 'name', 'macronated', 'grp_macron', 'TARGET_FID', 'grp_ascii', 'grp_name',
                         'name_ascii']}
     BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146,
