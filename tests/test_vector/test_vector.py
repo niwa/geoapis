@@ -27,8 +27,13 @@ class LinzVectorsTest(unittest.TestCase):
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    LAND = {"area": 150539169542.39142, "geometryType": 'Polygon', 'length': 6006036.039821969}
-    BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146}
+    LAND = {"area": 150539169542.3913, "geometryType": 'Polygon', 'length': 6006036.039821965,
+            'columns': ['geometry', 'name', 'macronated', 'grp_macron', 'TARGET_FID', 'grp_ascii', 'grp_name',
+                        'name_ascii'], 'name': ['South Island or Te Waipounamu']}
+    BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146,
+                           'columns': ['geometry', 'fidn', 'valdco', 'verdat', 'inform', 'ninfom', 'ntxtds',
+                                       'scamin', 'txtdsc', 'sordat', 'sorind', 'hypcat'],
+                           'valdco': [2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 20.0, 0.0, 0.0, 5.0, 10.0, 30.0, 2.0, 0.0]}
 
     @classmethod
     def setUpClass(cls):
@@ -91,13 +96,17 @@ class LinzVectorsTest(unittest.TestCase):
                                self.instructions['instructions']['apis']['linz']['land']['type'])
 
         # check various shape attributes match those expected
+        self.assertEqual(land.loc[0].geometry.geometryType(), self.LAND['geometryType'], "The geometryType of the " +
+                         f"returned land polygon `{land.loc[0].geometry.geometryType()}` differs from the expected " +
+                         f"{self.LAND['geometryType']}")
+        self.assertEqual(list(land.columns), self.LAND['columns'], "The columns of the returned land polygon " +
+                         f"`{list(land.columns)}` differ from the expected {self.LAND['columns']}")
+        self.assertEqual(list(land['name_ascii']), self.LAND['name'], "The value of the land polygon's 'name' column " +
+                         f"`{list(land['name_ascii'])}` differ from the expected {self.LAND['name']}")
         self.assertEqual(land.geometry.area.sum(), self.LAND['area'], "The area of the returned land polygon " +
                          f"`{land.geometry.area.sum()}` differs from the expected {self.LAND['area']}")
         self.assertEqual(land.geometry.length.sum(), self.LAND['length'], "The length of the returned land polygon " +
                          f"`{land.geometry.length.sum()}` differs from the expected {self.LAND['length']}")
-        self.assertEqual(land.loc[0].geometry.geometryType(), self.LAND['geometryType'], "The geometryType of the " +
-                         f"returned land polygon `{land.loc[0].geometry.geometryType()}` differs from the expected " +
-                         f"{self.LAND['length']}")
 
     def test_bathymetry(self):
         """ A test to check expected bathyemtry contours are loaded """
@@ -107,16 +116,22 @@ class LinzVectorsTest(unittest.TestCase):
             self.instructions['instructions']['apis']['linz']['bathymetry_contours']['type'])
 
         # check various shape attributes match those expected
+        self.assertEqual(bathymetry_contours.loc[0].geometry.geometryType(), self.BATHYMETRY_CONTOURS['geometryType'],
+                         "The geometryType of the returned land polygon " +
+                         f"`{bathymetry_contours.loc[0].geometry.geometryType()}` differs from the expected " +
+                         f"{self.BATHYMETRY_CONTOURS['geometryType']}")
+        self.assertEqual(list(bathymetry_contours.columns), self.BATHYMETRY_CONTOURS['columns'], "The columns of the" +
+                         f" returned land polygon `{list(bathymetry_contours.columns)}` differ from the expected " +
+                         f"{self.BATHYMETRY_CONTOURS['columns']}")
+        self.assertEqual(list(bathymetry_contours['valdco']), self.BATHYMETRY_CONTOURS['valdco'], "The columns of the" +
+                         f" land polygon's 'valdco' column `{list(bathymetry_contours['valdco'])}` differ from the " +
+                         f"expected {self.BATHYMETRY_CONTOURS['valdco']}")
         self.assertEqual(bathymetry_contours.geometry.area.sum(), self.BATHYMETRY_CONTOURS['area'], "The area of the " +
                          f"returned bathymetry_contours polygon `{bathymetry_contours.geometry.area.sum()}` differs " +
                          "from the expected {self.BATHYMETRY_CONTOURS['area']}")
         self.assertEqual(bathymetry_contours.geometry.length.sum(), self.BATHYMETRY_CONTOURS['length'], "The area of " +
                          f"the returned bathymetry_contours polygon `{bathymetry_contours.geometry.length.sum()}` " +
                          "differs from the expected {self.BATHYMETRY_CONTOURS['length']}")
-        self.assertEqual(bathymetry_contours.loc[0].geometry.geometryType(), self.BATHYMETRY_CONTOURS['geometryType'],
-                         "The geometryType of the returned land polygon " +
-                         f"`{bathymetry_contours.loc[0].geometry.geometryType()}` differs from the expected " +
-                         f"{self.BATHYMETRY_CONTOURS['length']}")
 
 
 if __name__ == '__main__':

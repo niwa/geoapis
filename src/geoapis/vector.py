@@ -78,8 +78,8 @@ class Linz:
         catchment_bounds = self.catchment_polygon.geometry.bounds
         feature_collection = self.query_vector_wfs(catchment_bounds, layer, geometry_type)
 
-        # Cycle through each feature getting name and coordinates
-        features = []
+        # Cycle through each feature checking in bounds and getting geometry and properties
+        features = {'geometry': []}
         for feature in feature_collection['features']:
 
             shapely_geometry = shapely.geometry.shape(feature['geometry'])
@@ -87,16 +87,23 @@ class Linz:
             # check intersection of tile and catchment in LINZ CRS
             if self.catchment_polygon.intersects(shapely_geometry).any():
 
-                # convert any one Polygon MultiPolygons to a straight Polygon
+                # Create column headings for each 'properties' option from the first in-bounds vector
+                if len(features['geometry']) == 0:
+                    for key in feature['properties'].keys():
+                        features[key] = []  # The empty list to append the property values too
+
+                # Convert any one Polygon MultiPolygon to a straight Polygon then add to the geometries
                 if (shapely_geometry.geometryType() == 'MultiPolygon' and len(shapely_geometry) == 1):
                     shapely_geometry = shapely_geometry[0]
+                features['geometry'].append(shapely_geometry)
 
-                features.append(shapely_geometry)
+                # Add the value of each property in turn
+                for key in feature['properties'].keys():
+                    features[key].append(feature['properties'][key])
 
         # Convert to a geopandas dataframe
         if len(features) > 0:
-            features = geopandas.GeoDataFrame(index=list(range(len(features))), geometry=features,
-                                              crs=self.catchment_polygon.crs)
+            features = geopandas.GeoDataFrame(features, crs=self.catchment_polygon.crs)
         else:
             features = None
 
