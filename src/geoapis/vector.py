@@ -87,12 +87,12 @@ class Linz:
             # check intersection of tile and catchment in LINZ CRS
             if self.catchment_polygon.intersects(shapely_geometry).any():
 
-                # Create 'properties' column headings from first in-bounds vector
+                # Create column headings for each 'properties' option from the first in-bounds vector
                 if len(features['geometry']) == 0:
                     for key in feature['properties'].keys():
-                        features[key] = []
+                        features[key] = []  # The empty list to append the property values too
 
-                # Convert any one Polygon MultiPolygons to a straight Polygon then add to the geometries
+                # Convert any one Polygon MultiPolygon to a straight Polygon then add to the geometries
                 if (shapely_geometry.geometryType() == 'MultiPolygon' and len(shapely_geometry) == 1):
                     shapely_geometry = shapely_geometry[0]
                 features['geometry'].append(shapely_geometry)
