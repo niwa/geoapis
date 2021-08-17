@@ -107,7 +107,6 @@ class LinzVectorsTest(unittest.TestCase):
         self.assertEqual(land.geometry.length.sum(), self.LAND['length'], "The length of the returned land polygon " +
                          f"`{land.geometry.length.sum()}` differs from the expected {self.LAND['length']}")
 
-
     def test_land_no_geometry_name(self):
         """ A test to check expected island is loaded """
 
@@ -125,7 +124,6 @@ class LinzVectorsTest(unittest.TestCase):
                          f"`{land.geometry.area.sum()}` differs from the expected {self.LAND['area']}")
         self.assertEqual(land.geometry.length.sum(), self.LAND['length'], "The length of the returned land polygon " +
                          f"`{land.geometry.length.sum()}` differs from the expected {self.LAND['length']}")
-
 
     def test_bathymetry(self):
         """ A test to check expected bathyemtry contours are loaded """
@@ -151,7 +149,6 @@ class LinzVectorsTest(unittest.TestCase):
         self.assertEqual(bathymetry_contours.geometry.length.sum(), self.BATHYMETRY_CONTOURS['length'], "The area of " +
                          f"the returned bathymetry_contours polygon `{bathymetry_contours.geometry.length.sum()}` " +
                          "differs from the expected {self.BATHYMETRY_CONTOURS['length']}")
-
 
     def test_bathymetry_no_geometry_name(self):
         """ A test to check expected bathyemtry contours are loaded """

@@ -30,9 +30,9 @@ class Linz:
     WFS_PATH_API_END = "/wfs"
     LINZ_GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
-    def __init__(self, key: str, crs: int = None, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None, verbose: bool = False):
-        """ Load in vector information from LINZ. Specify the layer to import during run.
-        """
+    def __init__(self, key: str, crs: int = None, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None,
+                 verbose: bool = False):
+        """ Load in vector information from LINZ. Specify the layer to import during run. """
 
         self.key = key
         self.catchment_polygon = catchment_polygon
@@ -40,7 +40,6 @@ class Linz:
         self.verbose = verbose
 
         self._set_up()
-
 
     def _set_up(self):
         # Set the crs from the catchment_polygon if it's not been set
@@ -50,7 +49,6 @@ class Linz:
         # Set the catchment_polygon crs from the crs if they differ
         if self.catchment_polygon is not None and self.crs != self.catchment_polygon.crs.to_epsg():
             self.catchment_polygon.to_crs(self.crs)
-
 
     def run(self, layer: int, geometry_name: str = ""):
         """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
@@ -94,7 +92,6 @@ class Linz:
 
         return response
 
-
     def get_json_response_in_bounds(self, layer: int, bounds, geometry_name: str):
         """ Check for specified `geometry_name` - try the standard LINZ ones in turn if not specified - and check for
         error messages before returning  """
@@ -116,11 +113,10 @@ class Linz:
                     return response.json()
                 except requests.exceptions.HTTPError:
                     if self.verbose:
-                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +\
+                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +
                               "{requests.Request('POST', data_url, params=params).prepare().url}")
             assert False, f"No geometry types matching that of layer: {layer} tried. The geometry_name's tried are: +" \
                 "{geometry_type_list}"
-
 
     def get_features_inside_catchment(self, layer: int, geometry_name: str):
         """ Get a list of features within the catchment boundary """
@@ -162,7 +158,6 @@ class Linz:
             features = None
 
         return features
-
 
     def query_vector_wfs(self, layer: int):
         """ Function to check for all features associated with a layer using the LINZ WFS vector query API

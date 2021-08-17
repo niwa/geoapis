@@ -55,7 +55,7 @@ class LinzVectorsTest(unittest.TestCase):
 
         # Run pipeline - download files
         cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                 crs = cls.instructions['instructions']['projection'], catchment_polygon=None,
+                                 crs=cls.instructions['instructions']['projection'], catchment_polygon=None,
                                  verbose=True)
 
     @classmethod
@@ -91,7 +91,7 @@ class LinzVectorsTest(unittest.TestCase):
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
         description = "pastural lease parcels"
         benchmark = self.PASTURAL_LEASE
-        
+
         # check various shape attributes match those expected
         self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
                          f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
@@ -104,7 +104,6 @@ class LinzVectorsTest(unittest.TestCase):
                          f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
         self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned {description}"
                          + f"`{features.geometry.length.sum()}` differs from the expected {benchmark['length']}")
-
 
 
 if __name__ == '__main__':
