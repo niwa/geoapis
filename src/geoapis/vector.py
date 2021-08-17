@@ -24,7 +24,7 @@ class Linz:
     NETLOC_API = "data.linz.govt.nz"
     WFS_PATH_API_START = "/services;key="
     WFS_PATH_API_END = "/wfs"
-    LINZ_GEOMETRY_TYPES = ['GEOMETRY', 'shape']
+    LINZ_GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
     def __init__(self, key: str, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None, verbose: bool = False):
         """ Load in vector information from LINZ. Specify the layer to import during run.
@@ -34,22 +34,22 @@ class Linz:
         self.catchment_polygon = catchment_polygon
         self.verbose = verbose
 
-    def run(self, layer: int, geometry_type: str = ""):
+    def run(self, layer: int, geometry_name: str = ""):
         """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
         within the catchment """
 
         if self.catchment_polygon is None:
             features = self.get_features(layer)
         else:
-            features = self.get_features_inside_catchment(layer, geometry_type)
+            features = self.get_features_inside_catchment(layer, geometry_name)
 
         return features
 
-    def query_vector_wfs_in_bounds(self, layer: int, bounds, geometry_type: str):
+    def query_vector_wfs_in_bounds(self, layer: int, bounds, geometry_name: str):
         """ Function to check for tiles in search rectangle using the LINZ WFS vector query API
         https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
-        Note that depending on the LDS layer the geometry name may be 'shape' - most property/titles,
+        Note that depending on the LDS layer the geometry_name may be 'shape' - most property/titles,
         or GEOMETRY - most other layers including Hydrographic and Topographic data.
 
         bounds defines the bounding box containing in the catchment boundary """
@@ -65,7 +65,7 @@ class Linz:
             "typeNames": f"layer-{layer}",
             "outputFormat": "json",
             "SRSName": f"{self.catchment_polygon.crs.to_string()}",
-            "cql_filter": f"bbox({geometry_type}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
+            "cql_filter": f"bbox({geometry_name}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
                           f"{bounds['miny'].min()}, {bounds['minx'].min()}, " +
                           f"'urn:ogc:def:crs:{self.catchment_polygon.crs.to_string()}')"
         }
@@ -75,39 +75,39 @@ class Linz:
         return response
 
 
-    def get_json_response_in_bounds(self, layer: int, bounds, geometry_type: str):
-        """ Check for specified `geometry_type` - try the standard LINZ ones in turn if not specified - and check for
+    def get_json_response_in_bounds(self, layer: int, bounds, geometry_name: str):
+        """ Check for specified `geometry_name` - try the standard LINZ ones in turn if not specified - and check for
         error messages before returning  """
 
-        # If a geometry_type was specified use this, otherwise try the standard LINZ ones
-        if geometry_type is not None and geometry_type != "":
+        # If a geometry_name was specified use this, otherwise try the standard LINZ ones
+        if geometry_name is not None and geometry_name != "":
 
-            response = self.query_vector_wfs_in_bounds(layer, bounds, geometry_type)
+            response = self.query_vector_wfs_in_bounds(layer, bounds, geometry_name)
             response.raise_for_status()
             return response.json()
 
         else:
 
-            # cycle through the standard LINZ geometry_types - suppress errors and only raise one if no valid responses
-            for geometry_type in self.LINZ_GEOMETRY_TYPES:
-                response = self.query_vector_wfs_in_bounds(layer, bounds, geometry_type)
+            # cycle through the standard LINZ geometry_name's - suppress errors and only raise one if no valid responses
+            for geometry_name in self.LINZ_GEOMETRY_NAMES:
+                response = self.query_vector_wfs_in_bounds(layer, bounds, geometry_name)
                 try:
                     response.raise_for_status()
                     return response.json()
                 except urllib.error.HTTPError:
                     if self.verbose:
-                        print(f"Layer: {layer} is not of geometry type: {geometry_type}. URL is: " +\
+                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +\
                               "{requests.Request('POST', data_url, params=params).prepare().url}")
-            assert False, f"No geometry types matching that of layer: {layer} tried. The geometry types tried are: +" \
+            assert False, f"No geometry types matching that of layer: {layer} tried. The geometry_name's tried are: +" \
                 "{geometry_type_list}"
 
 
-    def get_features_inside_catchment(self, layer: int, geometry_type: str):
+    def get_features_inside_catchment(self, layer: int, geometry_name: str):
         """ Get a list of features within the catchment boundary """
 
         # radius in metres
         catchment_bounds = self.catchment_polygon.geometry.bounds
-        feature_collection = self.get_json_response_in_bounds(layer, catchment_bounds, geometry_type)
+        feature_collection = self.get_json_response_in_bounds(layer, catchment_bounds, geometry_name)
 
         # Cycle through each feature checking in bounds and getting geometry and properties
         features = {'geometry': []}
