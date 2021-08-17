@@ -18,7 +18,11 @@ class Linz:
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
     The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the catchment_polygon are returned. """
+    in the catchment_polygon are returned. 
+
+    Flexibility exists in the inputs. Only the key is required. If no search_polygon is specified all features in a
+    layer will be downloaded. If no crs is specified, the search_polygon will be used if the search_polygon is
+    specified. If no CRS or search_polygon is specified the CRS of the downloaded features will be used. """
 
     SCHEME = "https"
     NETLOC_API = "data.linz.govt.nz"
@@ -82,7 +86,7 @@ class Linz:
                           f"'urn:ogc:def:crs:{self.catchment_polygon.crs.to_string()}')"
         }
 
-        if self.crs is not None:  # Only specify crs if passed in
+        if self.crs is not None:  # Only specify crs if specified
             api_query["SRSName"] = f"EPSG:{self.crs}"
 
         response = requests.get(data_url, params=api_query, stream=True)
@@ -175,7 +179,7 @@ class Linz:
             "outputFormat": "json"
         }
 
-        if self.crs is not None:  # Only specify crs if passed in
+        if self.crs is not None:  # Only specify crs if specified
             api_query["SRSName"] = f"EPSG:{self.crs}"
 
         response = requests.get(data_url, params=api_query, stream=True)
