@@ -55,7 +55,8 @@ class LinzVectorsTest(unittest.TestCase):
 
         # Run pipeline - download files
         cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                 catchment_polygon=None, verbose=True)
+                                 crs = cls.instructions['instructions']['projection'], catchment_polygon=None,
+                                 verbose=True)
 
     @classmethod
     def tearDownClass(cls):

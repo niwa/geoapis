@@ -26,13 +26,26 @@ class Linz:
     WFS_PATH_API_END = "/wfs"
     LINZ_GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
-    def __init__(self, key: str, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None, verbose: bool = False):
+    def __init__(self, key: str, crs: int = None, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None, verbose: bool = False):
         """ Load in vector information from LINZ. Specify the layer to import during run.
         """
 
         self.key = key
         self.catchment_polygon = catchment_polygon
+        self.crs = crs
         self.verbose = verbose
+
+        self._set_up()
+
+
+    def _set_up(self):
+        # Set the crs from the catchment_polygon if it's not been set
+        if self.crs is None and self.catchment_polygon is not None:
+            self.crs = self.catchment_polygon.crs.to_epsg()
+
+        # Set the catchment_polygon crs from the crs if they differ
+        if self.catchment_polygon is not None and self.crs != self.catchment_polygon.crs.to_epsg():
+            self.catchment_polygon.to_crs(self.crs)
 
     def run(self, layer: int, geometry_name: str = ""):
         """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
@@ -64,11 +77,13 @@ class Linz:
             "request": "GetFeature",
             "typeNames": f"layer-{layer}",
             "outputFormat": "json",
-            "SRSName": f"{self.catchment_polygon.crs.to_string()}",
             "cql_filter": f"bbox({geometry_name}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
                           f"{bounds['miny'].min()}, {bounds['minx'].min()}, " +
                           f"'urn:ogc:def:crs:{self.catchment_polygon.crs.to_string()}')"
         }
+
+        if self.crs is not None:  # Only specify crs if passed in
+            api_query["SRSName"] = f"EPSG:{self.crs}"
 
         response = requests.get(data_url, params=api_query, stream=True)
 
@@ -107,7 +122,10 @@ class Linz:
 
         # radius in metres
         catchment_bounds = self.catchment_polygon.geometry.bounds
+
+        # get feature information from query
         feature_collection = self.get_json_response_in_bounds(layer, catchment_bounds, geometry_name)
+        crs = feature_collection['crs']['properties']['name']
 
         # Cycle through each feature checking in bounds and getting geometry and properties
         features = {'geometry': []}
@@ -134,7 +152,7 @@ class Linz:
 
         # Convert to a geopandas dataframe
         if len(features) > 0:
-            features = geopandas.GeoDataFrame(features, crs=self.catchment_polygon.crs)
+            features = geopandas.GeoDataFrame(features, crs=crs)
         else:
             features = None
 
@@ -154,9 +172,11 @@ class Linz:
             "version": 2.0,
             "request": "GetFeature",
             "typeNames": f"layer-{layer}",
-            "outputFormat": "json",
-            "SRSName": f"{self.catchment_polygon.crs.to_string()}"
+            "outputFormat": "json"
         }
+
+        if self.crs is not None:  # Only specify crs if passed in
+            api_query["SRSName"] = f"EPSG:{self.crs}"
 
         response = requests.get(data_url, params=api_query, stream=True)
 
@@ -166,8 +186,9 @@ class Linz:
     def get_features(self, layer: int):
         """ Get a list of all features associated with layer """
 
-        # radius in metres
+        # get feature information from query
         feature_collection = self.query_vector_wfs(layer)
+        crs = feature_collection['crs']['properties']['name']
 
         # Cycle through each feature checking in bounds and getting geometry and properties
         features = {'geometry': []}
@@ -191,7 +212,7 @@ class Linz:
 
         # Convert to a geopandas dataframe
         if len(features) > 0:
-            features = geopandas.GeoDataFrame(features, crs=self.catchment_polygon.crs)
+            features = geopandas.GeoDataFrame(features, crs=crs)
         else:
             features = None
 
