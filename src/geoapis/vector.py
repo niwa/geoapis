@@ -18,11 +18,11 @@ class Linz:
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
     The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the catchment_polygon are returned.
+    in the bounding_polygon are returned.
 
-    Flexibility exists in the inputs. Only the key is required. If no search_polygon is specified all features in a
-    layer will be downloaded. If no crs is specified, the search_polygon will be used if the search_polygon is
-    specified. If no CRS or search_polygon is specified the CRS of the downloaded features will be used. """
+    Flexibility exists in the inputs. Only the key is required. If no bounding_polygon is specified all features in a
+    layer will be downloaded. If no crs is specified, the bounding_polygon will be used if the bounding_polygon is
+    specified. If no CRS or bounding_polygon is specified the CRS of the downloaded features will be used. """
 
     SCHEME = "https"
     NETLOC_API = "data.linz.govt.nz"
@@ -30,31 +30,31 @@ class Linz:
     WFS_PATH_API_END = "/wfs"
     LINZ_GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
-    def __init__(self, key: str, crs: int = None, catchment_polygon: geopandas.geodataframe.GeoDataFrame = None,
+    def __init__(self, key: str, crs: int = None, bounding_polygon: geopandas.geodataframe.GeoDataFrame = None,
                  verbose: bool = False):
         """ Load in vector information from LINZ. Specify the layer to import during run. """
 
         self.key = key
-        self.catchment_polygon = catchment_polygon
+        self.bounding_polygon = bounding_polygon
         self.crs = crs
         self.verbose = verbose
 
         self._set_up()
 
     def _set_up(self):
-        # Set the crs from the catchment_polygon if it's not been set
-        if self.crs is None and self.catchment_polygon is not None:
-            self.crs = self.catchment_polygon.crs.to_epsg()
+        # Set the crs from the bounding_polygon if it's not been set
+        if self.crs is None and self.bounding_polygon is not None:
+            self.crs = self.bounding_polygon.crs.to_epsg()
 
-        # Set the catchment_polygon crs from the crs if they differ
-        if self.catchment_polygon is not None and self.crs != self.catchment_polygon.crs.to_epsg():
-            self.catchment_polygon.to_crs(self.crs)
+        # Set the bounding_polygon crs from the crs if they differ
+        if self.bounding_polygon is not None and self.crs != self.bounding_polygon.crs.to_epsg():
+            self.bounding_polygon.to_crs(self.crs)
 
     def run(self, layer: int, geometry_name: str = ""):
         """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
         within the catchment """
 
-        if self.catchment_polygon is None:
+        if self.bounding_polygon is None:
             features = self.get_features(layer)
         else:
             features = self.get_features_inside_catchment(layer, geometry_name)
@@ -82,7 +82,7 @@ class Linz:
             "outputFormat": "json",
             "cql_filter": f"bbox({geometry_name}, {bounds['maxy'].max()}, {bounds['maxx'].max()}, " +
                           f"{bounds['miny'].min()}, {bounds['minx'].min()}, " +
-                          f"'urn:ogc:def:crs:{self.catchment_polygon.crs.to_string()}')"
+                          f"'urn:ogc:def:crs:{self.bounding_polygon.crs.to_string()}')"
         }
 
         if self.crs is not None:  # Only specify crs if specified
@@ -122,7 +122,7 @@ class Linz:
         """ Get a list of features within the catchment boundary """
 
         # radius in metres
-        catchment_bounds = self.catchment_polygon.geometry.bounds
+        catchment_bounds = self.bounding_polygon.geometry.bounds
 
         # get feature information from query
         feature_collection = self.get_json_response_in_bounds(layer, catchment_bounds, geometry_name)
@@ -135,7 +135,7 @@ class Linz:
             shapely_geometry = shapely.geometry.shape(feature['geometry'])
 
             # check intersection of tile and catchment in LINZ CRS
-            if self.catchment_polygon.intersects(shapely_geometry).any():
+            if self.bounding_polygon.intersects(shapely_geometry).any():
 
                 # Create column headings for each 'properties' option from the first in-bounds vector
                 if len(features['geometry']) == 0:

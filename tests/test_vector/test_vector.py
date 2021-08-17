@@ -55,7 +55,7 @@ class LinzVectorsTest(unittest.TestCase):
 
         # Run pipeline - download files
         cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                 crs=cls.instructions['instructions']['projection'], catchment_polygon=None,
+                                 crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
                                  verbose=True)
 
     @classmethod
