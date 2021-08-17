@@ -98,7 +98,6 @@ class Linz:
                     if self.verbose:
                         print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +\
                               "{requests.Request('POST', data_url, params=params).prepare().url}")
-                    continue
             assert False, f"No geometry types matching that of layer: {layer} tried. The geometry_name's tried are: +" \
                 "{geometry_type_list}"
 

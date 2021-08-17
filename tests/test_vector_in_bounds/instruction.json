@@ -1,0 +1,20 @@
+{"instructions": 
+  {
+    "projection": 2193,
+    "data_paths": {
+      "local_cache": "tests/test_vector_in_bounds/data"
+    },
+	"apis": {
+		"linz": {
+			"land": {
+				"layers": [51153],
+				"geometry_name": "GEOMETRY"
+			},
+			"bathymetry_contours": {
+				"layers": [50448],
+				"geometry_name": "shape"
+			}
+		}
+	}
+  }
+}
