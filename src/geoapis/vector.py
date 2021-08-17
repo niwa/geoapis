@@ -141,7 +141,7 @@ class Linz:
         return features
 
 
-    def query_vector_wfs(self, bounds, layer: int, geometry_type: str):
+    def query_vector_wfs(self, layer: int):
         """ Function to check for all features associated with a layer using the LINZ WFS vector query API
         https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering """
 
