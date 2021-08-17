@@ -27,7 +27,7 @@ class LinzVectorsTest(unittest.TestCase):
     # The expected datasets and files to be downloaded - used for comparison in the later tests
     RAILWAYS = {"area": 0.0, "geometryType": 'MultiLineString', 'length': 5475052.898111259,
                 'columns': ['geometry', 'id', 'name', 'name_utf8'], 'id': [1775717, 1775718, 1775719, 1778938, 1778939]}
-    PASTURAL_LEASE = {"area": 13387663696.368122, "geometryType": 'POLYGON ', 'length': 15756644.418670136,
+    PASTURAL_LEASE = {"area": 13387663696.368122, "geometryType": 'MultiPolygon', 'length': 15756644.418670136,
                       'columns': ['geometry', 'id', 'lease_name'], 'id': [12767, 12768, 12770, 12773, 12776]}
 
     @classmethod
@@ -89,7 +89,7 @@ class LinzVectorsTest(unittest.TestCase):
         """ A test to check expected island is loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
-        description = "railways centre lines"
+        description = "pastural lease parcels"
         benchmark = self.PASTURAL_LEASE
         
         # check various shape attributes match those expected

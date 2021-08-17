@@ -18,7 +18,7 @@ class Linz:
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
     The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the catchment_polygon are returned. 
+    in the catchment_polygon are returned.
 
     Flexibility exists in the inputs. Only the key is required. If no search_polygon is specified all features in a
     layer will be downloaded. If no crs is specified, the search_polygon will be used if the search_polygon is
@@ -50,6 +50,7 @@ class Linz:
         # Set the catchment_polygon crs from the crs if they differ
         if self.catchment_polygon is not None and self.crs != self.catchment_polygon.crs.to_epsg():
             self.catchment_polygon.to_crs(self.crs)
+
 
     def run(self, layer: int, geometry_name: str = ""):
         """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
