@@ -94,7 +94,7 @@ class Linz:
                 try:
                     response.raise_for_status()
                     return response.json()
-                except urllib.error.HTTPError:
+                except urllib.error.HTTPError or requests.exceptions.HTTPError:
                     if self.verbose:
                         print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +\
                               "{requests.Request('POST', data_url, params=params).prepare().url}")
