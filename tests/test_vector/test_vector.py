@@ -8,8 +8,6 @@ Created on Wed Jun 30 11:11:25 2021
 import unittest
 import json
 import pathlib
-import shapely
-import geopandas
 import shutil
 import dotenv
 import os
@@ -22,18 +20,15 @@ class LinzVectorsTest(unittest.TestCase):
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
-        1. test_land - Test that the expected land dataset is downloaded from LINZ
-        2. test_bathymetry - Test that the expected land dataset is downloaded from LINZ
+        1. test_railways - Test that the expected railways dataset is downloaded from LINZ
+        2. test_pastural_lease - Test that the expected pastural lease dataset is downloaded from LINZ
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    LAND = {"area": 150539169542.3913, "geometryType": 'Polygon', 'length': 6006036.039821965,
-            'columns': ['geometry', 'name', 'macronated', 'grp_macron', 'TARGET_FID', 'grp_ascii', 'grp_name',
-                        'name_ascii'], 'name': ['South Island or Te Waipounamu']}
-    BATHYMETRY_CONTOURS = {"area": 0.0, "geometryType": 'LineString', 'length': 144353.73387463146,
-                           'columns': ['geometry', 'fidn', 'valdco', 'verdat', 'inform', 'ninfom', 'ntxtds',
-                                       'scamin', 'txtdsc', 'sordat', 'sorind', 'hypcat'],
-                           'valdco': [2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 20.0, 0.0, 0.0, 5.0, 10.0, 30.0, 2.0, 0.0]}
+    RAILWAYS = {"area": 0.0, "geometryType": 'MultiLineString', 'length': 5475052.898111259,
+                'columns': ['geometry', 'id', 'name', 'name_utf8'], 'id': [1775717, 1775718, 1775719, 1778938, 1778939]}
+    PASTURAL_LEASE = {"area": 13387663696.368122, "geometryType": 'MultiPolygon', 'length': 15756644.418670136,
+                      'columns': ['geometry', 'id', 'lease_name'], 'id': [12767, 12768, 12770, 12773, 12776]}
 
     @classmethod
     def setUpClass(cls):
@@ -58,29 +53,10 @@ class LinzVectorsTest(unittest.TestCase):
             shutil.rmtree(cls.cache_dir)
         cls.cache_dir.mkdir()
 
-        # create fake catchment boundary
-        x0 = 1477354
-        x1 = 1484656
-        y0 = 5374408
-        y1 = 5383411
-        catchment = shapely.geometry.Polygon([(x0, y0), (x0, y1), (x1, y1), (x1, y0)])
-        catchment = geopandas.GeoSeries([catchment])
-        catchment = catchment.set_crs(cls.instructions['instructions']['projection'])
-
-        # save faked catchment file
-        catchment_dir = cls.cache_dir / "catchment"
-        catchment.to_file(catchment_dir)
-        shutil.make_archive(base_name=catchment_dir, format='zip', root_dir=catchment_dir)
-        shutil.rmtree(catchment_dir)
-
-        # cconvert catchment file to zipfile
-        catchment_dir = pathlib.Path(str(catchment_dir) + ".zip")
-        catchment_polygon = geopandas.read_file(catchment_dir)
-        catchment_polygon.to_crs(cls.instructions['instructions']['projection'])
-
         # Run pipeline - download files
         cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                 catchment_polygon, verbose=True)
+                                 crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
+                                 verbose=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -89,49 +65,45 @@ class LinzVectorsTest(unittest.TestCase):
         if cls.cache_dir.exists():
             shutil.rmtree(cls.cache_dir)
 
-    def test_land(self):
+    def test_railways(self):
         """ A test to check expected island is loaded """
 
-        land = self.runner.run(self.instructions['instructions']['apis']['linz']['land']['layers'][0],
-                               self.instructions['instructions']['apis']['linz']['land']['type'])
+        features = self.runner.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
+        description = "railways centre lines"
+        benchmark = self.RAILWAYS
 
         # check various shape attributes match those expected
-        self.assertEqual(land.loc[0].geometry.geometryType(), self.LAND['geometryType'], "The geometryType of the " +
-                         f"returned land polygon `{land.loc[0].geometry.geometryType()}` differs from the expected " +
-                         f"{self.LAND['geometryType']}")
-        self.assertEqual(list(land.columns), self.LAND['columns'], "The columns of the returned land polygon " +
-                         f"`{list(land.columns)}` differ from the expected {self.LAND['columns']}")
-        self.assertEqual(list(land['name_ascii']), self.LAND['name'], "The value of the land polygon's 'name' column " +
-                         f"`{list(land['name_ascii'])}` differ from the expected {self.LAND['name']}")
-        self.assertEqual(land.geometry.area.sum(), self.LAND['area'], "The area of the returned land polygon " +
-                         f"`{land.geometry.area.sum()}` differs from the expected {self.LAND['area']}")
-        self.assertEqual(land.geometry.length.sum(), self.LAND['length'], "The length of the returned land polygon " +
-                         f"`{land.geometry.length.sum()}` differs from the expected {self.LAND['length']}")
+        self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
+                         f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
+                         f"expected {benchmark['geometryType']}")
+        self.assertEqual(list(features.columns), benchmark['columns'], "The columns of the returned {description}" +
+                         f" lines `{list(features.columns)}` differ from the expected {benchmark['columns']}")
+        self.assertEqual(list(features['id'][0:5]), benchmark['id'], "The value of the 'id' column for the first" +
+                         f" five entries `{list(features['id'][0:5])}` differ from the expected {benchmark['id']}")
+        self.assertEqual(features.geometry.area.sum(), benchmark['area'], "The area of the returned {description}" +
+                         f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
+        self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned {description}"
+                         + f"`{features.geometry.length.sum()}` differs from the expected {benchmark['length']}")
 
-    def test_bathymetry(self):
-        """ A test to check expected bathyemtry contours are loaded """
+    def test_pastural_lease(self):
+        """ A test to check expected island is loaded """
 
-        bathymetry_contours = self.runner.run(
-            self.instructions['instructions']['apis']['linz']['bathymetry_contours']['layers'][0],
-            self.instructions['instructions']['apis']['linz']['bathymetry_contours']['type'])
+        features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
+        description = "pastural lease parcels"
+        benchmark = self.PASTURAL_LEASE
 
         # check various shape attributes match those expected
-        self.assertEqual(bathymetry_contours.loc[0].geometry.geometryType(), self.BATHYMETRY_CONTOURS['geometryType'],
-                         "The geometryType of the returned land polygon " +
-                         f"`{bathymetry_contours.loc[0].geometry.geometryType()}` differs from the expected " +
-                         f"{self.BATHYMETRY_CONTOURS['geometryType']}")
-        self.assertEqual(list(bathymetry_contours.columns), self.BATHYMETRY_CONTOURS['columns'], "The columns of the" +
-                         f" returned land polygon `{list(bathymetry_contours.columns)}` differ from the expected " +
-                         f"{self.BATHYMETRY_CONTOURS['columns']}")
-        self.assertEqual(list(bathymetry_contours['valdco']), self.BATHYMETRY_CONTOURS['valdco'], "The columns of the" +
-                         f" land polygon's 'valdco' column `{list(bathymetry_contours['valdco'])}` differ from the " +
-                         f"expected {self.BATHYMETRY_CONTOURS['valdco']}")
-        self.assertEqual(bathymetry_contours.geometry.area.sum(), self.BATHYMETRY_CONTOURS['area'], "The area of the " +
-                         f"returned bathymetry_contours polygon `{bathymetry_contours.geometry.area.sum()}` differs " +
-                         "from the expected {self.BATHYMETRY_CONTOURS['area']}")
-        self.assertEqual(bathymetry_contours.geometry.length.sum(), self.BATHYMETRY_CONTOURS['length'], "The area of " +
-                         f"the returned bathymetry_contours polygon `{bathymetry_contours.geometry.length.sum()}` " +
-                         "differs from the expected {self.BATHYMETRY_CONTOURS['length']}")
+        self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
+                         f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
+                         f"expected {benchmark['geometryType']}")
+        self.assertEqual(list(features.columns), benchmark['columns'], "The columns of the returned {description}" +
+                         f" lines `{list(features.columns)}` differ from the expected {benchmark['columns']}")
+        self.assertEqual(list(features['id'][0:5]), benchmark['id'], "The value of the 'id' column for the first" +
+                         f" five entries `{list(features['id'][0:5])}` differ from the expected {benchmark['id']}")
+        self.assertEqual(features.geometry.area.sum(), benchmark['area'], "The area of the returned {description}" +
+                         f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
+        self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned {description}"
+                         + f"`{features.geometry.length.sum()}` differs from the expected {benchmark['length']}")
 
 
 if __name__ == '__main__':

@@ -6,13 +6,11 @@
     },
 	"apis": {
 		"linz": {
-			"land": {
-				"layers": [51153],
-				"type": "GEOMETRY"
+			"railways": {
+				"layers": [50781]
 			},
-			"bathymetry_contours": {
-				"layers": [50448],
-				"type": "shape"
+			"pastural_lease": {
+				"layers": [51572]
 			}
 		}
 	}
