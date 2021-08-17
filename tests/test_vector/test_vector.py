@@ -36,7 +36,7 @@ class LinzVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_in_bounds/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
