@@ -8,11 +8,11 @@
 		"linz": {
 			"land": {
 				"layers": [51153],
-				"type": "GEOMETRY"
+				"geometry_name": "GEOMETRY"
 			},
 			"bathymetry_contours": {
 				"layers": [50448],
-				"type": "shape"
+				"geometry_name": "shape"
 			}
 		}
 	}
