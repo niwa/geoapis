@@ -52,8 +52,8 @@ class LrisVectorsTest(unittest.TestCase):
 
         # Load in environment variables to get and set the private API keys
         dotenv.load_dotenv()
-        linz_key = os.environ.get('LRIS_API', None)
-        cls.instructions['instructions']['apis']['lris']['key'] = linz_key
+        lris_key = os.environ.get('LRIS_API', None)
+        cls.instructions['instructions']['apis']['lris']['key'] = lris_key
 
         # define cache location - and catchment dirs
         cls.cache_dir = pathlib.Path(cls.instructions['instructions']['data_paths']['local_cache'])

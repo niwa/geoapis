@@ -10,9 +10,10 @@ import requests
 import shapely
 import shapely.geometry
 import geopandas
+import abc
 
 
-class WfsQueryBase:
+class WfsQueryBase(abc.ABC):
     """ An abstract class to manage fetching Vector data using WFS.
 
     API details at: https://www.ogc.org/standards/wfs or
@@ -26,11 +27,13 @@ class WfsQueryBase:
     specified. If no CRS or bounding_polygon is specified the CRS of the downloaded features will be used. """
 
     @property
+    @abc.abstractmethod
     def NETLOC_API():
         raise NotImplementedError
 
     @property
-    def GEOMETRY_NAME():
+    @abc.abstractmethod
+    def GEOMETRY_NAMES():
         raise NotImplementedError
 
     SCHEME = "https"
@@ -233,8 +236,13 @@ class Linz(WfsQueryBase):
     GEOMETRY for most other layers including Hydrographic and Topographic data.
     """
 
-    NETLOC_API = "data.linz.govt.nz"
-    GEOMETRY_NAMES = ['GEOMETRY', 'shape']
+    @property
+    def NETLOC_API(self) -> str:
+        return "data.linz.govt.nz"
+
+    @property
+    def GEOMETRY_NAMES(self) -> list:
+        return ['GEOMETRY', 'shape']
 
 
 class Lris(WfsQueryBase):
@@ -246,5 +254,10 @@ class Lris(WfsQueryBase):
     for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
     """
 
-    NETLOC_API = "lris.scinfo.org.nz"
-    GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
+    @property
+    def NETLOC_API(self) -> str:
+        return "lris.scinfo.org.nz"
+
+    @property
+    def GEOMETRY_NAMES(self) -> list:
+        return ['GEOMETRY', 'Shape']
