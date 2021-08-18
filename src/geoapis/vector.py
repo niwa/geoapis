@@ -245,5 +245,5 @@ class Lris(WfsQueryBase):
     for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
     """
 
-    NETLOC_API = "lris.scinfo.org.nz/"
+    NETLOC_API = "lris.scinfo.org.nz"
     GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
