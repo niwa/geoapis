@@ -1,0 +1,18 @@
+{"instructions": 
+  {
+    "projection": 2193,
+    "data_paths": {
+      "local_cache": "tests/test_vector_lris/data"
+    },
+	"apis": {
+		"lris": {
+			"northland_erosions": {
+				"layers": [48556]
+			},
+			"pukekohe_soils": {
+				"layers": [48155]
+			}
+		}
+	}
+  }
+}

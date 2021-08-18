@@ -21,15 +21,18 @@ class LinzVectorsTest(unittest.TestCase):
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
-        * test_50781 - Test layer 50781 features are correctly downloaded
-        * test_51572 - Test layer 51572 features are correctly downloaded
+        * test_48556 - Test layer 48556 features are correctly downloaded
+        * test_48155 - Test layer 48155 features are correctly downloaded
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    RAILWAYS = {"area": 0.0, "geometryType": 'MultiLineString', 'length': 5475052.898111259,
-                'columns': ['geometry', 'id', 'name', 'name_utf8'], 'id': [1775717, 1775718, 1775719, 1778938, 1778939]}
-    PASTURAL_LEASE = {"area": 13387663696.368122, "geometryType": 'MultiPolygon', 'length': 15756644.418670136,
-                      'columns': ['geometry', 'id', 'lease_name'], 'id': [12767, 12768, 12770, 12773, 12776]}
+    NORTHLAND_EROSION = {"area": 2335705.1410131645, "geometryType": 'Polygon', 'length': 214953.27371777612,
+                         'columns': ['geometry', 'OBJECTID', 'Type', 'SHAPE_Leng', 'SHAPE_Area', 'Confidence',
+                                     'Comment', 'Age', 'Area', 'eros_code', 'code'],
+                         'Area': [6.78169759532, 4.15827444502, 3.12360615684, 270.951816682, 21.0797912601]}
+    PUKEKOHE_SOILS = {"area": 14735624.95558952, "geometryType": 'Polygon', 'length': 75736.74547737166,
+                      'columns': ['geometry', 'DOMSOI', 'SURCODE', 'SOIL', 'SERIES', 'TOPSOIL_TE', 'UNIT', 'NZSC1',
+                                  'NZSC2', 'NZSC_GROUP'], 'DOMSOI': ['PhR', 'PhR', 'Amp', 'Am', 'Wm']}
 
     @classmethod
     def setUpClass(cls):
@@ -37,14 +40,14 @@ class LinzVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_linz/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_lris/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
         # Load in environment variables to get and set the private API keys
         dotenv.load_dotenv()
-        linz_key = os.environ.get('LINZ_API', None)
-        cls.instructions['instructions']['apis']['linz']['key'] = linz_key
+        linz_key = os.environ.get('LRIS_API', None)
+        cls.instructions['instructions']['apis']['lris']['key'] = linz_key
 
         # define cache location - and catchment dirs
         cls.cache_dir = pathlib.Path(cls.instructions['instructions']['data_paths']['local_cache'])
@@ -55,7 +58,7 @@ class LinzVectorsTest(unittest.TestCase):
         cls.cache_dir.mkdir()
 
         # Run pipeline - download files
-        cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
+        cls.runner = vector.Lris(cls.instructions['instructions']['apis']['lris']['key'],
                                  crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
                                  verbose=True)
 
@@ -86,25 +89,25 @@ class LinzVectorsTest(unittest.TestCase):
                          f"{description} `{features.geometry.length.sum()}` differs from the expected " +
                          "{benchmark['length']}")
 
-    def test_50781(self):
+    def test_48556(self):
         """ A test to check expected island is loaded """
 
-        features = self.runner.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
-        description = "railways centre lines"
-        benchmark = self.RAILWAYS
+        features = self.runner.run(self.instructions['instructions']['apis']['lris']['northland_erosions']['layers'][0])
+        description = "Northand Erosion"
+        benchmark = self.NORTHLAND_EROSION
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'id')
+        self.compare_to_benchmark(features, benchmark, description, 'Area')
 
-    def test_51572(self):
+    def test_48155(self):
         """ A test to check expected island is loaded """
 
-        features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
-        description = "pastural lease parcels"
-        benchmark = self.PASTURAL_LEASE
+        features = self.runner.run(self.instructions['instructions']['apis']['lris']['pukekohe_soils']['layers'][0])
+        description = "Soils in Pukekohe Borough"
+        benchmark = self.PUKEKOHE_SOILS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'id')
+        self.compare_to_benchmark(features, benchmark, description, 'DOMSOI')
 
 
 if __name__ == '__main__':
