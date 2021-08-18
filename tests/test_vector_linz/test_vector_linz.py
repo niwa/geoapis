@@ -87,7 +87,7 @@ class LinzVectorsTest(unittest.TestCase):
                          "{benchmark['length']}")
 
     def test_50781(self):
-        """ A test to check expected island is loaded """
+        """ Test expacted entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
         description = "railways centre lines"
@@ -97,7 +97,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'id')
 
     def test_51572(self):
-        """ A test to check expected island is loaded """
+        """ Test expacted entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
         description = "pastural lease parcels"

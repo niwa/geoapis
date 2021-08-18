@@ -115,7 +115,7 @@ class LinzVectorsTest(unittest.TestCase):
                          "{benchmark['length']}")
 
     def test_105112(self):
-        """ A test to check expected layer features are loaded """
+        """ Test expacted features of layer loaded """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0],
@@ -127,7 +127,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'uid')
 
     def test_105112_no_geometry_name(self):
-        """ A test to check expected layer features are loaded even without specifying the 'geometry_name' """
+        """ Test expacted features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0])
@@ -138,7 +138,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'uid')
 
     def test_104400(self):
-        """ A test to check expected bathyemtry contours are loaded """
+        """ Test expacted features of layer loaded """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0],
@@ -150,7 +150,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'Class_2018')
 
     def test_104400_no_geometry_name(self):
-        """ A test to check expected bathyemtry contours are loaded """
+        """ Test expacted features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0])
