@@ -22,12 +22,10 @@ class LinzVectorsTest(unittest.TestCase):
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
-        * test_land - Test that the expected land dataset is downloaded from LINZ
-        * test_land_no_geometry_name - Test that the expected land dataset is downloaded from LINZ even without
-                                       specifying the geometery_name
-        * test_bathymetry - Test that the expected land dataset is downloaded from LINZ
-        * test_bathymetry_no_geometry_name - Test that the expected bathymetry dataset is downloaded from LINZ even
-                                             without specifying the geometery_name
+        * test_51153 - Test layer 105112 features are correctly downloaded within the specified bbox
+        * test_51153_no_geometry_name - Test layer 105112 and bbox, but with no geometry_name given
+        * test_50448 - Test layer 104400 features are correctly downloaded within the specified bbox
+        * test_50448_no_geometry_name - Test layer 104400 and bbox, but with no geometry_name given
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
@@ -112,7 +110,7 @@ class LinzVectorsTest(unittest.TestCase):
                          f"{description} `{features.geometry.length.sum()}` differs from the expected " +
                          "{benchmark['length']}")
 
-    def test_land(self):
+    def test_51153(self):
         """ A test to check expected island is loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['land']['layers'][0],
@@ -123,7 +121,7 @@ class LinzVectorsTest(unittest.TestCase):
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'name')
 
-    def test_land_no_geometry_name(self):
+    def test_51153_no_geometry_name(self):
         """ A test to check expected island is loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['land']['layers'][0])
@@ -133,7 +131,7 @@ class LinzVectorsTest(unittest.TestCase):
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'name')
 
-    def test_bathymetry(self):
+    def test_50448(self):
         """ A test to check expected bathyemtry contours are loaded """
 
         features = self.runner.run(
@@ -145,7 +143,7 @@ class LinzVectorsTest(unittest.TestCase):
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'valdco')
 
-    def test_bathymetry_no_geometry_name(self):
+    def test_50448_no_geometry_name(self):
         """ A test to check expected bathyemtry contours are loaded """
 
         features = self.runner.run(

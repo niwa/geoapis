@@ -21,8 +21,8 @@ class LinzVectorsTest(unittest.TestCase):
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include:
-        1. test_railways - Test that the expected railways dataset is downloaded from LINZ
-        2. test_pastural_lease - Test that the expected pastural lease dataset is downloaded from LINZ
+        1. test_50781 - Test layer 50781 features are correctly downloaded
+        2. test_51572 - Test layer 51572 features are correctly downloaded
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
@@ -86,7 +86,7 @@ class LinzVectorsTest(unittest.TestCase):
                          f"{description} `{features.geometry.length.sum()}` differs from the expected " +
                          "{benchmark['length']}")
 
-    def test_railways(self):
+    def test_50781(self):
         """ A test to check expected island is loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
@@ -96,7 +96,7 @@ class LinzVectorsTest(unittest.TestCase):
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'id')
 
-    def test_pastural_lease(self):
+    def test_51572(self):
         """ A test to check expected island is loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
