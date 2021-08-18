@@ -10,29 +10,44 @@ import requests
 import shapely
 import shapely.geometry
 import geopandas
+import abc
 
 
-class Linz:
-    """ A class to manage fetching Vector data from LINZ.
+class WfsQueryBase(abc.ABC):
+    """ An abstract class to manage fetching Vector data using WFS.
 
-    API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+    API details at: https://www.ogc.org/standards/wfs or
+    https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
-    The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the bounding_polygon are returned.
+    The specified vector layer is queried each time run is called, and any layer features passing though the optionally
+    defined bounding_polygon are returned. If no bounding_polygon is specified all layer features are returned.
 
     Flexibility exists in the inputs. Only the key is required. If no bounding_polygon is specified all features in a
     layer will be downloaded. If no crs is specified, the bounding_polygon will be used if the bounding_polygon is
     specified. If no CRS or bounding_polygon is specified the CRS of the downloaded features will be used. """
 
+    @property
+    @abc.abstractmethod
+    def NETLOC_API():
+        """ This should be instantiated in the base class. Provide the netloc of the data service. """
+
+        raise NotImplementedError("NETLOC_API must be instantiated in the child class")
+
+    @property
+    @abc.abstractmethod
+    def GEOMETRY_NAMES():
+        """ This should be instantiated in the base class. Define the 'geometry_name' used when making a WFS
+        'cql_filter' query """
+
+        raise NotImplementedError("NETLOC_API must be instantiated in the child class")
+
     SCHEME = "https"
-    NETLOC_API = "data.linz.govt.nz"
     WFS_PATH_API_START = "/services;key="
     WFS_PATH_API_END = "/wfs"
-    LINZ_GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
     def __init__(self, key: str, crs: int = None, bounding_polygon: geopandas.geodataframe.GeoDataFrame = None,
                  verbose: bool = False):
-        """ Load in vector information from LINZ. Specify the layer to import during run. """
+        """ Load in the wfs key and CRS/bounding_polygon if specified. Specify the layer to import during run. """
 
         self.key = key
         self.bounding_polygon = bounding_polygon
@@ -42,6 +57,8 @@ class Linz:
         self._set_up()
 
     def _set_up(self):
+        """ Ensure the bouding_polygon and CRS are in agreement. """
+
         # Set the crs from the bounding_polygon if it's not been set
         if self.crs is None and self.bounding_polygon is not None:
             self.crs = self.bounding_polygon.crs.to_epsg()
@@ -50,9 +67,9 @@ class Linz:
         if self.bounding_polygon is not None and self.crs != self.bounding_polygon.crs.to_epsg():
             self.bounding_polygon.to_crs(self.crs)
 
-    def run(self, layer: int, geometry_name: str = ""):
-        """ Query for tiles within a catchment for a specified layer and return a list of the vector features names
-        within the catchment """
+    def run(self, layer: int, geometry_name: str = "") -> geopandas.GeoDataFrame:
+        """ Query for a specified layer and return a geopandas.GeoDataFrame of the vector features. If a
+        polygon_boundary is specified, only return vectors passing through this polygon. """
 
         if self.bounding_polygon is None:
             features = self.get_features(layer)
@@ -62,13 +79,11 @@ class Linz:
         return features
 
     def query_vector_wfs_in_bounds(self, layer: int, bounds, geometry_name: str):
-        """ Function to check for tiles in search rectangle using the LINZ WFS vector query API
-        https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+        """ Function to check for tiles in search rectangle using the WFS vector query API.
 
-        Note that depending on the LDS layer the geometry_name may be 'shape' - most property/titles,
-        or GEOMETRY - most other layers including Hydrographic and Topographic data.
+        Note that depending on the layer the geometry_name may vary.
 
-        bounds defines the bounding box containing in the catchment boundary """
+        bounds defines the bounding box containing in the bounding_polygon """
 
         data_url = urllib.parse.urlunparse((self.SCHEME, self.NETLOC_API,
                                             f"{self.WFS_PATH_API_START}{self.key}{self.WFS_PATH_API_END}",
@@ -93,8 +108,8 @@ class Linz:
         return response
 
     def get_json_response_in_bounds(self, layer: int, bounds, geometry_name: str):
-        """ Check for specified `geometry_name` - try the standard LINZ ones in turn if not specified - and check for
-        error messages before returning  """
+        """ Check for specified `geometry_name` - try the standard ones specified by self.GEOMETRY_NAMES in turn if not
+        specified - and check for error messages before returning  """
 
         # If a geometry_name was specified use this, otherwise try the standard LINZ ones
         if geometry_name is not None and geometry_name != "":
@@ -105,21 +120,20 @@ class Linz:
 
         else:
 
-            # cycle through the standard LINZ geometry_name's - suppress errors and only raise one if no valid responses
-            for geometry_name in self.LINZ_GEOMETRY_NAMES:
+            # cycle through the standard geometry_name's - suppress errors and only raise one if no valid responses
+            for geometry_name in self.GEOMETRY_NAMES:
                 response = self.query_vector_wfs_in_bounds(layer, bounds, geometry_name)
                 try:
                     response.raise_for_status()
                     return response.json()
                 except requests.exceptions.HTTPError:
                     if self.verbose:
-                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +
-                              "{requests.Request('POST', data_url, params=params).prepare().url}")
+                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}.")
             assert False, f"No geometry types matching that of layer: {layer} tried. The geometry_name's tried are: +" \
                 "{geometry_type_list}"
 
-    def get_features_inside_catchment(self, layer: int, geometry_name: str):
-        """ Get a list of features within the catchment boundary """
+    def get_features_inside_catchment(self, layer: int, geometry_name: str) -> geopandas.GeoDataFrame:
+        """ Filter the layer features to only keep those within the specified bounding_polygon """
 
         # radius in metres
         catchment_bounds = self.bounding_polygon.geometry.bounds
@@ -160,8 +174,7 @@ class Linz:
         return features
 
     def query_vector_wfs(self, layer: int):
-        """ Function to check for all features associated with a layer using the LINZ WFS vector query API
-        https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering """
+        """ Function to check for all features associated with a layer using the WFS vector query API  """
 
         data_url = urllib.parse.urlunparse((self.SCHEME, self.NETLOC_API,
                                             f"{self.WFS_PATH_API_START}{self.key}{self.WFS_PATH_API_END}",
@@ -183,8 +196,8 @@ class Linz:
         response.raise_for_status()
         return response.json()
 
-    def get_features(self, layer: int):
-        """ Get a list of all features associated with layer """
+    def get_features(self, layer: int) -> geopandas.GeoDataFrame:
+        """ Return all features and associated properties within a layer as a geopandas.GeoDataFrame """
 
         # get feature information from query
         feature_collection = self.query_vector_wfs(layer)
@@ -217,3 +230,31 @@ class Linz:
             features = None
 
         return features
+
+
+class Linz(WfsQueryBase):
+    """ A class to manage fetching Vector data from LINZ.
+
+    API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LINZ LDS uses
+    'shape' for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
+    """
+
+    NETLOC_API = "data.linz.govt.nz"
+
+    GEOMETRY_NAMES = ['GEOMETRY', 'shape']
+
+
+class Lris(WfsQueryBase):
+    """ A class to manage fetching Vector data from LRIS.
+
+    API details at: https://lris.scinfo.org.nz/p/api-support-wfs/ z
+
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LRIS generally
+    follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
+    """
+
+    NETLOC_API = "lris.scinfo.org.nz"
+
+    GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
