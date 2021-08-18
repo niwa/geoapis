@@ -119,8 +119,7 @@ class WfsQueryBase:
                     return response.json()
                 except requests.exceptions.HTTPError:
                     if self.verbose:
-                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}. URL is: " +
-                              "{requests.Request('POST', data_url, params=params).prepare().url}")
+                        print(f"Layer: {layer} is not of `geometry_name`: {geometry_name}.")
             assert False, f"No geometry types matching that of layer: {layer} tried. The geometry_name's tried are: +" \
                 "{geometry_type_list}"
 
@@ -247,4 +246,4 @@ class Lris(WfsQueryBase):
     """
 
     NETLOC_API = "lris.scinfo.org.nz/"
-    GEOMETRY_NAMES = ['GEOMETRY', 'shape']
+    GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
