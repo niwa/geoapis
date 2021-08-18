@@ -1,0 +1,20 @@
+{"instructions": 
+  {
+    "projection": 2193,
+    "data_paths": {
+      "local_cache": "tests/test_vector_lris_in_bounds/data"
+    },
+	"apis": {
+		"lris": {
+			"ni_pature_productivity": {
+				"layers": [105112],
+				"geometry_name": "Shape"
+			},
+			"land_cover_database": {
+				"layers": [104400],
+				"geometry_name": "GEOMETRY"
+			}
+		}
+	}
+  }
+}
