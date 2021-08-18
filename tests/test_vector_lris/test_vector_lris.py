@@ -20,9 +20,10 @@ class LrisVectorsTest(unittest.TestCase):
     """ A class to test the basic vector.Lris functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
-    Tests run include:
-        * test_48556 - Test layer 48556 features are correctly downloaded
-        * test_48155 - Test layer 48155 features are correctly downloaded
+    Tests run include (test_#### indicates the layer tested):
+        * test_48556 - Test the specified layer features are correctly downloaded
+        * test_48155 - Test the specified layer features are correctly downloaded
+    See the associated description for keywords that can be used to search for the layer in the data service.
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests

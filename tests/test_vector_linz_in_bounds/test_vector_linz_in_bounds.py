@@ -21,11 +21,12 @@ class LinzVectorsTest(unittest.TestCase):
     """ A class to test the basic vector.Linz functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
-    Tests run include:
-        * test_51153 - Test layer 105112 features are correctly downloaded within the specified bbox
-        * test_51153_no_geometry_name - Test layer 105112 and bbox, but with no geometry_name given
-        * test_50448 - Test layer 104400 features are correctly downloaded within the specified bbox
-        * test_50448_no_geometry_name - Test layer 104400 and bbox, but with no geometry_name given
+    Tests run include (test_#### indicates the layer tested):
+        * test_51153 - Test the specified layer features are correctly downloaded within the specified bbox
+        * test_51153_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
+        * test_50448 - Test the specified layer features are correctly downloaded within the specified bbox
+        * test_50448_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
+    See the associated description for keywords that can be used to search for the layer in the data service.
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
