@@ -29,12 +29,17 @@ class WfsQueryBase(abc.ABC):
     @property
     @abc.abstractmethod
     def NETLOC_API():
-        raise NotImplementedError
+        """ This should be instantiated in the base class. Provide the netloc of the data service. """
+
+        raise NotImplementedError("NETLOC_API must be instantiated in the child class")
 
     @property
     @abc.abstractmethod
     def GEOMETRY_NAMES():
-        raise NotImplementedError
+        """ This should be instantiated in the base class. Define the 'geometry_name' used when making a WFS
+        'cql_filter' query """
+
+        raise NotImplementedError("NETLOC_API must be instantiated in the child class")
 
     SCHEME = "https"
     WFS_PATH_API_START = "/services;key="
@@ -232,17 +237,12 @@ class Linz(WfsQueryBase):
 
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
-    Note that depending on the layer the geometry_name may vary. The LINZ LDS uses 'shape' for most property/titles, and
-    GEOMETRY for most other layers including Hydrographic and Topographic data.
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LINZ LDS uses
+    'shape' for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
     """
 
-    @property
-    def NETLOC_API(self) -> str:
-        return "data.linz.govt.nz"
-
-    @property
-    def GEOMETRY_NAMES(self) -> list:
-        return ['GEOMETRY', 'shape']
+    NETLOC_API = "data.linz.govt.nz"
+    GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
 
 class Lris(WfsQueryBase):
@@ -250,14 +250,9 @@ class Lris(WfsQueryBase):
 
     API details at: https://lris.scinfo.org.nz/p/api-support-wfs/ z
 
-    Note that depending on the layer the geometry_name may vary. The LRIS appears to follow the LINZ LDS uses of 'shape'
-    for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LRIS generally
+    follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
     """
 
-    @property
-    def NETLOC_API(self) -> str:
-        return "lris.scinfo.org.nz"
-
-    @property
-    def GEOMETRY_NAMES(self) -> list:
-        return ['GEOMETRY', 'Shape']
+    NETLOC_API = "lris.scinfo.org.nz"
+    GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
