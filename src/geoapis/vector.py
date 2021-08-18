@@ -15,10 +15,11 @@ import geopandas
 class WfsQueryBase:
     """ An abstract class to manage fetching Vector data using WFS.
 
-    API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+    API details at: https://www.ogc.org/standards/wfs or
+    https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
-    The specified vector layer is queried each time run is called and any vectors passing though the catchment defined
-    in the bounding_polygon are returned.
+    The specified vector layer is queried each time run is called, and any layer features passing though the optionally
+    defined bounding_polygon are returned. If no bounding_polygon is specified all layer features are returned.
 
     Flexibility exists in the inputs. Only the key is required. If no bounding_polygon is specified all features in a
     layer will be downloaded. If no crs is specified, the bounding_polygon will be used if the bounding_polygon is
