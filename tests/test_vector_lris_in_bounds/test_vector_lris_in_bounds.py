@@ -17,7 +17,7 @@ import os
 from src.geoapis import vector
 
 
-class LinzVectorsTest(unittest.TestCase):
+class LrisVectorsTest(unittest.TestCase):
     """ A class to test the basic vector.lris functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
