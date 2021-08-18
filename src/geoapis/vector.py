@@ -242,6 +242,7 @@ class Linz(WfsQueryBase):
     """
 
     NETLOC_API = "data.linz.govt.nz"
+
     GEOMETRY_NAMES = ['GEOMETRY', 'shape']
 
 
@@ -255,4 +256,5 @@ class Lris(WfsQueryBase):
     """
 
     NETLOC_API = "lris.scinfo.org.nz"
+
     GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
