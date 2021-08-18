@@ -2,7 +2,7 @@
   {
     "projection": 2193,
     "data_paths": {
-      "local_cache": "tests/test_vector/data"
+      "local_cache": "tests/test_vector_linz/data"
     },
 	"apis": {
 		"linz": {

@@ -11,6 +11,7 @@ import pathlib
 import shutil
 import dotenv
 import os
+import geopandas
 
 from src.geoapis import vector
 
@@ -36,7 +37,7 @@ class LinzVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_linz/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
@@ -65,6 +66,26 @@ class LinzVectorsTest(unittest.TestCase):
         if cls.cache_dir.exists():
             shutil.rmtree(cls.cache_dir)
 
+    def compare_to_benchmark(self, features: geopandas.GeoDataFrame, benchmark: dict, description: str,
+                             column_name: str):
+        """ Compare the features attributes (total area, total length, columns, first five values of a column) against
+        those recorded in a benchmark. """
+
+        # check various shape attributes match those expected
+        self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
+                         f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
+                         f"expected {benchmark['geometryType']}")
+        self.assertEqual(list(features.columns), benchmark['columns'], f"The columns of the returned {description}" +
+                         f" lines `{list(features.columns)}` differ from the expected {benchmark['columns']}")
+        self.assertEqual(list(features[column_name][0:5]), benchmark[column_name], "The value of the 'id' column for " +
+                         f"the first five entries `{list(features[column_name][0:5])}` differ from the expected " +
+                         f"{benchmark[column_name]}")
+        self.assertEqual(features.geometry.area.sum(), benchmark['area'], f"The area of the returned {description}" +
+                         f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
+        self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned " +
+                         f"{description} `{features.geometry.length.sum()}` differs from the expected " +
+                         "{benchmark['length']}")
+
     def test_railways(self):
         """ A test to check expected island is loaded """
 
@@ -73,17 +94,7 @@ class LinzVectorsTest(unittest.TestCase):
         benchmark = self.RAILWAYS
 
         # check various shape attributes match those expected
-        self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
-                         f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
-                         f"expected {benchmark['geometryType']}")
-        self.assertEqual(list(features.columns), benchmark['columns'], "The columns of the returned {description}" +
-                         f" lines `{list(features.columns)}` differ from the expected {benchmark['columns']}")
-        self.assertEqual(list(features['id'][0:5]), benchmark['id'], "The value of the 'id' column for the first" +
-                         f" five entries `{list(features['id'][0:5])}` differ from the expected {benchmark['id']}")
-        self.assertEqual(features.geometry.area.sum(), benchmark['area'], "The area of the returned {description}" +
-                         f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
-        self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned {description}"
-                         + f"`{features.geometry.length.sum()}` differs from the expected {benchmark['length']}")
+        self.compare_to_benchmark(features, benchmark, description, 'id')
 
     def test_pastural_lease(self):
         """ A test to check expected island is loaded """
@@ -93,17 +104,7 @@ class LinzVectorsTest(unittest.TestCase):
         benchmark = self.PASTURAL_LEASE
 
         # check various shape attributes match those expected
-        self.assertEqual(features.loc[0].geometry.geometryType(), benchmark['geometryType'], "The geometryType of the" +
-                         f" returned {description} `{features.loc[0].geometry.geometryType()}` differs from the " +
-                         f"expected {benchmark['geometryType']}")
-        self.assertEqual(list(features.columns), benchmark['columns'], "The columns of the returned {description}" +
-                         f" lines `{list(features.columns)}` differ from the expected {benchmark['columns']}")
-        self.assertEqual(list(features['id'][0:5]), benchmark['id'], "The value of the 'id' column for the first" +
-                         f" five entries `{list(features['id'][0:5])}` differ from the expected {benchmark['id']}")
-        self.assertEqual(features.geometry.area.sum(), benchmark['area'], "The area of the returned {description}" +
-                         f"`{features.geometry.area.sum()}` differs from the expected {benchmark['area']}")
-        self.assertEqual(features.geometry.length.sum(), benchmark['length'], "The length of the returned {description}"
-                         + f"`{features.geometry.length.sum()}` differs from the expected {benchmark['length']}")
+        self.compare_to_benchmark(features, benchmark, description, 'id')
 
 
 if __name__ == '__main__':
