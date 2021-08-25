@@ -140,7 +140,6 @@ class WfsQueryBase(abc.ABC):
 
         # get feature information from query
         feature_collection = self.get_json_response_in_bounds(layer, catchment_bounds, geometry_name)
-        crs = feature_collection['crs']['properties']['name']
 
         # Cycle through each feature checking in bounds and getting geometry and properties
         features = {'geometry': []}
@@ -166,8 +165,8 @@ class WfsQueryBase(abc.ABC):
                     features[key].append(feature['properties'][key])
 
         # Convert to a geopandas dataframe
-        if len(features) > 0:
-            features = geopandas.GeoDataFrame(features, crs=crs)
+        if len(features['geometry']) > 0:
+            features = geopandas.GeoDataFrame(features, crs=feature_collection['crs']['properties']['name'])
         else:
             features = None
 
