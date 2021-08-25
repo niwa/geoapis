@@ -112,7 +112,7 @@ class LinzVectorsTest(unittest.TestCase):
                          "{benchmark['length']}")
 
     def test_51153(self):
-        """ Test expacted features of layer loaded """
+        """ Test expected features of layer loaded """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['land']['layers'][0],
                                    self.instructions['instructions']['apis']['linz']['land']['geometry_name'])
@@ -123,7 +123,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'name')
 
     def test_51153_no_geometry_name(self):
-        """ Test expacted features of layer loaded without specifying the geometry_name """
+        """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['land']['layers'][0])
         description = "1:50k island polygons"
@@ -133,7 +133,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'name')
 
     def test_50448(self):
-        """ Test expacted features of layer loaded """
+        """ Test expected features of layer loaded """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['linz']['bathymetry_contours']['layers'][0],
@@ -145,7 +145,7 @@ class LinzVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'valdco')
 
     def test_50448_no_geometry_name(self):
-        """ Test expacted features of layer loaded without specifying the geometry_name """
+        """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['linz']['bathymetry_contours']['layers'][0])

@@ -168,6 +168,7 @@ class WfsQueryBase(abc.ABC):
         if len(features['geometry']) > 0:
             features = geopandas.GeoDataFrame(features, crs=feature_collection['crs']['properties']['name'])
         else:
+            # Return None if no vector features were within the WFS BBox search query
             features = None
 
         return features
