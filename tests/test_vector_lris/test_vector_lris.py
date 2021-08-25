@@ -91,7 +91,7 @@ class LrisVectorsTest(unittest.TestCase):
                          "{benchmark['length']}")
 
     def test_48556(self):
-        """ Test expacted entire layer loaded correctly """
+        """ Test expected entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['lris']['northland_erosions']['layers'][0])
         description = "Northand Erosion"
@@ -101,7 +101,7 @@ class LrisVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'Area')
 
     def test_48155(self):
-        """ Test expacted entire layer loaded correctly """
+        """ Test expected entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['lris']['pukekohe_soils']['layers'][0])
         description = "Soils in Pukekohe Borough"

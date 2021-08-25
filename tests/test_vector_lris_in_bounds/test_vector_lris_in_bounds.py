@@ -116,7 +116,7 @@ class LrisVectorsTest(unittest.TestCase):
                          "{benchmark['length']}")
 
     def test_105112(self):
-        """ Test expacted features of layer loaded """
+        """ Test expected features of layer loaded """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0],
@@ -128,7 +128,7 @@ class LrisVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'uid')
 
     def test_105112_no_geometry_name(self):
-        """ Test expacted features of layer loaded without specifying the geometry_name """
+        """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0])
@@ -139,7 +139,7 @@ class LrisVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'uid')
 
     def test_104400(self):
-        """ Test expacted features of layer loaded """
+        """ Test expected features of layer loaded """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0],
@@ -151,7 +151,7 @@ class LrisVectorsTest(unittest.TestCase):
         self.compare_to_benchmark(features, benchmark, description, 'Class_2018')
 
     def test_104400_no_geometry_name(self):
-        """ Test expacted features of layer loaded without specifying the geometry_name """
+        """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
             self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0])

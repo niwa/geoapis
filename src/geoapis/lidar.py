@@ -119,7 +119,6 @@ class OpenTopography:
             response = client.head_object(Bucket=self.OT_BUCKET, Key=file_prefix)
             assert response['ResponseMetadata'][
                 'HTTPStatusCode'] == 200, f"No tile index file exists with key: {file_prefix}"
-            self.response = response
 
             # ensure folder exists before download
             local_file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -140,7 +139,6 @@ class OpenTopography:
             file_prefix = dataset_prefix + "/" + tile_name
             local_path = self.cache_path / file_prefix
             if self.redownload_files_bool or not local_path.exists():
-                print(file_prefix)
                 response = client.head_object(Bucket=self.OT_BUCKET, Key=file_prefix)
                 assert response['ResponseMetadata'][
                     'HTTPStatusCode'] == 200, f"No tile file exists with key: {file_prefix}"
