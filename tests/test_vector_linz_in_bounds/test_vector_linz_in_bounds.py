@@ -26,6 +26,8 @@ class LinzVectorsTest(unittest.TestCase):
         * test_51153_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
         * test_50448 - Test the specified layer features are correctly downloaded within the specified bbox
         * test_50448_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
+        * test_50072 - Test the specified layer features are correctly downloaded within the specified bbox
+        * test_50072_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
     See the associated description for keywords that can be used to search for the layer in the data service.
     """
 
@@ -37,6 +39,7 @@ class LinzVectorsTest(unittest.TestCase):
                            'columns': ['geometry', 'fidn', 'valdco', 'verdat', 'inform', 'ninfom', 'ntxtds',
                                        'scamin', 'txtdsc', 'sordat', 'sorind', 'hypcat'],
                            'valdco': [2.0, 2.0, 0.0, 0.0, 0.0]}
+    CHATHAM_CONTOURS = None
 
     @classmethod
     def setUpClass(cls):
@@ -154,6 +157,31 @@ class LinzVectorsTest(unittest.TestCase):
 
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'valdco')
+
+    def test_50072(self):
+        """ Test expected features of layer loaded """
+
+        features = self.runner.run(
+            self.instructions['instructions']['apis']['linz']['chatham_contours']['layers'][0],
+            self.instructions['instructions']['apis']['linz']['chatham_contours']['geometry_name'])
+        description = "Chatham Island contours"
+        benchmark = self.CHATHAM_CONTOURS
+
+        # check various shape attributes match those expected
+        assert features is benchmark, "No features should have been returned as the WFS search BBox does not overlap with" + \
+            f" the {description} extents. Instead {features} was returned."
+
+    def test_50072_no_geometry_name(self):
+        """ Test expected features of layer loaded without specifying the geometry_name """
+
+        features = self.runner.run(
+            self.instructions['instructions']['apis']['linz']['chatham_contours']['layers'][0])
+        description = "Chatham Island contours"
+        benchmark = self.CHATHAM_CONTOURS
+
+        # check various shape attributes match those expected
+        assert features is benchmark, "No features should have been returned as the WFS search BBox does not overlap with" + \
+            f" the {description} extents. Instead {features} was returned."
 
 
 if __name__ == '__main__':
