@@ -1,0 +1,20 @@
+{"instructions": 
+  {
+    "projection": 2193,
+    "data_paths": {
+      "local_cache": "tests/test_vector_stats_nz/data"
+    },
+	"apis": {
+		"stats_nz": {
+			"regional_councils": {
+				"layers": [105133],
+				"geometry_name": "Shape"
+			},
+			"district_health_board": {
+				"layers": [87883],
+				"geometry_name": "GEOMETRY"
+			}
+		}
+	}
+  }
+}

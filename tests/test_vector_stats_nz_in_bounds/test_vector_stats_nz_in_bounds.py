@@ -22,24 +22,21 @@ class LrisVectorsTest(unittest.TestCase):
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
     Tests run include (test_#### indicates the layer tested):
-        * test_105112 - Test the specified layer features are correctly downloaded within the specified bbox
-        * test_105112_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
-        * test_104400 - Test the specified layer features are correctly downloaded within the specified bbox
-        * test_104400_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
+        * test_105133 - Test the specified layer features are correctly downloaded within the specified bbox
+        * test_105133_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
+        * test_87883 - Test the specified layer features are correctly downloaded within the specified bbox
+        * test_87883_no_geometry_name - Test the specified layer and bbox, but with no geometry_name given
     See the associated description for keywords that can be used to search for the layer in the data service.
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    NI_PASTURE = {"area": 717394.1067030121, "geometryType": 'Polygon', 'length': 41471.634234214216,
-                  'columns': ['geometry', 'cat', 'area_m2', 'low_prod', 'yield_t_ha', 'lcdb_class', 'uid', 'slope',
-                              'region', 'Shape_Length', 'Shape_Area'],
-                  'uid': ['0900292962', '0900292961', '0900066117', '0900065567', '0900065323']}
-    LCDB_V5 = {"area": 89357299.57565206, "geometryType": 'Polygon', 'length': 578730.5152480144,
-               'columns': ['geometry', 'Name_2018', 'Name_2012', 'Name_2008', 'Name_2001', 'Name_1996', 'Class_2018',
-                           'Class_2012', 'Class_2008', 'Class_2001', 'Class_1996', 'Wetland_18', 'Wetland_12',
-                           'Wetland_08', 'Wetland_01', 'Wetland_96', 'Onshore_18', 'Onshore_12', 'Onshore_08',
-                           'Onshore_01', 'Onshore_96', 'EditAuthor', 'EditDate', 'LCDB_UID'],
-               'Class_2018': [1, 51, 1, 2, 54]}
+    REGIONAL_COUNCILS = {"area": 15945315588.69047, "geometryType": 'Polygon', 'length': 579211.9585905309,
+                         'columns': ['geometry', 'REGC2021_V1_00', 'REGC2021_V1_00_NAME', 'REGC2021_V1_00_NAME_ASCII',
+                                     'LAND_AREA_SQ_KM', 'AREA_SQ_KM', 'Shape_Length', 'Shape_Area'],
+                         'AREA_SQ_KM': [15945.3207507]}
+    DISTRICT_HEALTH_BOARDS = {"area": 136597398950.17044, "geometryType": 'MultiPolygon', 'length': 15794952.293961357,
+                              'columns': ['geometry', 'DHB2015_Code', 'DHB2015_Name', 'Shape_Length', 'Shape_Area'],
+                              'DHB2015_Code': ['14', '99']}
 
     @classmethod
     def setUpClass(cls):
@@ -47,14 +44,14 @@ class LrisVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_lris_in_bounds/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_stats_nz_in_bounds/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
         # Load in environment variables to get and set the private API keys
         dotenv.load_dotenv()
-        lris_key = os.environ.get('LRIS_API', None)
-        cls.instructions['instructions']['apis']['lris']['key'] = lris_key
+        lris_key = os.environ.get('STATSNZ_API', None)
+        cls.instructions['instructions']['apis']['stats_nz']['key'] = lris_key
 
         # define cache location - and catchment dirs
         cls.cache_dir = pathlib.Path(cls.instructions['instructions']['data_paths']['local_cache'])
@@ -85,8 +82,8 @@ class LrisVectorsTest(unittest.TestCase):
         cls.catchment_polygon = catchment_polygon
 
         # Run pipeline - download files
-        cls.runner = vector.Lris(cls.instructions['instructions']['apis']['lris']['key'], crs=None,
-                                 bounding_polygon=catchment_polygon, verbose=True)
+        cls.runner = vector.StatsNz(cls.instructions['instructions']['apis']['stats_nz']['key'], crs=None,
+                                    bounding_polygon=catchment_polygon, verbose=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -115,51 +112,51 @@ class LrisVectorsTest(unittest.TestCase):
                          f"{description} `{features.geometry.length.sum()}` differs from the expected " +
                          "{benchmark['length']}")
 
-    def test_105112(self):
+    def test_105133(self):
         """ Test expected features of layer loaded """
 
         features = self.runner.run(
-            self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0],
-            self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['geometry_name'])
-        description = "NI pasture productivity"
-        benchmark = self.NI_PASTURE
+            self.instructions['instructions']['apis']['stats_nz']['regional_councils']['layers'][0],
+            self.instructions['instructions']['apis']['stats_nz']['regional_councils']['geometry_name'])
+        description = "Regional Council 2021"
+        benchmark = self.REGIONAL_COUNCILS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'uid')
+        self.compare_to_benchmark(features, benchmark, description, 'AREA_SQ_KM')
 
-    def test_105112_no_geometry_name(self):
+    def test_105133_no_geometry_name(self):
         """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
-            self.instructions['instructions']['apis']['lris']['ni_pature_productivity']['layers'][0])
-        description = "NI pasture productivity"
-        benchmark = self.NI_PASTURE
+            self.instructions['instructions']['apis']['stats_nz']['regional_councils']['layers'][0])
+        description = "Regional Council 2021"
+        benchmark = self.REGIONAL_COUNCILS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'uid')
+        self.compare_to_benchmark(features, benchmark, description, 'AREA_SQ_KM')
 
-    def test_104400(self):
+    def test_87883(self):
         """ Test expected features of layer loaded """
 
         features = self.runner.run(
-            self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0],
-            self.instructions['instructions']['apis']['lris']['land_cover_database']['geometry_name'])
-        description = "Land cover database v5"
-        benchmark = self.LCDB_V5
+            self.instructions['instructions']['apis']['stats_nz']['district_health_board']['layers'][0],
+            self.instructions['instructions']['apis']['stats_nz']['district_health_board']['geometry_name'])
+        description = "District Health Board 2015"
+        benchmark = self.DISTRICT_HEALTH_BOARDS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'Class_2018')
+        self.compare_to_benchmark(features, benchmark, description, 'DHB2015_Code')
 
-    def test_104400_no_geometry_name(self):
+    def test_87883_no_geometry_name(self):
         """ Test expected features of layer loaded without specifying the geometry_name """
 
         features = self.runner.run(
-            self.instructions['instructions']['apis']['lris']['land_cover_database']['layers'][0])
-        description = "Land cover database v5"
-        benchmark = self.LCDB_V5
+            self.instructions['instructions']['apis']['stats_nz']['district_health_board']['layers'][0])
+        description = "District Health Board 2015"
+        benchmark = self.DISTRICT_HEALTH_BOARDS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'Class_2018')
+        self.compare_to_benchmark(features, benchmark, description, 'DHB2015_Code')
 
 
 if __name__ == '__main__':
