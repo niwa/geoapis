@@ -17,9 +17,9 @@ import os
 from src.geoapis import vector
 
 
-class LrisVectorsTest(unittest.TestCase):
-    """ A class to test the basic vector.StatsNz functionality by downloading files from
-    OpenTopography within a small region. All files are deleted after checking their names and size.
+class StatsNzVectorsTest(unittest.TestCase):
+    """ A class to test the basic vector.StatsNz functionality by downloading files from the dataservice within a
+    small region. The vector attributes are then compared against the expected.
 
     Tests run include (test_#### indicates the layer tested):
         * test_105133 - Test the specified layer features are correctly downloaded within the specified bbox
