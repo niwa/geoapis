@@ -249,12 +249,27 @@ class Linz(WfsQueryBase):
 class Lris(WfsQueryBase):
     """ A class to manage fetching Vector data from LRIS.
 
-    API details at: https://lris.scinfo.org.nz/p/api-support-wfs/ z
+    API details at: https://lris.scinfo.org.nz/p/api-support-wfs/
 
     Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LRIS generally
     follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
     """
 
     NETLOC_API = "lris.scinfo.org.nz"
+
+    GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
+
+
+class StatsNz(WfsQueryBase):
+    """ A class to manage fetching Vector data from the Stats NZ datafinder.
+
+    General details at: https://datafinder.stats.govt.nz/
+    API details at: https://datafinder.stats.govt.nz/terms-of-use/
+
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. StatsNZ generally
+    follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
+    """
+
+    NETLOC_API = "datafinder.stats.govt.nz"
 
     GEOMETRY_NAMES = ['GEOMETRY', 'Shape']

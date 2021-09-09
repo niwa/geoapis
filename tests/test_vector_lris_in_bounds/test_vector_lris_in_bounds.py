@@ -18,8 +18,8 @@ from src.geoapis import vector
 
 
 class LrisVectorsTest(unittest.TestCase):
-    """ A class to test the basic vector.lris functionality by downloading files from
-    OpenTopography within a small region. All files are deleted after checking their names and size.
+    """ A class to test the basic vector.lris functionality by downloading files from the dataservice within a
+    small region. The vector attributes are then compared against the expected.
 
     Tests run include (test_#### indicates the layer tested):
         * test_105112 - Test the specified layer features are correctly downloaded within the specified bbox
@@ -146,7 +146,7 @@ class LrisVectorsTest(unittest.TestCase):
             self.instructions['instructions']['apis']['lris']['land_cover_database']['geometry_name'])
         description = "Land cover database v5"
         benchmark = self.LCDB_V5
-        self.features = features
+
         # check various shape attributes match those expected
         self.compare_to_benchmark(features, benchmark, description, 'Class_2018')
 

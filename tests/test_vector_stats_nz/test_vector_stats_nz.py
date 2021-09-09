@@ -16,21 +16,25 @@ import geopandas
 from src.geoapis import vector
 
 
-class LinzVectorsTest(unittest.TestCase):
-    """ A class to test the basic vector.Linz functionality by downloading files from the dataservice.
+class StatsNzVectorsTest(unittest.TestCase):
+    """ A class to test the basic vector.StatsNz functionality by downloading files from the dataservice.
     The vector attributes are then compared against the expected.
 
     Tests run include (test_#### indicates the layer tested):
-        * test_50781 - Test the specified layer features are correctly downloaded
-        * test_51572 - Test the specified layer features are correctly downloaded
+        * test_105133 - Test the specified layer features are correctly downloaded
+        * test_8347 - Test the specified layer features are correctly downloaded
     See the associated description for keywords that can be used to search for the layer in the data service.
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    RAILWAYS = {"area": 0.0, "geometryType": 'MultiLineString', 'length': 5475052.898111259,
-                'columns': ['geometry', 'id', 'name', 'name_utf8'], 'id': [1775717, 1775718, 1775719, 1778938, 1778939]}
-    PASTURAL_LEASE = {"area": 13387663696.368122, "geometryType": 'MultiPolygon', 'length': 15756644.418670136,
-                      'columns': ['geometry', 'id', 'lease_name'], 'id': [12767, 12768, 12770, 12773, 12776]}
+    REGIONAL_COUNCILS = {"area": 428759923712.16785, "geometryType": 'Polygon', 'length': 15946566.116020141,
+                         'columns': ['geometry', 'REGC2021_V1_00', 'REGC2021_V1_00_NAME',
+                                     'REGC2021_V1_00_NAME_ASCII', 'LAND_AREA_SQ_KM', 'AREA_SQ_KM',
+                                     'Shape_Length', 'Shape_Area'],
+                         'AREA_SQ_KM': [30084.2732362, 16156.2062737, 34888.8317055, 21883.7483717, 13989.049873]}
+    DISTRICT_HEALTH_BOARDS = {"area": 428759924063.5825, "geometryType": 'MultiPolygon', 'length': 34998519.751260854,
+                              'columns': ['geometry', 'DHB2015_Code', 'DHB2015_Name', 'Shape_Length', 'Shape_Area'],
+                              'DHB2015_Code': ['01', '02', '03', '04', '05']}
 
     @classmethod
     def setUpClass(cls):
@@ -38,14 +42,14 @@ class LinzVectorsTest(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_linz/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_vector_stats_nz/instruction.json")
         with open(file_path, 'r') as file_pointer:
             cls.instructions = json.load(file_pointer)
 
         # Load in environment variables to get and set the private API keys
         dotenv.load_dotenv()
-        linz_key = os.environ.get('LINZ_API', None)
-        cls.instructions['instructions']['apis']['linz']['key'] = linz_key
+        lris_key = os.environ.get('STATSNZ_API', None)
+        cls.instructions['instructions']['apis']['stats_nz']['key'] = lris_key
 
         # define cache location - and catchment dirs
         cls.cache_dir = pathlib.Path(cls.instructions['instructions']['data_paths']['local_cache'])
@@ -56,9 +60,9 @@ class LinzVectorsTest(unittest.TestCase):
         cls.cache_dir.mkdir()
 
         # Run pipeline - download files
-        cls.runner = vector.Linz(cls.instructions['instructions']['apis']['linz']['key'],
-                                 crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
-                                 verbose=True)
+        cls.runner = vector.StatsNz(cls.instructions['instructions']['apis']['stats_nz']['key'],
+                                    crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
+                                    verbose=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -87,25 +91,27 @@ class LinzVectorsTest(unittest.TestCase):
                          f"{description} `{features.geometry.length.sum()}` differs from the expected " +
                          "{benchmark['length']}")
 
-    def test_50781(self):
+    def test_105133(self):
         """ Test expected entire layer loaded correctly """
 
-        features = self.runner.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
-        description = "railways centre lines"
-        benchmark = self.RAILWAYS
+        features = self.runner.run(
+            self.instructions['instructions']['apis']['stats_nz']['regional_councils']['layers'][0])
+        description = "Regional Council 2021"
+        benchmark = self.REGIONAL_COUNCILS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'id')
+        self.compare_to_benchmark(features, benchmark, description, 'AREA_SQ_KM')
 
-    def test_51572(self):
+    def test_8347(self):
         """ Test expected entire layer loaded correctly """
 
-        features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
-        description = "pastural lease parcels"
-        benchmark = self.PASTURAL_LEASE
+        features = self.runner.run(
+            self.instructions['instructions']['apis']['stats_nz']['district_health_board']['layers'][0])
+        description = "District Health Board 2015"
+        benchmark = self.DISTRICT_HEALTH_BOARDS
 
         # check various shape attributes match those expected
-        self.compare_to_benchmark(features, benchmark, description, 'id')
+        self.compare_to_benchmark(features, benchmark, description, 'DHB2015_Code')
 
 
 if __name__ == '__main__':
