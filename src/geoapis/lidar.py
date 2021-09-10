@@ -119,14 +119,13 @@ class OpenTopography:
 
         # Download the file if needed
         if self.redownload_files_bool or not local_file_path.exists():
-            response = client.head_object(Bucket=self.OT_BUCKET, Key=file_prefix)
-            assert response['ResponseMetadata'][
-                'HTTPStatusCode'] == 200, f"No tile index file exists with key: {file_prefix}"
 
             # ensure folder exists before download
             local_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-            client.download_file(self.OT_BUCKET, file_prefix, str(local_file_path))
+            try:
+                client.download_file(self.OT_BUCKET, file_prefix, str(local_file_path))
+            except botocore.exceptions.ClientError as e:
+                f"An error occured when trying to download {file_prefix}, The error is {e}"
 
         # load in tile information
         tile_info = geometry.TileInfo(local_file_path, self.catchment_polygon)
@@ -144,13 +143,15 @@ class OpenTopography:
             local_path = self.cache_path / file_prefix
             if self.redownload_files_bool or not local_path.exists():
 
-                response = client.head_object(Bucket=self.OT_BUCKET, Key=str(file_prefix.as_posix()))
-                assert response['ResponseMetadata'][
-                    'HTTPStatusCode'] == 200, f"No tile file exists with key: {file_prefix}"
-                lidar_size_bytes += response['ContentLength']
-                if(self.verbose):
-                    print(f"checking size: {file_prefix}: {response['ContentLength']}, total (GB): " +
-                          f"{self._to_gbytes(lidar_size_bytes)}")
+                try:
+                    response = client.head_object(Bucket=self.OT_BUCKET, Key=str(file_prefix.as_posix()))
+                    lidar_size_bytes += response['ContentLength']
+
+                    if(self.verbose):
+                        print(f"checking size: {file_prefix}: {response['ContentLength']}, total (GB): " +
+                              f"{self._to_gbytes(lidar_size_bytes)}")
+                except botocore.exceptions.ClientError as e:
+                    f"An error occured when trying to access {file_prefix}, The error is {e}"
 
         return lidar_size_bytes
 
@@ -168,7 +169,10 @@ class OpenTopography:
             if self.redownload_files_bool or not local_path.exists():
                 if(self.verbose):
                     print(f"Downloading file: {file_prefix}")
-                client.download_file(self.OT_BUCKET, str(file_prefix.as_posix()), str(local_path))
+                try:
+                    client.download_file(self.OT_BUCKET, str(file_prefix.as_posix()), str(local_path))
+                except botocore.exceptions.ClientError as e:
+                    f"An error occured when trying to download {file_prefix}, The error is {e}"
 
     @property
     def dataset_prefixes(self):
