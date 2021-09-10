@@ -23,6 +23,9 @@ class OpenTopography:
         https://portal.opentopography.org/apidocs/#/Public/getOtCatalog
     Information for making a `bulk download` of a dataset using the AWS S3 protocol can be found by clicking on bulk
     download under any dataset.
+
+    All datasets within a search polygon may be downloaded; or datasets may be selected by name (either within a search
+    polygon or the entire dataset).
     """
 
     SCHEME = "https"
@@ -36,15 +39,13 @@ class OpenTopography:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " + \
         "Chrome/91.0.4472.124 Safari/537.36"
 
-    def __init__(self, catchment_polygon: geopandas.geodataframe.GeoDataFrame,
-                 cache_path: typing.Union[str, pathlib.Path], redownload_files: bool = False,
-                 download_limit_gbytes: typing.Union[int, float] = 100, verbose: bool = False):
-        """ Load in LiDAR with relevant processing chain.
+    def __init__(self, cache_path: typing.Union[str, pathlib.Path], search_polygon: geopandas.geodataframe.GeoDataFrame,
+                 redownload_files: bool = False, download_limit_gbytes: typing.Union[int, float] = 100,
+                 verbose: bool = False):
+        """ Define the cache_path (or location where the data will be downloaded). Other attributes are optional. If a
+        search_polygon is not specified then datasets must be downloaded by name. """
 
-        Note in case of multiple datasets could select by name, spatial extent, or most recent. download_size is in GB.
-        """
-
-        self.catchment_polygon = catchment_polygon
+        self.search_polygon = search_polygon
         self.cache_path = pathlib.Path(cache_path)
         self.redownload_files_bool = redownload_files
         self.download_limit_gbytes = download_limit_gbytes
@@ -57,15 +58,26 @@ class OpenTopography:
 
         return bytes_number/1024/1024/1024
 
-    def run(self):
-        """ Query for LiDAR data within a catchment and download any that hasn't already been downloaded """
+    def run(self, dataset_name: str = None):
+        """ Download LiDAR dataset(s) either within a search_polygon, by name, or both """
+
+        if dataset_name is not None:
+            self.download_dataset_by_name(dataset_name)
+        elif self.search_polygon is not None:
+            self.download_datasets_in_polygon()
+        else:
+            print("Both the search_polygon and dataset_name are None. Either a dataset_name of search polygon needs " +
+                  "to be specified if any datasets are to be downloaded from OpenTopography. Please specify a " +
+                  "search_polygon during construction, or a dataset_name during run.")
+
+    def download_datasets_in_polygon(self):
+        """ Download all LiDAR datasets within the search polygon """
 
         ot_endpoint_url = urllib.parse.urlunparse((self.SCHEME, self.NETLOC_DATA, "", "", "", ""))
         client = boto3.client('s3', endpoint_url=ot_endpoint_url,
                               config=botocore.config.Config(signature_version=botocore.UNSIGNED))
 
         self._dataset_prefixes = []
-
         json_response = self.query_for_datasets_inside_catchment()
 
         # cycle through each dataset within a region
@@ -73,26 +85,35 @@ class OpenTopography:
             dataset_prefix = json_dataset['Dataset']['alternateName']
             self._dataset_prefixes.append(dataset_prefix)
 
-            if self.verbose:
-                print(f"Check files in dataset {dataset_prefix}")
+            self.download_dataset(dataset_prefix, client)
 
-            tile_info = self._get_dataset_tile_names(client, dataset_prefix)
+    def download_dataset_by_name(self, dataset_name: str):
+        """ Download a LiDAR dataset by name after checking it is within any specified search polygon """
 
-            # check download size limit is not exceeded
-            lidar_size_bytes = self._calculate_dataset_download_size(client, dataset_prefix, tile_info)
+        ot_endpoint_url = urllib.parse.urlunparse((self.SCHEME, self.NETLOC_DATA, "", "", "", ""))
+        client = boto3.client('s3', endpoint_url=ot_endpoint_url,
+                              config=botocore.config.Config(signature_version=botocore.UNSIGNED))
 
-            assert self._to_gbytes(lidar_size_bytes) < self.download_limit_gbytes, "The size of the LiDAR to be " \
-                + f"downloaded is {self._to_gbytes(lidar_size_bytes)}GB, which greater than the specified download " \
-                + f"limit of {self.download_limit_gbytes}GB. Please free up some and try again."
-
-            # check for tiles and download as needed
-            self._download_tiles_in_catchment(client, dataset_prefix, tile_info)
+        self._dataset_prefixes = []
+        if self.search_polygon is None:
+            # No search polygon so download the specified dataset
+            self._dataset_prefixes.append(dataset_name)
+            self.download_dataset(dataset_name, client)
+        else:
+            # Only download if the specified dataset name is in the search polygon
+            json_response = self.query_for_datasets_inside_catchment()
+            for json_dataset in json_response['Datasets']:
+                dataset_prefix = json_dataset['Dataset']['alternateName']
+                if dataset_prefix == dataset_name:
+                    self._dataset_prefixes.append(dataset_name)
+                    self.download_dataset(dataset_name, client)
+                    break
 
     def query_for_datasets_inside_catchment(self):
         """ Function to check for data in search region using the otCatalogue API
         https://portal.opentopography.org/apidocs/#/Public/getOtCatalog """
 
-        catchment_bounds = self.catchment_polygon.geometry.to_crs(self.OT_CRS).bounds
+        catchment_bounds = self.search_polygon.geometry.to_crs(self.OT_CRS).bounds
         api_query = {
             "productFormat": "PointCloud",
             "minx": catchment_bounds['minx'].min(),
@@ -109,6 +130,24 @@ class OpenTopography:
         response = requests.get(data_url, params=api_query, stream=True)
         response.raise_for_status()
         return response.json()
+
+    def download_dataset(self, dataset_prefix, client):
+        """ Download all files within an optional search polygon of a given dataset_prefix"""
+
+        if self.verbose:
+            print(f"Check files in dataset {dataset_prefix}")
+
+        tile_info = self._get_dataset_tile_names(client, dataset_prefix)
+
+        # check download size limit is not exceeded
+        lidar_size_bytes = self._calculate_dataset_download_size(client, dataset_prefix, tile_info)
+
+        assert self._to_gbytes(lidar_size_bytes) < self.download_limit_gbytes, "The size of the LiDAR to be " \
+            + f"downloaded is {self._to_gbytes(lidar_size_bytes)}GB, which greater than the specified download " \
+            + f"limit of {self.download_limit_gbytes}GB. Please free up some and try again."
+
+        # check for tiles and download as needed
+        self._download_tiles_in_catchment(client, dataset_prefix, tile_info)
 
     def _get_dataset_tile_names(self, client, dataset_prefix):
         """ Check for the tile index shapefile and download as needed, then load in and trim to the catchment to
@@ -128,13 +167,12 @@ class OpenTopography:
                 f"An error occured when trying to download {file_prefix}, The error is {e}"
 
         # load in tile information
-        tile_info = geometry.TileInfo(local_file_path, self.catchment_polygon)
+        tile_info = geometry.TileInfo(local_file_path, self.search_polygon)
 
         return tile_info
 
     def _calculate_dataset_download_size(self, client, dataset_prefix, tile_info):
         """ Sum up the size of the LiDAR data in catchment """
-
         lidar_size_bytes = 0
 
         for tile_url in tile_info.urls:
@@ -176,6 +214,7 @@ class OpenTopography:
 
     @property
     def dataset_prefixes(self):
+        """ Get the dataset names of all datasets downloaded by this object. """
 
         assert self._dataset_prefixes is not None, "The run command needs to be called before 'dataset_prefixes' can " \
             + "be called."

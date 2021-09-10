@@ -70,7 +70,7 @@ class OpenTopographyTest(unittest.TestCase):
         catchment_polygon.to_crs(instructions['instructions']['projection'])
 
         # Run pipeline - download files
-        runner = lidar.OpenTopography(catchment_polygon, cls.cache_dir, verbose=True)
+        runner = lidar.OpenTopography(cache_path=cls.cache_dir, search_polygon=catchment_polygon, verbose=True)
         runner.run()
 
     @classmethod

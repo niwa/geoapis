@@ -16,7 +16,7 @@ import numpy
 from src.geoapis import lidar
 
 
-class OpenTopographyTestSubfolders(unittest.TestCase):
+class OpenTopographyTestByName(unittest.TestCase):
     """ A class to test the basic lidar.OpenTopography functionality by downloading files from
     OpenTopography within a small region. All files are deleted after checking their names and size.
 
@@ -27,12 +27,9 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
     """
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
-    DATASETS = ["NZ18_Banks", "NZ18_AmuriCant", "NZ18_Canterbury", "Chch_Selwn_2015", "Chch_Selwn_2015/NZ_Christchurch"]
-    FILE_SIZES = {DATASETS[0]: {f"{DATASETS[0]}_TileIndex.zip": 134113},
-                  DATASETS[1]: {f"{DATASETS[1]}_TileIndex.zip": 813250},
-                  DATASETS[2]: {f"{DATASETS[2]}_TileIndex.zip": 70260, "CL2_BX24_2018_1000_2520.laz": 14829064},
-                  DATASETS[3]: {f"{DATASETS[3]}_TileIndex.zip": 221422},
-                  DATASETS[4]: {"ot_CL2_BX24_2015_1000_2520.laz": 10761065}}
+    DATASETS = ["Chch_Selwn_2015", "Chch_Selwn_2015/NZ_Christchurch"]
+    FILE_SIZES = {DATASETS[0]: {f"{DATASETS[0]}_TileIndex.zip": 221422},
+                  DATASETS[1]: {"ot_CL2_BX24_2015_1000_2520.laz": 10761065}}
 
     @classmethod
     def setUpClass(cls):
@@ -40,7 +37,7 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         in the tests. """
 
         # load in the test instructions
-        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_lidar_subfolders/instruction.json")
+        file_path = pathlib.Path().cwd() / pathlib.Path("tests/test_lidar_by_name/instruction.json")
         with open(file_path, 'r') as file_pointer:
             instructions = json.load(file_pointer)
 
@@ -73,7 +70,7 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
 
         # Run pipeline - download files
         runner = lidar.OpenTopography(cache_path=cls.cache_dir, search_polygon=catchment_polygon, verbose=True)
-        runner.run()
+        runner.run(cls.DATASETS[0])
 
     @classmethod
     def tearDownClass(cls):

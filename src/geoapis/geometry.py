@@ -23,9 +23,10 @@ class TileInfo:
     def _set_up(self):
         """ Set CRS and select all tiles partially within the catchment, and look up the file column name """
 
-        self._tile_info = self._tile_info.to_crs(self.catchment_polygon.crs)
-        self._tile_info = geopandas.sjoin(self._tile_info, self.catchment_polygon)
-        self._tile_info = self._tile_info.reset_index(drop=True)
+        if self.catchment_polygon is not None:
+            self._tile_info = self._tile_info.to_crs(self.catchment_polygon.crs)
+            self._tile_info = geopandas.sjoin(self._tile_info, self.catchment_polygon)
+            self._tile_info = self._tile_info.reset_index(drop=True)
 
         # Try workout the name of the column containing file name information.
         column_names = self._tile_info.columns
