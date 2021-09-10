@@ -16,6 +16,7 @@ class TileInfo:
         self.catchment_polygon = catchment_polygon
 
         self.file_name = None
+        self.url_name = None
 
         self._set_up()
 
@@ -34,8 +35,21 @@ class TileInfo:
             f" columns: {column_names}"
         self.file_name = column_name_matches[0]
 
+        # Try workout the name of the column containing URL information.
+        column_names = self._tile_info.columns
+        column_name_matches = [name for name in column_names if "url" == name.lower()]
+        assert len(column_name_matches) == 1, "No single `URL` column detected in the tile file with" + \
+            f" columns: {column_names}"
+        self.url_name = column_name_matches[0]
+
     @property
-    def tile_names(self):
+    def file_names(self):
         """ Return the names of all tiles within the catchment """
 
         return self._tile_info[self.file_name]
+
+    @property
+    def urls(self):
+        """ Return the names of all tiles within the catchment """
+
+        return self._tile_info[self.url_name]

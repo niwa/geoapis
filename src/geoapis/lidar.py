@@ -52,7 +52,7 @@ class OpenTopography:
 
         self._dataset_prefixes = None
 
-    def _to_gbytes(self, bytes_number):
+    def _to_gbytes(self, bytes_number: int):
         """ convert bytes into gigabytes"""
 
         return bytes_number/1024/1024/1024
@@ -73,17 +73,20 @@ class OpenTopography:
             dataset_prefix = json_dataset['Dataset']['alternateName']
             self._dataset_prefixes.append(dataset_prefix)
 
-            tile_names = self._get_dataset_tile_names(client, dataset_prefix)
+            if self.verbose:
+                print(f"Check files in dataset {dataset_prefix}")
+
+            tile_info = self._get_dataset_tile_names(client, dataset_prefix)
 
             # check download size limit is not exceeded
-            lidar_size_bytes = self._calculate_dataset_download_size(client, dataset_prefix, tile_names)
+            lidar_size_bytes = self._calculate_dataset_download_size(client, dataset_prefix, tile_info)
 
             assert self._to_gbytes(lidar_size_bytes) < self.download_limit_gbytes, "The size of the LiDAR to be " \
-                + f"downloaded is greater than the specified download limit of {self.download_limit_gbytes}"
+                + f"downloaded is {self._to_gbytes(lidar_size_bytes)}GB, which greater than the specified download " \
+                + f"limit of {self.download_limit_gbytes}GB. Please free up some and try again."
 
             # check for tiles and download as needed
-            print("run: self._download_tiles_in_catchment")
-            self._download_tiles_in_catchment(client, dataset_prefix, tile_names)
+            self._download_tiles_in_catchment(client, dataset_prefix, tile_info)
 
     def query_for_datasets_inside_catchment(self):
         """ Function to check for data in search region using the otCatalogue API
@@ -128,18 +131,20 @@ class OpenTopography:
         # load in tile information
         tile_info = geometry.TileInfo(local_file_path, self.catchment_polygon)
 
-        return tile_info.tile_names
+        return tile_info
 
-    def _calculate_dataset_download_size(self, client, dataset_prefix, tile_names):
+    def _calculate_dataset_download_size(self, client, dataset_prefix, tile_info):
         """ Sum up the size of the LiDAR data in catchment """
 
         lidar_size_bytes = 0
 
-        for tile_name in tile_names:
-            file_prefix = dataset_prefix + "/" + tile_name
+        for tile_url in tile_info.urls:
+            # drop the OT_BUCKET from the URL path to get the file_prefix
+            file_prefix = pathlib.Path(*pathlib.Path(urllib.parse.urlparse(tile_url).path).parts[2:])
             local_path = self.cache_path / file_prefix
             if self.redownload_files_bool or not local_path.exists():
-                response = client.head_object(Bucket=self.OT_BUCKET, Key=file_prefix)
+
+                response = client.head_object(Bucket=self.OT_BUCKET, Key=str(file_prefix.as_posix()))
                 assert response['ResponseMetadata'][
                     'HTTPStatusCode'] == 200, f"No tile file exists with key: {file_prefix}"
                 lidar_size_bytes += response['ContentLength']
@@ -149,17 +154,21 @@ class OpenTopography:
 
         return lidar_size_bytes
 
-    def _download_tiles_in_catchment(self, client, dataset_prefix, tile_names):
+    def _download_tiles_in_catchment(self, client, dataset_prefix, tile_info):
         """ Download the LiDAR data within the catchment """
 
-        for tile_name in tile_names:
-            file_prefix = f"{dataset_prefix}/{tile_name}"
+        for url in tile_info.urls:
+            # drop the OT_BUCKET from the URL path to get the file_prefix
+            file_prefix = pathlib.Path(*pathlib.Path(urllib.parse.urlparse(url).path).parts[2:])
             local_path = self.cache_path / file_prefix
+
+            # ensure folder exists before download - in case its in a subdirectory that hasn't been created yet
+            local_path.parent.mkdir(parents=True, exist_ok=True)
 
             if self.redownload_files_bool or not local_path.exists():
                 if(self.verbose):
                     print(f"Downloading file: {file_prefix}")
-                client.download_file(self.OT_BUCKET, file_prefix, str(local_path))
+                client.download_file(self.OT_BUCKET, str(file_prefix.as_posix()), str(local_path))
 
     @property
     def dataset_prefixes(self):
