@@ -39,9 +39,9 @@ class OpenTopography:
     USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " + \
         "Chrome/91.0.4472.124 Safari/537.36"
 
-    def __init__(self, cache_path: typing.Union[str, pathlib.Path], search_polygon: geopandas.geodataframe.GeoDataFrame,
-                 redownload_files: bool = False, download_limit_gbytes: typing.Union[int, float] = 100,
-                 verbose: bool = False):
+    def __init__(self, cache_path: typing.Union[str, pathlib.Path],
+                 search_polygon: geopandas.geodataframe.GeoDataFrame = None, redownload_files: bool = False,
+                 download_limit_gbytes: typing.Union[int, float] = 100, verbose: bool = False):
         """ Define the cache_path (or location where the data will be downloaded). Other attributes are optional. If a
         search_polygon is not specified then datasets must be downloaded by name. """
 
