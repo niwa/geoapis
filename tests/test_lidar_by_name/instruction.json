@@ -1,0 +1,8 @@
+{"instructions": 
+  {
+    "projection": 2193,
+    "data_paths": {
+      "local_cache": "tests/test_lidar_by_name/data"
+    }
+  }
+}

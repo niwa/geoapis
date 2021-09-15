@@ -46,8 +46,7 @@ class OpenTopographyTest(unittest.TestCase):
         cls.cache_dir = pathlib.Path(instructions['instructions']['data_paths']['local_cache'])
 
         # ensure the cache directory doesn't exist - i.e. clean up from last test occurred correctly
-        if cls.cache_dir.exists():
-            shutil.rmtree(cls.cache_dir)
+        cls.tearDownClass()
         cls.cache_dir.mkdir()
 
         # create fake catchment boundary
@@ -71,7 +70,7 @@ class OpenTopographyTest(unittest.TestCase):
         catchment_polygon.to_crs(instructions['instructions']['projection'])
 
         # Run pipeline - download files
-        runner = lidar.OpenTopography(catchment_polygon, cls.cache_dir, verbose=True)
+        runner = lidar.OpenTopography(cache_path=cls.cache_dir, search_polygon=catchment_polygon, verbose=True)
         runner.run()
 
     @classmethod
