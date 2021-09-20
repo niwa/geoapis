@@ -64,6 +64,11 @@ class StatsNzVectorsTest(unittest.TestCase):
                                     crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
                                     verbose=True)
 
+        cls.runner_generic = vector.WfsQuery(key=cls.instructions['instructions']['apis']['stats_nz']['key'],
+                                             crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
+                                             verbose=True, netloc_url="datafinder.stats.govt.nz",
+                                             geometry_names=['GEOMETRY', 'shape'])
+
     @classmethod
     def tearDownClass(cls):
         """ Remove created cache directory. """
@@ -106,6 +111,28 @@ class StatsNzVectorsTest(unittest.TestCase):
         """ Test expected entire layer loaded correctly """
 
         features = self.runner.run(
+            self.instructions['instructions']['apis']['stats_nz']['district_health_board']['layers'][0])
+        description = "District Health Board 2015"
+        benchmark = self.DISTRICT_HEALTH_BOARDS
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'DHB2015_Code')
+
+    def test_105133_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(
+            self.instructions['instructions']['apis']['stats_nz']['regional_councils']['layers'][0])
+        description = "Regional Council 2021"
+        benchmark = self.REGIONAL_COUNCILS
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'AREA_SQ_KM')
+
+    def test_8347_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(
             self.instructions['instructions']['apis']['stats_nz']['district_health_board']['layers'][0])
         description = "District Health Board 2015"
         benchmark = self.DISTRICT_HEALTH_BOARDS

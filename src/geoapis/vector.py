@@ -11,6 +11,7 @@ import shapely
 import shapely.geometry
 import geopandas
 import abc
+import typing
 
 
 class WfsQueryBase(abc.ABC):
@@ -237,7 +238,7 @@ class Linz(WfsQueryBase):
 
     API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
 
-    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LINZ LDS uses
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layers. The LINZ LDS uses
     'shape' for most property/titles, and GEOMETRY for most other layers including Hydrographic and Topographic data.
     """
 
@@ -251,7 +252,7 @@ class Lris(WfsQueryBase):
 
     API details at: https://lris.scinfo.org.nz/p/api-support-wfs/
 
-    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. The LRIS generally
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layers. The LRIS generally
     follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
     """
 
@@ -266,10 +267,39 @@ class StatsNz(WfsQueryBase):
     General details at: https://datafinder.stats.govt.nz/
     API details at: https://datafinder.stats.govt.nz/terms-of-use/
 
-    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layes. StatsNZ generally
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies between layers. StatsNZ generally
     follows the LINZ LDS but uses 'Shape' in place of 'shape'. It still uses 'GEOMETRY'.
     """
 
     NETLOC_API = "datafinder.stats.govt.nz"
 
     GEOMETRY_NAMES = ['GEOMETRY', 'Shape']
+
+
+class WfsQuery(WfsQueryBase):
+    """ A class to manage fetching Vector data from any generic data portal supporting WFS.
+
+    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries can vary between layers. You will need to
+    specify the 'geometry_name' of the layers you want to download.
+    """
+
+    def __init__(self, key: str, netloc_url: str, geometry_names: typing.Union[list, str], crs: int = None,
+                 bounding_polygon: geopandas.geodataframe.GeoDataFrame = None, verbose: bool = False):
+        """ Set NETLOC_API and GEOMETRY_NAMES and instantiate the WfsQueryBase """
+
+        assert (type(geometry_names) is list) or (type(geometry_names) is str), "geometry_names must either be a list of" \
+            + f" strings or a string. Instead it is {geometry_names}"
+
+        self.netloc_url = netloc_url
+        self.geometry_names = geometry_names if type(geometry_names) is list else [geometry_names]
+
+        # Setup the WfsQueryBase class
+        super(WfsQuery, self).__init__(key=key, crs=crs, bounding_polygon=bounding_polygon, verbose=verbose)
+
+    @property
+    def NETLOC_API(self):
+        return self.netloc_url
+
+    @property
+    def GEOMETRY_NAMES(self):
+        return self.geometry_names
