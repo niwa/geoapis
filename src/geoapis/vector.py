@@ -40,7 +40,7 @@ class WfsQueryBase(abc.ABC):
         """ This should be instantiated in the base class. Define the 'geometry_name' used when making a WFS
         'cql_filter' query """
 
-        raise NotImplementedError("NETLOC_API must be instantiated in the child class")
+        raise NotImplementedError("GEOMETRY_NAMES must be instantiated in the child class")
 
     SCHEME = "https"
     WFS_PATH_API_START = "/services;key="
@@ -298,8 +298,12 @@ class WfsQuery(WfsQueryBase):
 
     @property
     def NETLOC_API(self):
+        """ Instantiate the entered netloc of the data service. """
+
         return self.netloc_url
 
     @property
     def GEOMETRY_NAMES(self):
+        """ Instantiate the entered geometry_names of the layers to query from the data service. """
+
         return self.geometry_names
