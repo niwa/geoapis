@@ -63,6 +63,11 @@ class LrisVectorsTest(unittest.TestCase):
                                  crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
                                  verbose=True)
 
+        cls.runner_generic = vector.WfsQuery(key=cls.instructions['instructions']['apis']['lris']['key'],
+                                             crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
+                                             verbose=True, netloc_url="lris.scinfo.org.nz",
+                                             geometry_names=['GEOMETRY', 'Shape'])
+
     @classmethod
     def tearDownClass(cls):
         """ Remove created cache directory. """
@@ -104,6 +109,26 @@ class LrisVectorsTest(unittest.TestCase):
         """ Test expected entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['lris']['pukekohe_soils']['layers'][0])
+        description = "Soils in Pukekohe Borough"
+        benchmark = self.PUKEKOHE_SOILS
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'DOMSOI')
+
+    def test_48556_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(self.instructions['instructions']['apis']['lris']['northland_erosions']['layers'][0])
+        description = "Northand Erosion"
+        benchmark = self.NORTHLAND_EROSION
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'Area')
+
+    def test_48155_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(self.instructions['instructions']['apis']['lris']['pukekohe_soils']['layers'][0])
         description = "Soils in Pukekohe Borough"
         benchmark = self.PUKEKOHE_SOILS
 

@@ -60,6 +60,11 @@ class LinzVectorsTest(unittest.TestCase):
                                  crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
                                  verbose=True)
 
+        cls.runner_generic = vector.WfsQuery(key=cls.instructions['instructions']['apis']['linz']['key'],
+                                             crs=cls.instructions['instructions']['projection'], bounding_polygon=None,
+                                             verbose=True, netloc_url="data.linz.govt.nz",
+                                             geometry_names=['GEOMETRY', 'shape'])
+
     @classmethod
     def tearDownClass(cls):
         """ Remove created cache directory. """
@@ -101,6 +106,27 @@ class LinzVectorsTest(unittest.TestCase):
         """ Test expected entire layer loaded correctly """
 
         features = self.runner.run(self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
+        description = "pastural lease parcels"
+        benchmark = self.PASTURAL_LEASE
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'id')
+
+    def test_50781_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(self.instructions['instructions']['apis']['linz']['railways']['layers'][0])
+        description = "railways centre lines"
+        benchmark = self.RAILWAYS
+
+        # check various shape attributes match those expected
+        self.compare_to_benchmark(features, benchmark, description, 'id')
+
+    def test_51572_generic(self):
+        """ Test expected entire layer loaded correctly """
+
+        features = self.runner_generic.run(
+            self.instructions['instructions']['apis']['linz']['pastural_lease']['layers'][0])
         description = "pastural lease parcels"
         benchmark = self.PASTURAL_LEASE
 
