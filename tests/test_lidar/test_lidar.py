@@ -30,7 +30,8 @@ class OpenTopographyTest(unittest.TestCase):
            expected file sizes
     """
 
-    # The expected datasets and files to be downloaded - used for comparison in the later tests
+    # The expected datasets and files to be downloaded - used for comparison in the
+    # later tests
     DATASETS = ["Wellington_2013", "NZ21_Kapiti"]
     FILE_SIZES = {
         "ot_CL1_WLG_2013_1km_085033.laz": 6795072,
@@ -42,8 +43,8 @@ class OpenTopographyTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Create a cache directory and CatchmentGeometry object for use in the tests and also download the files used
-        in the tests."""
+        """Create a cache directory and CatchmentGeometry object for use in the tests
+        and also download the files used in the tests."""
 
         # load in the test instructions
         file_path = pathlib.Path().cwd() / pathlib.Path(
@@ -56,7 +57,8 @@ class OpenTopographyTest(unittest.TestCase):
             instructions["instructions"]["data_paths"]["local_cache"]
         )
 
-        # ensure the cache directory doesn't exist - i.e. clean up from last test occurred correctly
+        # ensure the cache directory doesn't exist - i.e. clean up from last test
+        # occurred correctly
         cls.tearDownClass()
         cls.cache_dir.mkdir()
 
