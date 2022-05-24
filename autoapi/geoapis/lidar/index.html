@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoapis.lidar &mdash; geoapis 0.2.4 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> geoapis
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">geoapis</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.lidar</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/geoapis/lidar/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-geoapis.lidar">
+<span id="geoapis-lidar"></span><h1><a class="reference internal" href="#module-geoapis.lidar" title="geoapis.lidar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.lidar</span></code></a><a class="headerlink" href="#module-geoapis.lidar" title="Permalink to this headline"></a></h1>
+<p>Created on Fri Jul  2 10:10:55 2021</p>
+<p>&#64;author: pearsonra</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geoapis.lidar.S3QueryBase" title="geoapis.lidar.S3QueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3QueryBase</span></code></a></p></td>
+<td><p>A class to manage fetching LiDAR data from Open Topography.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geoapis.lidar.OpenTopography" title="geoapis.lidar.OpenTopography"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OpenTopography</span></code></a></p></td>
+<td><p>A class to manage fetching LiDAR data from Open Topography</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.lidar.</span></span><span class="sig-name descname"><span class="pre">S3QueryBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redownload_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_limit_gbytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A class to manage fetching LiDAR data from Open Topography.</p>
+<p>API details for querying datasets within a search rectangle in a AWS style bucket</p>
+<p>All datasets within a search polygon may be downloaded; or datasets may be selected
+by name (either within a search  polygon or the entire dataset).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>search_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+<li><p><strong>redownload_files</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>download_limit_gbytes</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.NETLOC_DATA">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_DATA</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.NETLOC_DATA" title="Permalink to this definition"></a></dt>
+<dd><p>This should be instantiated in the base class. Provide the netloc of the data
+service.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.OT_BUCKET">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OT_BUCKET</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.OT_BUCKET" title="Permalink to this definition"></a></dt>
+<dd><p>This should be instantiated in the base class. Provide the netloc of the data
+service.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.run" title="Permalink to this definition"></a></dt>
+<dd><p>Download LiDAR dataset(s) either within a search_polygon, by name, or both</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataset_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_datasets_in_polygon">
+<span class="sig-name descname"><span class="pre">download_datasets_in_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_datasets_in_polygon" title="Permalink to this definition"></a></dt>
+<dd><p>Download all LiDAR datasets within the search polygon</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_dataset_by_name">
+<span class="sig-name descname"><span class="pre">download_dataset_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset_by_name" title="Permalink to this definition"></a></dt>
+<dd><p>Download a LiDAR dataset by name after checking it is within any specified
+search polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dataset_name</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.query_for_datasets_inside_catchment">
+<span class="sig-name descname"><span class="pre">query_for_datasets_inside_catchment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.query_for_datasets_inside_catchment" title="Permalink to this definition"></a></dt>
+<dd><p>Function to check for data in search region using the otCatalogue API
+<a class="reference external" href="https://portal.opentopography.org/apidocs/#/Public/getOtCatalog">https://portal.opentopography.org/apidocs/#/Public/getOtCatalog</a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_dataset">
+<span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset" title="Permalink to this definition"></a></dt>
+<dd><p>Download all files within an optional search polygon of a given dataset_prefix</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.dataset_prefixes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataset_prefixes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.dataset_prefixes" title="Permalink to this definition"></a></dt>
+<dd><p>Get the dataset names of all datasets downloaded by this object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.lidar.OpenTopography">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.lidar.</span></span><span class="sig-name descname"><span class="pre">OpenTopography</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redownload_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_limit_gbytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.OpenTopography" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#geoapis.lidar.S3QueryBase" title="geoapis.lidar.S3QueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S3QueryBase</span></code></a></p>
+<p>A class to manage fetching LiDAR data from Open Topography</p>
+<dl class="simple">
+<dt>API details for querying datasets within a search rectangle at:</dt><dd><p><a class="reference external" href="https://portal.opentopography.org/apidocs/#/Public/getOtCatalog">https://portal.opentopography.org/apidocs/#/Public/getOtCatalog</a></p>
+</dd>
+</dl>
+<p>Information for making a <cite>bulk download</cite> of a dataset using the AWS S3 protocol can
+be found by clicking on bulk download under any public dataset.</p>
+<p>All datasets within a search polygon may be downloaded; or datasets may be selected
+by name (either within a search polygon or the entire dataset).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cache_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>search_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+<li><p><strong>redownload_files</strong> (<em>bool</em>) – </p></li>
+<li><p><strong>download_limit_gbytes</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>]</em>) – </p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Rose Pearson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

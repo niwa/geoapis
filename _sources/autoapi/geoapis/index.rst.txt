@@ -1,0 +1,24 @@
+:py:mod:`geoapis`
+=================
+
+.. py:module:: geoapis
+
+.. autoapi-nested-parse::
+
+   Created on Thu Jul  1 09:57:30 2021
+
+   @author: pearsonra
+
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   geometry/index.rst
+   lidar/index.rst
+   vector/index.rst
+
+

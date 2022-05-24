@@ -1,0 +1,170 @@
+:py:mod:`geoapis.vector`
+========================
+
+.. py:module:: geoapis.vector
+
+.. autoapi-nested-parse::
+
+   Created on Fri Jul  2 10:10:55 2021
+
+   @author: pearsonra
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   geoapis.vector.WfsQueryBase
+   geoapis.vector.Linz
+   geoapis.vector.Lris
+   geoapis.vector.StatsNz
+   geoapis.vector.WfsQuery
+
+
+
+
+.. py:class:: WfsQueryBase(key, crs = None, bounding_polygon = None, verbose = False)
+
+   Bases: :py:obj:`abc.ABC`
+
+   An abstract class to manage fetching Vector data using WFS.
+
+   API details at: https://www.ogc.org/standards/wfs or
+   https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+
+   The specified vector layer is queried each time run is called, and any layer
+   features passing though the optionally defined bounding_polygon are returned. If no
+   bounding_polygon is specified all layer features are returned.
+
+   Flexibility exists in the inputs. Only the key is required. If no bounding_polygon
+   is specified all features in a layer will be downloaded. If no crs is specified, the
+   bounding_polygon will be used if the bounding_polygon is specified. If no CRS or
+   bounding_polygon is specified the CRS of the downloaded features will be used.
+
+   .. py:method:: NETLOC_API()
+      :property:
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
+   .. py:method:: GEOMETRY_NAMES()
+      :property:
+
+      This should be instantiated in the base class. Define the 'geometry_name'
+      used when making a WFS 'cql_filter' query
+
+
+   .. py:method:: run(self, layer, geometry_name = '')
+
+      Query for a specified layer and return a geopandas.GeoDataFrame of the vector
+      features. If a polygon_boundary is specified, only return vectors passing
+      through this polygon.
+
+
+   .. py:method:: query_vector_wfs_in_bounds(self, layer, bounds, geometry_name)
+
+      Function to check for tiles in search rectangle using the WFS vector query
+      API.
+
+      Note that depending on the layer the geometry_name may vary.
+
+      bounds defines the bounding box containing in the bounding_polygon
+
+
+   .. py:method:: get_json_response_in_bounds(self, layer, bounds, geometry_name)
+
+      Check for specified `geometry_name` - try the standard ones specified by
+      self.GEOMETRY_NAMES in turn if not specified - and check for error messages
+      before returning
+
+
+   .. py:method:: get_features_inside_catchment(self, layer, geometry_name)
+
+      Filter the layer features to only keep those within the specified
+      bounding_polygon
+
+
+   .. py:method:: query_vector_wfs(self, layer)
+
+      Function to check for all features associated with a layer using the WFS
+      vector query API
+
+
+   .. py:method:: get_features(self, layer)
+
+      Return all features and associated properties within a layer as a
+      geopandas.GeoDataFrame
+
+
+
+.. py:class:: Linz(key, crs = None, bounding_polygon = None, verbose = False)
+
+   Bases: :py:obj:`WfsQueryBase`
+
+   A class to manage fetching Vector data from LINZ.
+
+   API details at: https://www.linz.govt.nz/data/linz-data-service/guides-and-documentation/wfs-spatial-filtering
+
+   Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies
+   between layers. The LINZ LDS uses 'shape' for most property/titles, and GEOMETRY for
+   most other layers including Hydrographic and Topographic data.
+
+
+.. py:class:: Lris(key, crs = None, bounding_polygon = None, verbose = False)
+
+   Bases: :py:obj:`WfsQueryBase`
+
+   A class to manage fetching Vector data from LRIS.
+
+   API details at: https://lris.scinfo.org.nz/p/api-support-wfs/
+
+   Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies
+   between layers. The LRIS generally follows the LINZ LDS but uses 'Shape' in place of
+   'shape'. It still uses 'GEOMETRY'.
+
+
+.. py:class:: StatsNz(key, crs = None, bounding_polygon = None, verbose = False)
+
+   Bases: :py:obj:`WfsQueryBase`
+
+   A class to manage fetching Vector data from the Stats NZ datafinder.
+
+   General details at: https://datafinder.stats.govt.nz/
+   API details at: https://datafinder.stats.govt.nz/terms-of-use/
+
+   Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies
+   between layers. StatsNZ generally follows the LINZ LDS but uses 'Shape' in place of
+   'shape'. It still uses 'GEOMETRY'.
+
+
+.. py:class:: WfsQuery(key, netloc_url, geometry_names, crs = None, bounding_polygon = None, verbose = False)
+
+   Bases: :py:obj:`WfsQueryBase`
+
+   A class to manage fetching Vector data from any generic data portal supporting
+   WFS.
+
+   Note that the 'geometry_name' used when making a WFS 'cql_filter' queries can vary
+   between layers. You will need to specify the 'geometry_name' of the layers you want
+   to download.
+
+   .. py:method:: NETLOC_API(self)
+      :property:
+
+      Instantiate the entered netloc of the data service.
+
+
+   .. py:method:: GEOMETRY_NAMES(self)
+      :property:
+
+      Instantiate the entered geometry_names of the layers to query from the data
+      service.
+
+
+

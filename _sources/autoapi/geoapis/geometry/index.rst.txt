@@ -1,0 +1,43 @@
+:py:mod:`geoapis.geometry`
+==========================
+
+.. py:module:: geoapis.geometry
+
+.. autoapi-nested-parse::
+
+   Created on Tue Aug  3 11:12:56 2021
+
+   @author: pearsonra
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   geoapis.geometry.TileInfo
+
+
+
+
+.. py:class:: TileInfo(tile_file, catchment_polygon)
+
+   A class for working with tiling information
+
+   .. py:method:: file_names(self)
+      :property:
+
+      Return the names of all tiles within the catchment
+
+
+   .. py:method:: urls(self)
+      :property:
+
+      Return the names of all tiles within the catchment
+
+
+
