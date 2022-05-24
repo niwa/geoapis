@@ -265,3 +265,20 @@ class S3QueryBase(abc.ABC):
         )
 
         return self._dataset_prefixes
+
+
+class OpenTopography(S3QueryBase):
+    """A class to manage fetching LiDAR data from Open Topography
+
+    API details for querying datasets within a search rectangle at:
+        https://portal.opentopography.org/apidocs/#/Public/getOtCatalog
+    Information for making a `bulk download` of a dataset using the AWS S3 protocol can
+    be found by clicking on bulk download under any public dataset.
+
+    All datasets within a search polygon may be downloaded; or datasets may be selected
+    by name (either within a search polygon or the entire dataset).
+    """
+
+    NETLOC_DATA = "opentopography.s3.sdsc.edu"
+    OT_BUCKET = "pc-bulk"
+
