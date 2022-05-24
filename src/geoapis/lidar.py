@@ -281,4 +281,3 @@ class OpenTopography(S3QueryBase):
 
     NETLOC_DATA = "opentopography.s3.sdsc.edu"
     OT_BUCKET = "pc-bulk"
-
