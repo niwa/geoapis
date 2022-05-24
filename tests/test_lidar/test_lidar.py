@@ -90,7 +90,8 @@ class OpenTopographyTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        """Remove created cache directory and included created and downloaded files at the end of the test."""
+        """Remove created cache directory and included created and downloaded files at
+        the end of the test."""
 
         if cls.cache_dir.exists():
             shutil.rmtree(cls.cache_dir)
