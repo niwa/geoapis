@@ -6,44 +6,6 @@ Created on Wed Jun 30 11:22:08 2021
 """
 import setuptools
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
 setuptools.setup(
-    name="geoapis",
-    author="Rose pearson",
-    author_email="rose.pearson@niwa.co.nz",
-    description="A package for downloading geospatial data from web APIs",
-    keywords="APIs, LiDAR, vector, Geospatial data",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/niwa/geoapis",
-    project_urls={
-        "Documentation": "https://github.com/niwa/geoapis",
-        "Bug Reports": "https://github.com/niwa/geoapis/issues",
-        "Source Code": "https://github.com/niwa/geoapis",
-        # 'Funding': '',
-        # 'Say Thanks!': '',
-    },
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
-    classifiers=[
-        # see https://pypi.org/classifiers/
-        "Development Status :: 2 - Pre-Alpha",
-        "Intended Audience :: Science/Research",
-        "Topic :: Scientific/Engineering :: GIS",
-        "Programming Language :: Python :: 3 :: Only",
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-        "Operating System :: OS Independent",
-    ],
-    python_requires=">=3.6",
-    install_requires=[
-        "geopandas>=0.9",
-        "requests>=2.25",
-        "boto3>=1.17",
-        "python-dotenv>=0.19",
-    ],
-    extras_require={
-        "dev": ["check-manifest"],
-    },
+    package_dir={"": "src"}, packages=setuptools.find_packages(where="src"),
 )
