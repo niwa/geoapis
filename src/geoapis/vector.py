@@ -194,9 +194,9 @@ class WfsQueryBase(abc.ABC):
                 # the geometries
                 if (
                     shapely_geometry.geometryType() == "MultiPolygon"
-                    and len(shapely_geometry) == 1
+                    and len(shapely_geometry.geoms) == 1
                 ):
-                    shapely_geometry = shapely_geometry[0]
+                    shapely_geometry = shapely_geometry.geoms[0]
                 features["geometry"].append(shapely_geometry)
 
                 # Add the value of each property in turn
@@ -268,9 +268,9 @@ class WfsQueryBase(abc.ABC):
             # geometries
             if (
                 shapely_geometry.geometryType() == "MultiPolygon"
-                and len(shapely_geometry) == 1
+                and len(shapely_geometry.geoms) == 1
             ):
-                shapely_geometry = shapely_geometry[0]
+                shapely_geometry = shapely_geometry.geoms[0]
             features["geometry"].append(shapely_geometry)
 
             # Add the value of each property in turn
