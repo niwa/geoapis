@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoapis"
-version = "0.2.6"
+version = "0.2.7"
 description = "A package for downloading geospatial data from web APIs."
 readme = "README.md"
 authors = [{ name = "Rose pearson", email = "rose.pearson@niwa.co.nz" }]
@@ -36,5 +36,5 @@ packages = ["geoapis"]
 dev = ["black", "python-dotenv", "pip-tools", "pytest"]
 
 [project.urls]
-GitHub = "https://github.com/niwa/geoapis"
+Homepage = "https://github.com/niwa/geoapis"
 Documentation = "https://github.com/niwa/geoapis/wiki"
