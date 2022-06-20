@@ -22,9 +22,9 @@ classifiers = [
 ]
 keywords = ["APIs", "LiDAR", "point clouds", "vector", "Geospatial data"]
 dependencies = [
-    "geopandas>=0.9",
-    "requests>=2.25",
-    "boto3>=1.17",
+    "geopandas>=0.10",
+    "requests",
+    "boto3",
     'tomli; python_version < "3.11"',
 ]
 requires-python = ">=3.9"
