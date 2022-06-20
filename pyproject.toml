@@ -1,6 +1,40 @@
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools>=61.0.0",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "geoapis"
+version = "0.2.8"
+description = "A package for downloading geospatial data from web APIs."
+readme = "README.md"
+authors = [{ name = "Rose pearson", email = "rose.pearson@niwa.co.nz" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["APIs", "LiDAR", "point clouds", "vector", "Geospatial data"]
+dependencies = [
+    "geopandas>=0.10",
+    "requests",
+    "boto3",
+    'tomli; python_version < "3.11"',
+]
+requires-python = ">=3.9"
+
+[tool.setuptools]
+packages = ["geoapis"]
+
+[project.optional-dependencies]
+dev = ["black", "python-dotenv", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/niwa/geoapis"
+Documentation = "https://github.com/niwa/geoapis/wiki"
