@@ -162,7 +162,8 @@ class S3QueryBase(abc.ABC):
         return response.json()
 
     def download_dataset(self, dataset_prefix, client):
-        """Download all files within an optional search polygon of a given dataset_prefix"""
+        """Download all files within an optional search polygon of a given
+        dataset_prefix"""
 
         if self.verbose:
             print(f"Check files in dataset {dataset_prefix}")
