@@ -158,7 +158,12 @@ class KoordinatesExportsQueryBase(abc.ABC):
             response.raise_for_status()
             zip_object = zipfile.ZipFile(io.BytesIO(response.content))
             zip_object.extractall(self.cache_path / f"{layer}")
-        return self.cache_path / f"{layer}"
+        # Return the file names of the downloaded rasters
+        rasters = []
+        for file_name in (self.cache_path / f"{layer}").iterdir():
+            if file_name.suffix == ".tif":
+                rasters.append(file_name)
+        return rasters
 
 
 class Linz(KoordinatesExportsQueryBase):
