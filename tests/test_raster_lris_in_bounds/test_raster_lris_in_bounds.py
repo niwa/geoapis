@@ -86,7 +86,10 @@ class LrisRasterTest(unittest.TestCase):
             shutil.rmtree(cls.cache_dir)
 
     def compare_to_benchmark(
-        self, file_names: pathlib.Path, benchmark: dict, description: str,
+        self,
+        file_names: pathlib.Path,
+        benchmark: dict,
+        description: str,
     ):
         """Compare the various attributes of the raster (total number of files, name,
         file size) against those recorded in a benchmark."""
