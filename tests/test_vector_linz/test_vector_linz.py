@@ -39,7 +39,7 @@ class LinzVectorsTest(unittest.TestCase):
     PASTURAL_LEASE = {
         "area": 13278778764.94074,
         "geometryType": "MultiPolygon",
-        "length": 15868456.954778664,
+        "length": 15648834.84743058,
         "columns": ["geometry", "id", "lease_name"],
         "id": [12511, 12653, 12658, 12797, 12461],
     }

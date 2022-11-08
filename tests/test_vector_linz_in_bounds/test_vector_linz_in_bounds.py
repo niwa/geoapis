@@ -43,7 +43,7 @@ class LinzVectorsTest(unittest.TestCase):
     LAND = {
         "area": 150539776091.31247,
         "geometryType": "Polygon",
-        "length": 6004326.598544762,
+        "length": 6002892.54900315,
         "columns": [
             "geometry",
             "name",

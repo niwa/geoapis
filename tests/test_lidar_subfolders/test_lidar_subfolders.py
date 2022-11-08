@@ -38,6 +38,7 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         "NZ18_Canterbury",
         "Chch_Selwn_2015",
         "Chch_Selwn_2015/NZ_Christchurch",
+        "NZ20_Canterbury",
     ]
     FILE_SIZES = {
         DATASETS[0]: {f"{DATASETS[0]}_TileIndex.zip": 134113},
@@ -48,6 +49,10 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         },
         DATASETS[3]: {f"{DATASETS[3]}_TileIndex.zip": 221422},
         DATASETS[4]: {"ot_CL2_BX24_2015_1000_2520.laz": 10761065},
+        DATASETS[5]: {
+            "CL2_BX24_2020_1000_2520.laz": 25891330,
+            f"{DATASETS[5]}_TileIndex.zip": 120930,
+        },
     }
 
     @classmethod
@@ -77,8 +82,9 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         y0 = 5172000
         y1 = 5172200
         catchment = shapely.geometry.Polygon([(x0, y0), (x1, y0), (x1, y1), (x0, y1)])
-        catchment = geopandas.GeoSeries([catchment])
-        catchment = catchment.set_crs(instructions["instructions"]["projection"])
+        catchment = geopandas.GeoDataFrame(
+            geometry=[catchment], crs=instructions["instructions"]["projection"]
+        )
 
         # save faked catchment boundary
         catchment.to_file(cls.cache_dir / "catchment.geojson")
