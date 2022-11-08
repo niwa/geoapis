@@ -19,6 +19,7 @@ Submodules
 
    geometry/index.rst
    lidar/index.rst
+   raster/index.rst
    vector/index.rst
 
 

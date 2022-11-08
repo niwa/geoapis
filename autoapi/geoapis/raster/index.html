@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>geoapis.raster &mdash; geoapis 0.2.4 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> geoapis
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">geoapis</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.raster</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/autoapi/geoapis/raster/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-geoapis.raster">
+<span id="geoapis-raster"></span><h1><a class="reference internal" href="#module-geoapis.raster" title="geoapis.raster"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.raster</span></code></a><a class="headerlink" href="#module-geoapis.raster" title="Permalink to this heading"></a></h1>
+<p>Created on Fri Nov  7 10:10:55 2022</p>
+<p>&#64;author: pearsonra</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h3>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geoapis.raster.KoordinatesExportsQueryBase" title="geoapis.raster.KoordinatesExportsQueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesExportsQueryBase</span></code></a></p></td>
+<td><p>An abstract class to manage fetching Raster data using the Koordinates exports</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geoapis.raster.Linz" title="geoapis.raster.Linz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Linz</span></code></a></p></td>
+<td><p>A class to manage fetching Vector data from LINZ.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geoapis.raster.Lris" title="geoapis.raster.Lris"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Lris</span></code></a></p></td>
+<td><p>A class to manage fetching Vector data from LRIS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#geoapis.raster.StatsNz" title="geoapis.raster.StatsNz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StatsNz</span></code></a></p></td>
+<td><p>A class to manage fetching Vector data from the Stats NZ datafinder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geoapis.raster.KoordinatesQuery" title="geoapis.raster.KoordinatesQuery"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesQuery</span></code></a></p></td>
+<td><p>A class to manage fetching Vector data from any generic data portal supporting</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.raster.KoordinatesExportsQueryBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.raster.</span></span><span class="sig-name descname"><span class="pre">KoordinatesExportsQueryBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.KoordinatesExportsQueryBase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>An abstract class to manage fetching Raster data using the Koordinates exports
+API. Downloads the GeoTiff specified in the run routine.</p>
+<p>API details at: <a class="reference external" href="https://help.koordinates.com/site-admin-apis/export-api/">https://help.koordinates.com/site-admin-apis/export-api/</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – The API key.  Must have Search, view and download exported data
+permissions.</p></li>
+<li><p><strong>cache_path</strong> (<em>pathlib.Path</em>) – The location to download all GeoTiffs queried in the run method.</p></li>
+<li><p><strong>crs</strong> (<em>int</em>) – The CRS EPSG code for the GeoTifss to be downloaded as.</p></li>
+<li><p><strong>bounding_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – An option geometry to clip the downloaded GeoTiffs within.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="geoapis.raster.KoordinatesExportsQueryBase.NETLOC_API">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><a class="headerlink" href="#geoapis.raster.KoordinatesExportsQueryBase.NETLOC_API" title="Permalink to this definition"></a></dt>
+<dd><p>This should be instantiated in the base class. Provide the netloc of the data
+service.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="geoapis.raster.KoordinatesExportsQueryBase.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.KoordinatesExportsQueryBase.run" title="Permalink to this definition"></a></dt>
+<dd><p>Query for a specified layer and return a geopandas.GeoDataFrame of the vector
+features. If a polygon_boundary is specified, only return vectors passing
+through this polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>layer</strong> (<em>int</em>) – </p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pathlib.Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.raster.Linz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.raster.</span></span><span class="sig-name descname"><span class="pre">Linz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.Linz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#geoapis.raster.KoordinatesExportsQueryBase" title="geoapis.raster.KoordinatesExportsQueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesExportsQueryBase</span></code></a></p>
+<p>A class to manage fetching Vector data from LINZ.</p>
+<p>LIRS data service can be accessed at: <a class="reference external" href="https://https://data.linz.govt.nz/">https://https://data.linz.govt.nz/</a></p>
+<p>Note that only rasters supporting the grid image/tiff geotiff are supported</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>cache_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>crs</strong> (<em>int</em>) – </p></li>
+<li><p><strong>bounding_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.raster.Lris">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.raster.</span></span><span class="sig-name descname"><span class="pre">Lris</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.Lris" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#geoapis.raster.KoordinatesExportsQueryBase" title="geoapis.raster.KoordinatesExportsQueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesExportsQueryBase</span></code></a></p>
+<p>A class to manage fetching Vector data from LRIS.</p>
+<p>LIRS data service can be accessed at: <a class="reference external" href="https://lris.scinfo.org.nz/">https://lris.scinfo.org.nz/</a></p>
+<p>Note that only rasters supporting the grid image/tiff geotiff are supported</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>cache_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>crs</strong> (<em>int</em>) – </p></li>
+<li><p><strong>bounding_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.raster.StatsNz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.raster.</span></span><span class="sig-name descname"><span class="pre">StatsNz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.StatsNz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#geoapis.raster.KoordinatesExportsQueryBase" title="geoapis.raster.KoordinatesExportsQueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesExportsQueryBase</span></code></a></p>
+<p>A class to manage fetching Vector data from the Stats NZ datafinder.</p>
+<p>Stats NZ data service can be accessed at: datafinder.stats.govt.nz</p>
+<p>Note that only rasters supporting the grid image/tiff geotiff are supported</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>cache_path</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>pathlib.Path</em><em>]</em>) – </p></li>
+<li><p><strong>crs</strong> (<em>int</em>) – </p></li>
+<li><p><strong>bounding_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="geoapis.raster.KoordinatesQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">geoapis.raster.</span></span><span class="sig-name descname"><span class="pre">KoordinatesQuery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">netloc_url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.raster.KoordinatesQuery" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#geoapis.raster.KoordinatesExportsQueryBase" title="geoapis.raster.KoordinatesExportsQueryBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KoordinatesExportsQueryBase</span></code></a></p>
+<p>A class to manage fetching Vector data from any generic data portal supporting
+WFS.</p>
+<p>Note that the ‘geometry_name’ used when making a WFS ‘cql_filter’ queries can vary
+between layers. You will need to specify the ‘geometry_name’ of the layers you want
+to download.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – </p></li>
+<li><p><strong>netloc_url</strong> (<em>str</em>) – </p></li>
+<li><p><strong>crs</strong> (<em>int</em>) – </p></li>
+<li><p><strong>bounding_polygon</strong> (<em>geopandas.geodataframe.GeoDataFrame</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="geoapis.raster.KoordinatesQuery.NETLOC_API">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><a class="headerlink" href="#geoapis.raster.KoordinatesQuery.NETLOC_API" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate the entered netloc of the data service.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Rose Pearson.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

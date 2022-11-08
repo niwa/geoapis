@@ -17,6 +17,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -54,8 +55,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.lidar</span></code></li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.lidar</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/geoapis/lidar/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -106,23 +107,29 @@ by name (either within a search  polygon or the entire dataset).</p>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.NETLOC_DATA">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_DATA</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.NETLOC_DATA" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_DATA</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.NETLOC_DATA" title="Permalink to this definition"></a></dt>
 <dd><p>This should be instantiated in the base class. Provide the netloc of the data
 service.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.OT_BUCKET">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OT_BUCKET</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.OT_BUCKET" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OT_BUCKET</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.OT_BUCKET" title="Permalink to this definition"></a></dt>
 <dd><p>This should be instantiated in the base class. Provide the netloc of the data
 service.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.dataset_prefixes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataset_prefixes</span></span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.dataset_prefixes" title="Permalink to this definition"></a></dt>
+<dd><p>Get the dataset names of all datasets downloaded by this object.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.run" title="Permalink to this definition"></a></dt>
 <dd><p>Download LiDAR dataset(s) either within a search_polygon, by name, or both</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -133,13 +140,13 @@ service.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_datasets_in_polygon">
-<span class="sig-name descname"><span class="pre">download_datasets_in_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_datasets_in_polygon" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_datasets_in_polygon</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_datasets_in_polygon" title="Permalink to this definition"></a></dt>
 <dd><p>Download all LiDAR datasets within the search polygon</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_dataset_by_name">
-<span class="sig-name descname"><span class="pre">download_dataset_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset_by_name" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_dataset_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset_by_name" title="Permalink to this definition"></a></dt>
 <dd><p>Download a LiDAR dataset by name after checking it is within any specified
 search polygon</p>
 <dl class="field-list simple">
@@ -151,21 +158,16 @@ search polygon</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.query_for_datasets_inside_catchment">
-<span class="sig-name descname"><span class="pre">query_for_datasets_inside_catchment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.query_for_datasets_inside_catchment" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">query_for_datasets_inside_catchment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.query_for_datasets_inside_catchment" title="Permalink to this definition"></a></dt>
 <dd><p>Function to check for data in search region using the otCatalogue API
 <a class="reference external" href="https://portal.opentopography.org/apidocs/#/Public/getOtCatalog">https://portal.opentopography.org/apidocs/#/Public/getOtCatalog</a></p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.download_dataset">
-<span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Download all files within an optional search polygon of a given dataset_prefix</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="geoapis.lidar.S3QueryBase.dataset_prefixes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dataset_prefixes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.dataset_prefixes" title="Permalink to this definition"></a></dt>
-<dd><p>Get the dataset names of all datasets downloaded by this object.</p>
+<span class="sig-name descname"><span class="pre">download_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.lidar.S3QueryBase.download_dataset" title="Permalink to this definition"></a></dt>
+<dd><p>Download all files within an optional search polygon of a given
+dataset_prefix</p>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,112 @@
+:py:mod:`geoapis.raster`
+========================
+
+.. py:module:: geoapis.raster
+
+.. autoapi-nested-parse::
+
+   Created on Fri Nov  7 10:10:55 2022
+
+   @author: pearsonra
+
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   geoapis.raster.KoordinatesExportsQueryBase
+   geoapis.raster.Linz
+   geoapis.raster.Lris
+   geoapis.raster.StatsNz
+   geoapis.raster.KoordinatesQuery
+
+
+
+
+.. py:class:: KoordinatesExportsQueryBase(key, cache_path, crs = None, bounding_polygon = None)
+
+   Bases: :py:obj:`abc.ABC`
+
+   An abstract class to manage fetching Raster data using the Koordinates exports
+   API. Downloads the GeoTiff specified in the run routine.
+
+   API details at: https://help.koordinates.com/site-admin-apis/export-api/
+
+   :param key: The API key.  Must have Search, view and download exported data
+               permissions.
+   :type key: str
+   :param cache_path: The location to download all GeoTiffs queried in the run method.
+   :type cache_path: pathlib.Path
+   :param crs: The CRS EPSG code for the GeoTifss to be downloaded as.
+   :type crs: int
+   :param bounding_polygon: An option geometry to clip the downloaded GeoTiffs within.
+   :type bounding_polygon: geopandas.geodataframe.GeoDataFrame
+
+   .. py:property:: NETLOC_API
+      :abstractmethod:
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+   .. py:method:: run(layer)
+
+      Query for a specified layer and return a geopandas.GeoDataFrame of the vector
+      features. If a polygon_boundary is specified, only return vectors passing
+      through this polygon.
+
+
+
+.. py:class:: Linz(key, cache_path, crs = None, bounding_polygon = None)
+
+   Bases: :py:obj:`KoordinatesExportsQueryBase`
+
+   A class to manage fetching Vector data from LINZ.
+
+   LIRS data service can be accessed at: https://https://data.linz.govt.nz/
+
+   Note that only rasters supporting the grid image/tiff geotiff are supported
+
+
+.. py:class:: Lris(key, cache_path, crs = None, bounding_polygon = None)
+
+   Bases: :py:obj:`KoordinatesExportsQueryBase`
+
+   A class to manage fetching Vector data from LRIS.
+
+   LIRS data service can be accessed at: https://lris.scinfo.org.nz/
+
+   Note that only rasters supporting the grid image/tiff geotiff are supported
+
+
+.. py:class:: StatsNz(key, cache_path, crs = None, bounding_polygon = None)
+
+   Bases: :py:obj:`KoordinatesExportsQueryBase`
+
+   A class to manage fetching Vector data from the Stats NZ datafinder.
+
+   Stats NZ data service can be accessed at: datafinder.stats.govt.nz
+
+   Note that only rasters supporting the grid image/tiff geotiff are supported
+
+
+.. py:class:: KoordinatesQuery(key, netloc_url, crs = None, bounding_polygon = None)
+
+   Bases: :py:obj:`KoordinatesExportsQueryBase`
+
+   A class to manage fetching Vector data from any generic data portal supporting
+   WFS.
+
+   Note that the 'geometry_name' used when making a WFS 'cql_filter' queries can vary
+   between layers. You will need to specify the 'geometry_name' of the layers you want
+   to download.
+
+   .. py:property:: NETLOC_API
+
+      Instantiate the entered netloc of the data service.
+
+

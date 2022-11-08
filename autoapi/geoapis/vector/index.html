@@ -17,6 +17,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -54,8 +55,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.vector</span></code></li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active"><code class="xref py py-mod docutils literal notranslate"><span class="pre">geoapis.vector</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/autoapi/geoapis/vector/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -120,23 +121,23 @@ bounding_polygon is specified the CRS of the downloaded features will be used.</
 </ul>
 </dd>
 </dl>
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.NETLOC_API">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.NETLOC_API" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.NETLOC_API" title="Permalink to this definition"></a></dt>
 <dd><p>This should be instantiated in the base class. Provide the netloc of the data
 service.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.GEOMETRY_NAMES">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GEOMETRY_NAMES</span></span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.GEOMETRY_NAMES" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GEOMETRY_NAMES</span></span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.GEOMETRY_NAMES" title="Permalink to this definition"></a></dt>
 <dd><p>This should be instantiated in the base class. Define the ‘geometry_name’
 used when making a WFS ‘cql_filter’ query</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.run" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.run" title="Permalink to this definition"></a></dt>
 <dd><p>Query for a specified layer and return a geopandas.GeoDataFrame of the vector
 features. If a polygon_boundary is specified, only return vectors passing
 through this polygon.</p>
@@ -155,7 +156,7 @@ through this polygon.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.query_vector_wfs_in_bounds">
-<span class="sig-name descname"><span class="pre">query_vector_wfs_in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.query_vector_wfs_in_bounds" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">query_vector_wfs_in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.query_vector_wfs_in_bounds" title="Permalink to this definition"></a></dt>
 <dd><p>Function to check for tiles in search rectangle using the WFS vector query
 API.</p>
 <p>Note that depending on the layer the geometry_name may vary.</p>
@@ -172,7 +173,7 @@ API.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.get_json_response_in_bounds">
-<span class="sig-name descname"><span class="pre">get_json_response_in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_json_response_in_bounds" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_json_response_in_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_json_response_in_bounds" title="Permalink to this definition"></a></dt>
 <dd><p>Check for specified <cite>geometry_name</cite> - try the standard ones specified by
 self.GEOMETRY_NAMES in turn if not specified - and check for error messages
 before returning</p>
@@ -188,7 +189,7 @@ before returning</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.get_features_inside_catchment">
-<span class="sig-name descname"><span class="pre">get_features_inside_catchment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_features_inside_catchment" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_features_inside_catchment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_features_inside_catchment" title="Permalink to this definition"></a></dt>
 <dd><p>Filter the layer features to only keep those within the specified
 bounding_polygon</p>
 <dl class="field-list simple">
@@ -206,7 +207,7 @@ bounding_polygon</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.query_vector_wfs">
-<span class="sig-name descname"><span class="pre">query_vector_wfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.query_vector_wfs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">query_vector_wfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.query_vector_wfs" title="Permalink to this definition"></a></dt>
 <dd><p>Function to check for all features associated with a layer using the WFS
 vector query API</p>
 <dl class="field-list simple">
@@ -218,7 +219,7 @@ vector query API</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQueryBase.get_features">
-<span class="sig-name descname"><span class="pre">get_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_features" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQueryBase.get_features" title="Permalink to this definition"></a></dt>
 <dd><p>Return all features and associated properties within a layer as a
 geopandas.GeoDataFrame</p>
 <dl class="field-list simple">
@@ -318,15 +319,15 @@ to download.</p>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQuery.NETLOC_API">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQuery.NETLOC_API" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NETLOC_API</span></span><a class="headerlink" href="#geoapis.vector.WfsQuery.NETLOC_API" title="Permalink to this definition"></a></dt>
 <dd><p>Instantiate the entered netloc of the data service.</p>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="geoapis.vector.WfsQuery.GEOMETRY_NAMES">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GEOMETRY_NAMES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geoapis.vector.WfsQuery.GEOMETRY_NAMES" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GEOMETRY_NAMES</span></span><a class="headerlink" href="#geoapis.vector.WfsQuery.GEOMETRY_NAMES" title="Permalink to this definition"></a></dt>
 <dd><p>Instantiate the entered geometry_names of the layers to query from the data
 service.</p>
 </dd></dl>

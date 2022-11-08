@@ -36,51 +36,48 @@ Classes
    All datasets within a search polygon may be downloaded; or datasets may be selected
    by name (either within a search  polygon or the entire dataset).
 
-   .. py:method:: NETLOC_DATA()
-      :property:
+   .. py:property:: NETLOC_DATA
+      :abstractmethod:
 
       This should be instantiated in the base class. Provide the netloc of the data
       service.
 
-
-   .. py:method:: OT_BUCKET()
-      :property:
+   .. py:property:: OT_BUCKET
+      :abstractmethod:
 
       This should be instantiated in the base class. Provide the netloc of the data
       service.
 
+   .. py:property:: dataset_prefixes
 
-   .. py:method:: run(self, dataset_name = None)
+      Get the dataset names of all datasets downloaded by this object.
+
+   .. py:method:: run(dataset_name = None)
 
       Download LiDAR dataset(s) either within a search_polygon, by name, or both
 
 
-   .. py:method:: download_datasets_in_polygon(self)
+   .. py:method:: download_datasets_in_polygon()
 
       Download all LiDAR datasets within the search polygon
 
 
-   .. py:method:: download_dataset_by_name(self, dataset_name)
+   .. py:method:: download_dataset_by_name(dataset_name)
 
       Download a LiDAR dataset by name after checking it is within any specified
       search polygon
 
 
-   .. py:method:: query_for_datasets_inside_catchment(self)
+   .. py:method:: query_for_datasets_inside_catchment()
 
       Function to check for data in search region using the otCatalogue API
       https://portal.opentopography.org/apidocs/#/Public/getOtCatalog
 
 
-   .. py:method:: download_dataset(self, dataset_prefix, client)
+   .. py:method:: download_dataset(dataset_prefix, client)
 
-      Download all files within an optional search polygon of a given dataset_prefix
-
-
-   .. py:method:: dataset_prefixes(self)
-      :property:
-
-      Get the dataset names of all datasets downloaded by this object.
+      Download all files within an optional search polygon of a given
+      dataset_prefix
 
 
 

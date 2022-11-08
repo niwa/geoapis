@@ -28,16 +28,12 @@ Classes
 
    A class for working with tiling information
 
-   .. py:method:: file_names(self)
-      :property:
+   .. py:property:: file_names
 
       Return the names of all tiles within the catchment
 
-
-   .. py:method:: urls(self)
-      :property:
+   .. py:property:: urls
 
       Return the names of all tiles within the catchment
-
 
 
