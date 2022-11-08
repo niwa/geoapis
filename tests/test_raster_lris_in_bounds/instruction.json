@@ -1,0 +1,16 @@
+{
+	"instructions":
+    {
+		"projection": 2193,
+		"data_paths": {
+		"local_cache": "tests/test_raster_lris_in_bounds/data"
+		},
+	"apis": {
+		"lris": {
+			"1": {
+				"layers": 48081
+			}
+		}
+	}
+  }
+}

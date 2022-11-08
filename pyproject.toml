@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoapis"
-version = "0.2.9"
+version = "0.3.0"
 description = "A package for downloading geospatial data from web APIs."
 readme = "README.md"
 authors = [{ name = "Rose pearson", email = "rose.pearson@niwa.co.nz" }]
