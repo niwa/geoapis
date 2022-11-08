@@ -41,7 +41,7 @@ class LinzVectorsTest(unittest.TestCase):
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
     LAND = {
-        "area": 150539796136.69177,
+        "area": 150539776091.31247,
         "geometryType": "Polygon",
         "length": 6004326.598544762,
         "columns": [
