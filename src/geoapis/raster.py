@@ -71,7 +71,14 @@ class KoordinatesExportsQueryBase(abc.ABC):
         self.crs = crs
 
         self.base_url = urllib.parse.urlunparse(
-            (self.SCHEME, self.NETLOC_API, self.PATH, "", "", "",)
+            (
+                self.SCHEME,
+                self.NETLOC_API,
+                self.PATH,
+                "",
+                "",
+                "",
+            )
         )
 
         self._set_up()
@@ -130,7 +137,10 @@ class KoordinatesExportsQueryBase(abc.ABC):
         # Check the state of your exports until the triggered raster exports completes
         logging.info("Check status of download request")
         while True:
-            response = requests.get(f"{self.base_url}/exports/", headers=headers,)
+            response = requests.get(
+                f"{self.base_url}/exports/",
+                headers=headers,
+            )
             # find the triggered export
             element = [
                 element for element in response.json() if element["id"] == query_id
