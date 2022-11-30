@@ -254,7 +254,7 @@ class S3QueryBase(abc.ABC):
                         self.OT_BUCKET, str(file_prefix.as_posix()), str(local_path)
                     )
                 except botocore.exceptions.ClientError as e:
-                    f"An error occured during download {file_prefix}, The error is {e}"
+                    print(f"An error occured during download {file_prefix}, The error is {e}")
 
     @property
     def dataset_prefixes(self):
