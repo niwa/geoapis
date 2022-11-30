@@ -210,37 +210,37 @@ class S3QueryBase(abc.ABC):
         lidar_size_bytes = 0
 
         for tile_url in tile_info.urls:
-            # drop the OT_BUCKET from the URL path to get the file_prefix
-            file_prefix = pathlib.Path(
+            # drop the OT_BUCKET from the URL path to get the file_name
+            file_name = pathlib.Path(
                 *pathlib.Path(urllib.parse.urlparse(tile_url).path).parts[2:]
             )
-            local_path = self.cache_path / file_prefix
+            local_path = self.cache_path / file_name
             if self.redownload_files_bool or not local_path.exists():
 
                 try:
                     response = client.head_object(
-                        Bucket=self.OT_BUCKET, Key=str(file_prefix.as_posix())
+                        Bucket=self.OT_BUCKET, Key=str(file_name.as_posix())
                     )
                     lidar_size_bytes += response["ContentLength"]
 
                     if self.verbose:
                         print(
-                            f"checking size: {file_prefix}: {response['ContentLength']}"
+                            f"checking size: {file_name}: {response['ContentLength']}"
                             f", total (GB): {self._to_gbytes(lidar_size_bytes)}"
                         )
                 except botocore.exceptions.ClientError as e:
-                    f"An error occured during access of {file_prefix}, The error is {e}"
+                    f"An error occured during access of {file_name}, The error is {e}"
         return lidar_size_bytes
 
     def _download_tiles_in_catchment(self, client, _dataset_prefix, tile_info):
         """Download the LiDAR data within the catchment"""
 
         for url in tile_info.urls:
-            # drop the OT_BUCKET from the URL path to get the file_prefix
-            file_prefix = pathlib.Path(
+            # drop the OT_BUCKET from the URL path to get the file_name
+            file_name = pathlib.Path(
                 *pathlib.Path(urllib.parse.urlparse(url).path).parts[2:]
             )
-            local_path = self.cache_path / file_prefix
+            local_path = self.cache_path / file_name
 
             # ensure folder exists before download - in case its in a subdirectory that
             # hasn't been created yet
@@ -248,13 +248,13 @@ class S3QueryBase(abc.ABC):
 
             if self.redownload_files_bool or not local_path.exists():
                 if self.verbose:
-                    print(f"Downloading file: {file_prefix}")
+                    print(f"Downloading file: {file_name}")
                 try:
                     client.download_file(
-                        self.OT_BUCKET, str(file_prefix.as_posix()), str(local_path)
+                        self.OT_BUCKET, str(file_name.as_posix()), str(local_path)
                     )
                 except botocore.exceptions.ClientError as e:
-                    print(f"An error occured during download {file_prefix}, The error is {e}")
+                    print(f"An error occured during download {file_name}, The error is {e}")
 
     @property
     def dataset_prefixes(self):
