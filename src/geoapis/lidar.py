@@ -14,6 +14,7 @@ import botocore.client
 import typing
 import geopandas
 import abc
+from tqdm import tqdm
 from . import geometry
 
 
@@ -182,7 +183,9 @@ class S3QueryBase(abc.ABC):
         )
 
         # check for tiles and download as needed
-        self._download_tiles_in_catchment(client, dataset_prefix, tile_info)
+        self._download_tiles_in_catchment(
+            client, dataset_prefix, tile_info, lidar_size_bytes
+        )
 
     def _get_dataset_tile_names(self, client, dataset_prefix):
         """Check for the tile index shapefile and download as needed, then load in and
@@ -232,29 +235,52 @@ class S3QueryBase(abc.ABC):
                     f"An error occured during access of {file_name}, The error is {e}"
         return lidar_size_bytes
 
-    def _download_tiles_in_catchment(self, client, _dataset_prefix, tile_info):
+    def _download_tiles_in_catchment(
+        self, client, dataset_prefix, tile_info, lidar_size_bytes
+    ):
         """Download the LiDAR data within the catchment"""
+        total_gb = self._to_gbytes(lidar_size_bytes)
+        # Create progress bar context, only displayed if self.verbose is True
+        with tqdm(
+            disable=not self.verbose, unit="GB", total=total_gb, ncols=140
+        ) as progress_bar:
+            for url in tile_info.urls:
+                self._download_single_tile_in_catchment(
+                    client, dataset_prefix, url, progress_bar
+                )
 
-        for url in tile_info.urls:
-            # drop the OT_BUCKET from the URL path to get the file_name
-            file_name = pathlib.Path(
-                *pathlib.Path(urllib.parse.urlparse(url).path).parts[2:]
-            )
-            local_path = self.cache_path / file_name
+    def _download_single_tile_in_catchment(
+        self, client, _dataset_prefix, url, progress_bar
+    ):
+        """Downloads a single LiDAR file"""
+        # drop the OT_BUCKET from the URL path to get the file_name
+        file_name = pathlib.Path(
+            *pathlib.Path(urllib.parse.urlparse(url).path).parts[2:]
+        )
+        local_path = self.cache_path / file_name
 
-            # ensure folder exists before download - in case its in a subdirectory that
-            # hasn't been created yet
-            local_path.parent.mkdir(parents=True, exist_ok=True)
+        # ensure folder exists before download - in case its in a subdirectory that
+        # hasn't been created yet
+        local_path.parent.mkdir(parents=True, exist_ok=True)
 
-            if self.redownload_files_bool or not local_path.exists():
-                if self.verbose:
-                    print(f"Downloading file: {file_name}")
-                try:
-                    client.download_file(
-                        self.OT_BUCKET, str(file_name.as_posix()), str(local_path)
-                    )
-                except botocore.exceptions.ClientError as e:
-                    print(f"An error occured during download {file_name}, The error is {e}")
+        if self.redownload_files_bool or not local_path.exists():
+            if self.verbose:
+                # Writing to the progress bar instead of printing ensures proper formatting
+                progress_bar.write(f"Downloading file: {file_name}")
+            try:
+                client.download_file(
+                    self.OT_BUCKET,
+                    str(file_name.as_posix()),
+                    str(local_path),
+                    Callback=lambda downloaded_bytes: progress_bar.update(
+                        self._to_gbytes(downloaded_bytes)
+                    ),
+                )
+            except botocore.exceptions.ClientError as e:
+                # Writing to progress bar works even if self.verbose is False. Ensures proper display with bar
+                progress_bar.write(
+                    f"An error occurred during download {file_name}, The error is {e}"
+                )
 
     @property
     def dataset_prefixes(self):
