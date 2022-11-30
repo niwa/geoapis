@@ -205,7 +205,7 @@ class S3QueryBase(abc.ABC):
 
         return tile_info
 
-    def _calculate_dataset_download_size(self, client, dataset_prefix, tile_info):
+    def _calculate_dataset_download_size(self, client, _dataset_prefix, tile_info):
         """Sum up the size of the LiDAR data in catchment"""
         lidar_size_bytes = 0
 
@@ -232,7 +232,7 @@ class S3QueryBase(abc.ABC):
                     f"An error occured during access of {file_prefix}, The error is {e}"
         return lidar_size_bytes
 
-    def _download_tiles_in_catchment(self, client, dataset_prefix, tile_info):
+    def _download_tiles_in_catchment(self, client, _dataset_prefix, tile_info):
         """Download the LiDAR data within the catchment"""
 
         for url in tile_info.urls:
