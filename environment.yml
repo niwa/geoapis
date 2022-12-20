@@ -11,5 +11,6 @@ dependencies:
   - boto3
   - python-dotenv
   - pytest
+  - tqdm
 
 prefix: C:\ProgramData\Anaconda3\envs\geoapis
