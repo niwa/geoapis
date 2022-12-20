@@ -39,6 +39,7 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         "Chch_Selwn_2015",
         "Chch_Selwn_2015/NZ_Christchurch",
         "NZ20_Canterbury",
+        "NZ20_Cant2",
     ]
     FILE_SIZES = {
         DATASETS[0]: {f"{DATASETS[0]}_TileIndex.zip": 134113},
@@ -52,6 +53,9 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         DATASETS[5]: {
             "CL2_BX24_2020_1000_2520.laz": 25891330,
             f"{DATASETS[5]}_TileIndex.zip": 120930,
+        },
+        DATASETS[6]: {
+            f"{DATASETS[6]}_TileIndex.zip": 1133609,
         },
     }
 
@@ -145,8 +149,9 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
                         if file.is_file()
                     ]
                 ),
-                f"There should be the dataset_files files in dataset {key} instead there are "
-                + f"{[file for file in dataset_dir.iterdir() if file.is_file()]}",
+                f"There should be the dataset_files files in dataset {key} instead "
+                "there are "
+                f"{[file for file in dataset_dir.iterdir() if file.is_file()]}",
             )
 
     def test_correct_file_sizes(self):
@@ -165,9 +170,9 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
                         for dataset_file in dataset_files
                     ]
                 ),
-                "There is a miss-match between the size"
-                + f" of the downloaded files {[file.stat().st_size for file in dataset_files]}"
-                + f" and the expected sizes of {self.FILE_SIZES[key].values()}",
+                "There is a miss-match between the size of the downloaded"
+                f" files {[file.stat().st_size for file in dataset_files]}"
+                f" and the expected sizes of {self.FILE_SIZES[key].values()}",
             )
 
 
