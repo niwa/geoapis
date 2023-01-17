@@ -102,12 +102,28 @@ class KoordinatesExportsQueryBase(abc.ABC):
             self.bounding_polygon.to_crs(self.crs)
         # Enforce the bounding_polygon must be a single geometry if it exists
         if self.bounding_polygon is not None:
-            assert (
-                len(self.bounding_polygon) == 1
-            ), "The bounding polygon must be a single geometry"
-            assert (
-                len(numpy.array(self.bounding_polygon.exterior.loc[0].coords)) < 1000
-            ), "The bounding polygon must be lass than 1000 points"
+            self.bounding_polygon = self.bounding_polygon.explode(index_parts=False)
+            if not (self.bounding_polygon.type == "Polygon").all():
+                logging.warning(
+                    "All bounding_polygon parts aren't Polygon's. Ignoring"
+                    f" those that aren't {self.bounding_polygon.geometry}"
+                )
+
+                self.bounding_polygon = self.bounding_polygon[
+                    self.bounding_polygon.type == "Polygon"
+                ]
+            number_of_coords = sum(
+                [
+                    len(polygon.coords)
+                    for polygon in self.bounding_polygon.explode(
+                        index_parts=False
+                    ).exterior
+                ]
+            )
+            assert number_of_coords < 1000, (
+                "The bounding polygon must be less than 1000 points. Consider using the"
+                " bbox to simplify the geometry"
+            )
 
     def run(self, layer: int) -> pathlib.Path:
         """Query for a specified layer and return a geopandas.GeoDataFrame of the vector
