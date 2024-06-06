@@ -193,7 +193,7 @@ class WfsQueryBase(abc.ABC):
                 # Convert any one Polygon MultiPolygon to a straight Polygon then add to
                 # the geometries
                 if (
-                    shapely_geometry.geometryType() == "MultiPolygon"
+                    shapely_geometry.geom_type == "MultiPolygon"
                     and len(shapely_geometry.geoms) == 1
                 ):
                     shapely_geometry = shapely_geometry.geoms[0]
@@ -267,7 +267,7 @@ class WfsQueryBase(abc.ABC):
             # Convert any one Polygon MultiPolygon to a straight Polygon then add to the
             # geometries
             if (
-                shapely_geometry.geometryType() == "MultiPolygon"
+                shapely_geometry.geom_type == "MultiPolygon"
                 and len(shapely_geometry.geoms) == 1
             ):
                 shapely_geometry = shapely_geometry.geoms[0]
