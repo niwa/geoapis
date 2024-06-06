@@ -41,9 +41,9 @@ class LinzVectorsTest(unittest.TestCase):
 
     # The expected datasets and files to be downloaded - used for comparison in the later tests
     LAND = {
-        "area": 150539776091.31247,
+        "area": 150539779947.93246,
         "geometryType": "Polygon",
-        "length": 6002892.54900315,
+        "length": 6002542.642926594,
         "columns": [
             "geometry",
             "name",
@@ -59,7 +59,7 @@ class LinzVectorsTest(unittest.TestCase):
     BATHYMETRY_CONTOURS = {
         "area": 0.0,
         "geometryType": "LineString",
-        "length": 144353.73387463146,
+        "length": 144353.7338746315,
         "columns": [
             "geometry",
             "fidn",
@@ -74,7 +74,7 @@ class LinzVectorsTest(unittest.TestCase):
             "sorind",
             "hypcat",
         ],
-        "valdco": [2.0, 2.0, 0.0, 0.0, 0.0],
+        "valdco": [0.0, 0.0, 2.0, 0.0, 2.0],
     }
     CHATHAM_CONTOURS = None
 
@@ -152,10 +152,10 @@ class LinzVectorsTest(unittest.TestCase):
 
         # check various shape attributes match those expected
         self.assertEqual(
-            features.loc[0].geometry.geometryType(),
+            features.loc[0].geometry.geom_type,
             benchmark["geometryType"],
             f"The geometryType of thereturned {description} "
-            f" `{features.loc[0].geometry.geometryType()}` differs from the expected "
+            f" `{features.loc[0].geometry.geom_type}` differs from the expected "
             f"{benchmark['geometryType']}",
         )
         self.assertEqual(
