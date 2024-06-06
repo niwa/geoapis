@@ -7,6 +7,7 @@ Created on Fri Jul  2 10:10:55 2021
 
 import urllib
 import pathlib
+import logging
 import requests
 import boto3
 import botocore
@@ -81,7 +82,7 @@ class S3QueryBase(abc.ABC):
         elif self.search_polygon is not None:
             self.download_datasets_in_polygon()
         else:
-            print(
+            logging.info(
                 "Both the search_polygon and dataset_name are None. Either a "
                 "dataset_name of search polygon needs to be specified if any datasets "
                 "are to be downloaded from OpenTopography. Please specify a "
@@ -167,7 +168,7 @@ class S3QueryBase(abc.ABC):
         dataset_prefix"""
 
         if self.verbose:
-            print(f"Check files in dataset {dataset_prefix}")
+            logging.info(f"Check files in dataset {dataset_prefix}")
         tile_info = self._get_dataset_tile_names(client, dataset_prefix)
 
         # check download size limit is not exceeded
@@ -227,7 +228,7 @@ class S3QueryBase(abc.ABC):
                     lidar_size_bytes += response["ContentLength"]
 
                     if self.verbose:
-                        print(
+                        logging.info(
                             f"checking size: {file_name}: {response['ContentLength']}"
                             f", total (GB): {self._to_gbytes(lidar_size_bytes)}"
                         )

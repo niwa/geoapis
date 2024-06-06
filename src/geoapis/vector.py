@@ -6,6 +6,7 @@ Created on Fri Jul  2 10:10:55 2021
 """
 
 import urllib
+import logging
 import requests
 import shapely
 import shapely.geometry
@@ -151,7 +152,7 @@ class WfsQueryBase(abc.ABC):
                     return response.json()
                 except requests.exceptions.HTTPError:
                     if self.verbose:
-                        print(
+                        logging.info(
                             f"Layer: {layer} is not `geometry_name`: {geometry_name}."
                         )
             assert False, (
