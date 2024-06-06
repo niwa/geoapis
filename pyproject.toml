@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoapis"
-version = "0.3.2"
+version = "0.3.3"
 description = "A package for downloading geospatial data from web APIs."
 readme = "README.md"
 authors = [{ name = "Rose pearson", email = "rose.pearson@niwa.co.nz" }]
@@ -27,7 +27,7 @@ dependencies = [
     "boto3",
     "python-dotenv",
     "tqdm",
-    'tomli; python_version < "3.11"',
+    'tomli; python_version < "3.6"',
 ]
 requires-python = ">=3.6"
 
