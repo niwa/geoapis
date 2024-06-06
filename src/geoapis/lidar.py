@@ -84,9 +84,9 @@ class S3QueryBase(abc.ABC):
         else:
             logging.info(
                 "Both the search_polygon and dataset_name are None. Either a "
-                "dataset_name of search polygon needs to be specified if any datasets "
+                "'dataset_name' or 'search_polygon' needs to be specified if any datasets "
                 "are to be downloaded from OpenTopography. Please specify a "
-                "search_polygon during construction, or a dataset_name during run."
+                "'search_polygon' during construction, or a 'dataset_name' during run."
             )
 
     def download_datasets_in_polygon(self):
