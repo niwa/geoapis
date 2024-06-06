@@ -197,7 +197,6 @@ class S3QueryBase(abc.ABC):
 
         # Download the file if needed
         if self.redownload_files_bool or not local_file_path.exists():
-
             # ensure folder exists before download
             local_file_path.parent.mkdir(parents=True, exist_ok=True)
             try:
@@ -220,7 +219,6 @@ class S3QueryBase(abc.ABC):
             )
             local_path = self.cache_path / file_name
             if self.redownload_files_bool or not local_path.exists():
-
                 try:
                     response = client.head_object(
                         Bucket=self.OT_BUCKET, Key=str(file_name.as_posix())
