@@ -164,10 +164,10 @@ class LrisVectorsTest(unittest.TestCase):
 
         # check various shape attributes match those expected
         self.assertEqual(
-            features.loc[0].geometry.geometryType(),
+            features.loc[0].geometry.geom_type,
             benchmark["geometryType"],
             "The geometryType of the returned {description} "
-            f"`{features.loc[0].geometry.geometryType()}` differs from the expected "
+            f"`{features.loc[0].geometry.geom_type}` differs from the expected "
             f"{benchmark['geometryType']}",
         )
         self.assertEqual(

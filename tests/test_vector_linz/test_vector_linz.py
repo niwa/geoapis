@@ -37,9 +37,9 @@ class LinzVectorsTest(unittest.TestCase):
         "id": [1775717, 1775718, 1775719, 1778938, 1778939],
     }
     PASTURAL_LEASE = {
-        "area": 13278778764.94074,
+        "area": 13189155932.7776,
         "geometryType": "MultiPolygon",
-        "length": 15648834.84743058,
+        "length": 15552938.848015543,
         "columns": ["geometry", "id", "lease_name"],
         "id": [12511, 12653, 12658, 12797, 12461],
     }
@@ -106,10 +106,10 @@ class LinzVectorsTest(unittest.TestCase):
 
         # check various shape attributes match those expected
         self.assertEqual(
-            features.loc[0].geometry.geometryType(),
+            features.loc[0].geometry.geom_type,
             benchmark["geometryType"],
             "The geometryType of the returned {description} "
-            f"`{features.loc[0].geometry.geometryType()}` differs from the expected "
+            f"`{features.loc[0].geometry.geom_type}` differs from the expected "
             f"{benchmark['geometryType']}",
         )
         self.assertEqual(

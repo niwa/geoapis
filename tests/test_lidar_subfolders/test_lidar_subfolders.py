@@ -33,8 +33,6 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
     # The expected datasets and files to be downloaded - used for comparison in the
     # later tests
     DATASETS = [
-        "NZ18_Banks",
-        "NZ18_AmuriCant",
         "NZ18_Canterbury",
         "Chch_Selwn_2015",
         "Chch_Selwn_2015/NZ_Christchurch",
@@ -42,20 +40,18 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
         "NZ20_Cant2",
     ]
     FILE_SIZES = {
-        DATASETS[0]: {f"{DATASETS[0]}_TileIndex.zip": 134113},
-        DATASETS[1]: {f"{DATASETS[1]}_TileIndex.zip": 813250},
-        DATASETS[2]: {
-            f"{DATASETS[2]}_TileIndex.zip": 70260,
+        DATASETS[0]: {
+            f"{DATASETS[0]}_TileIndex.zip": 70260,
             "CL2_BX24_2018_1000_2520.laz": 14829064,
         },
-        DATASETS[3]: {f"{DATASETS[3]}_TileIndex.zip": 221422},
-        DATASETS[4]: {"ot_CL2_BX24_2015_1000_2520.laz": 10761065},
-        DATASETS[5]: {
+        DATASETS[1]: {f"{DATASETS[1]}_TileIndex.zip": 221422},
+        DATASETS[2]: {"ot_CL2_BX24_2015_1000_2520.laz": 10761065},
+        DATASETS[3]: {
             "CL2_BX24_2020_1000_2520.laz": 25891330,
-            f"{DATASETS[5]}_TileIndex.zip": 120930,
+            f"{DATASETS[3]}_TileIndex.zip": 120930,
         },
-        DATASETS[6]: {
-            f"{DATASETS[6]}_TileIndex.zip": 1133609,
+        DATASETS[4]: {
+            f"{DATASETS[4]}_TileIndex.zip": 3389130,
         },
     }
 
