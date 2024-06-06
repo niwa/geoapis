@@ -1,5 +1,5 @@
-:py:mod:`geoapis`
-=================
+geoapis
+=======
 
 .. py:module:: geoapis
 
@@ -13,13 +13,13 @@
 
 Submodules
 ----------
+
 .. toctree::
-   :titlesonly:
    :maxdepth: 1
 
-   geometry/index.rst
-   lidar/index.rst
-   raster/index.rst
-   vector/index.rst
+   /autoapi/geoapis/geometry/index
+   /autoapi/geoapis/lidar/index
+   /autoapi/geoapis/raster/index
+   /autoapi/geoapis/vector/index
 
 

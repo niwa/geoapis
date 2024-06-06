@@ -1,5 +1,5 @@
-:py:mod:`geoapis.lidar`
-=======================
+geoapis.lidar
+=============
 
 .. py:module:: geoapis.lidar
 
@@ -11,11 +11,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -23,11 +20,13 @@ Classes
    geoapis.lidar.OpenTopography
 
 
-
+Module Contents
+---------------
 
 .. py:class:: S3QueryBase(cache_path, search_polygon = None, redownload_files = False, download_limit_gbytes = 100, verbose = False)
 
    Bases: :py:obj:`abc.ABC`
+
 
    A class to manage fetching LiDAR data from Open Topography.
 
@@ -36,11 +35,13 @@ Classes
    All datasets within a search polygon may be downloaded; or datasets may be selected
    by name (either within a search  polygon or the entire dataset).
 
+
    .. py:property:: NETLOC_DATA
       :abstractmethod:
 
       This should be instantiated in the base class. Provide the netloc of the data
       service.
+
 
    .. py:property:: OT_BUCKET
       :abstractmethod:
@@ -48,18 +49,17 @@ Classes
       This should be instantiated in the base class. Provide the netloc of the data
       service.
 
-   .. py:property:: dataset_prefixes
-
-      Get the dataset names of all datasets downloaded by this object.
 
    .. py:method:: run(dataset_name = None)
 
       Download LiDAR dataset(s) either within a search_polygon, by name, or both
 
 
+
    .. py:method:: download_datasets_in_polygon()
 
       Download all LiDAR datasets within the search polygon
+
 
 
    .. py:method:: download_dataset_by_name(dataset_name)
@@ -68,10 +68,12 @@ Classes
       search polygon
 
 
+
    .. py:method:: query_for_datasets_inside_catchment()
 
       Function to check for data in search region using the otCatalogue API
       https://portal.opentopography.org/apidocs/#/Public/getOtCatalog
+
 
 
    .. py:method:: download_dataset(dataset_prefix, client)
@@ -81,9 +83,14 @@ Classes
 
 
 
+   .. py:property:: dataset_prefixes
+      Get the dataset names of all datasets downloaded by this object.
+
+
 .. py:class:: OpenTopography(cache_path, search_polygon = None, redownload_files = False, download_limit_gbytes = 100, verbose = False)
 
    Bases: :py:obj:`S3QueryBase`
+
 
    A class to manage fetching LiDAR data from Open Topography
 

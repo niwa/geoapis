@@ -1,5 +1,5 @@
-:py:mod:`geoapis.vector`
-========================
+geoapis.vector
+==============
 
 .. py:module:: geoapis.vector
 
@@ -11,11 +11,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -26,11 +23,13 @@ Classes
    geoapis.vector.WfsQuery
 
 
-
+Module Contents
+---------------
 
 .. py:class:: WfsQueryBase(key, crs = None, bounding_polygon = None, verbose = False)
 
    Bases: :py:obj:`abc.ABC`
+
 
    An abstract class to manage fetching Vector data using WFS.
 
@@ -46,11 +45,13 @@ Classes
    bounding_polygon will be used if the bounding_polygon is specified. If no CRS or
    bounding_polygon is specified the CRS of the downloaded features will be used.
 
+
    .. py:property:: NETLOC_API
       :abstractmethod:
 
       This should be instantiated in the base class. Provide the netloc of the data
       service.
+
 
    .. py:property:: GEOMETRY_NAMES
       :abstractmethod:
@@ -58,11 +59,13 @@ Classes
       This should be instantiated in the base class. Define the 'geometry_name'
       used when making a WFS 'cql_filter' query
 
+
    .. py:method:: run(layer, geometry_name = '')
 
       Query for a specified layer and return a geopandas.GeoDataFrame of the vector
       features. If a polygon_boundary is specified, only return vectors passing
       through this polygon.
+
 
 
    .. py:method:: query_vector_wfs_in_bounds(layer, bounds, geometry_name)
@@ -75,11 +78,13 @@ Classes
       bounds defines the bounding box containing in the bounding_polygon
 
 
+
    .. py:method:: get_json_response_in_bounds(layer, bounds, geometry_name)
 
       Check for specified `geometry_name` - try the standard ones specified by
       self.GEOMETRY_NAMES in turn if not specified - and check for error messages
       before returning
+
 
 
    .. py:method:: get_features_inside_catchment(layer, geometry_name)
@@ -88,10 +93,12 @@ Classes
       bounding_polygon
 
 
+
    .. py:method:: query_vector_wfs(layer)
 
       Function to check for all features associated with a layer using the WFS
       vector query API
+
 
 
    .. py:method:: get_features(layer)
@@ -104,6 +111,7 @@ Classes
 .. py:class:: Linz(key, crs = None, bounding_polygon = None, verbose = False)
 
    Bases: :py:obj:`WfsQueryBase`
+
 
    A class to manage fetching Vector data from LINZ.
 
@@ -118,6 +126,7 @@ Classes
 
    Bases: :py:obj:`WfsQueryBase`
 
+
    A class to manage fetching Vector data from LRIS.
 
    API details at: https://lris.scinfo.org.nz/p/api-support-wfs/
@@ -130,6 +139,7 @@ Classes
 .. py:class:: StatsNz(key, crs = None, bounding_polygon = None, verbose = False)
 
    Bases: :py:obj:`WfsQueryBase`
+
 
    A class to manage fetching Vector data from the Stats NZ datafinder.
 
@@ -145,6 +155,7 @@ Classes
 
    Bases: :py:obj:`WfsQueryBase`
 
+
    A class to manage fetching Vector data from any generic data portal supporting
    WFS.
 
@@ -152,12 +163,12 @@ Classes
    between layers. You will need to specify the 'geometry_name' of the layers you want
    to download.
 
-   .. py:property:: NETLOC_API
 
+   .. py:property:: NETLOC_API
       Instantiate the entered netloc of the data service.
 
-   .. py:property:: GEOMETRY_NAMES
 
+   .. py:property:: GEOMETRY_NAMES
       Instantiate the entered geometry_names of the layers to query from the data
       service.
 

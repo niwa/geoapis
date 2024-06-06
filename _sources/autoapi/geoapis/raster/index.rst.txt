@@ -1,5 +1,5 @@
-:py:mod:`geoapis.raster`
-========================
+geoapis.raster
+==============
 
 .. py:module:: geoapis.raster
 
@@ -11,11 +11,8 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
@@ -26,11 +23,13 @@ Classes
    geoapis.raster.KoordinatesQuery
 
 
-
+Module Contents
+---------------
 
 .. py:class:: KoordinatesExportsQueryBase(key, cache_path, crs = None, bounding_polygon = None)
 
    Bases: :py:obj:`abc.ABC`
+
 
    An abstract class to manage fetching Raster data using the Koordinates exports
    API. Downloads the GeoTiff specified in the run routine.
@@ -47,11 +46,13 @@ Classes
    :param bounding_polygon: An option geometry to clip the downloaded GeoTiffs within.
    :type bounding_polygon: geopandas.geodataframe.GeoDataFrame
 
+
    .. py:property:: NETLOC_API
       :abstractmethod:
 
       This should be instantiated in the base class. Provide the netloc of the data
       service.
+
 
    .. py:method:: run(layer)
 
@@ -65,6 +66,7 @@ Classes
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
 
+
    A class to manage fetching Vector data from LINZ.
 
    LIRS data service can be accessed at: https://https://data.linz.govt.nz/
@@ -75,6 +77,7 @@ Classes
 .. py:class:: Lris(key, cache_path, crs = None, bounding_polygon = None)
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
+
 
    A class to manage fetching Vector data from LRIS.
 
@@ -87,6 +90,7 @@ Classes
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
 
+
    A class to manage fetching Vector data from the Stats NZ datafinder.
 
    Stats NZ data service can be accessed at: datafinder.stats.govt.nz
@@ -98,6 +102,7 @@ Classes
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
 
+
    A class to manage fetching Vector data from any generic data portal supporting
    WFS.
 
@@ -105,8 +110,8 @@ Classes
    between layers. You will need to specify the 'geometry_name' of the layers you want
    to download.
 
-   .. py:property:: NETLOC_API
 
+   .. py:property:: NETLOC_API
       Instantiate the entered netloc of the data service.
 
 

@@ -1,5 +1,5 @@
-:py:mod:`geoapis.geometry`
-==========================
+geoapis.geometry
+================
 
 .. py:module:: geoapis.geometry
 
@@ -11,29 +11,27 @@
 
 
 
-Module Contents
----------------
-
 Classes
-~~~~~~~
+-------
 
 .. autoapisummary::
 
    geoapis.geometry.TileInfo
 
 
-
+Module Contents
+---------------
 
 .. py:class:: TileInfo(tile_file, catchment_polygon)
 
    A class for working with tiling information
 
-   .. py:property:: file_names
 
+   .. py:property:: file_names
       Return the names of all tiles within the catchment
 
-   .. py:property:: urls
 
+   .. py:property:: urls
       Return the names of all tiles within the catchment
 
 
