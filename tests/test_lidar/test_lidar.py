@@ -35,9 +35,9 @@ class OpenTopographyTest(unittest.TestCase):
     DATASETS = ["Wellington_2013", "NZ21_Kapiti"]
     FILE_SIZES = {
         "ot_CL1_WLG_2013_1km_085033.laz": 6795072,
+        "ot_CL1_WLG_2013_1km_086034.laz": 13866572,
+        "ot_CL1_WLG_2013_1km_085034.laz": 18621287,
         "ot_CL1_WLG_2013_1km_086033.laz": 5712485,
-        "ot_CL1_WLG_2013_1km_085032.laz": 1670549,
-        "ot_CL1_WLG_2013_1km_086032.laz": 72787,
         DATASETS[0] + "_TileIndex.zip": 598532,
     }
 
@@ -63,9 +63,9 @@ class OpenTopographyTest(unittest.TestCase):
         cls.cache_dir.mkdir()
 
         # create fake catchment boundary
-        x0 = 1764410
+        x0 = 1765600
         y0 = 5470382
-        x1 = 1765656
+        x1 = 1766200
         y1 = 5471702
         catchment = shapely.geometry.Polygon([(x0, y0), (x1, y0), (x1, y1), (x0, y1)])
         catchment = geopandas.GeoSeries([catchment])
@@ -136,7 +136,7 @@ class OpenTopographyTest(unittest.TestCase):
 
         self.assertTrue(
             numpy.all([file in downloaded_files for file in dataset_dir.glob("*")]),
-            "The downloaded files {list(dataset_dir.glob('*'))} do not match the "
+            f"The downloaded files {list(dataset_dir.glob('*'))} do not match the "
             f"expected files {downloaded_files}",
         )
 
