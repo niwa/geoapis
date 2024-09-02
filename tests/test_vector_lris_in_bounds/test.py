@@ -14,7 +14,7 @@ import shutil
 import dotenv
 import os
 
-from src.geoapis import vector
+from geoapis import vector
 
 
 class LrisVectorsTest(unittest.TestCase):

@@ -13,7 +13,7 @@ import geopandas
 import shutil
 import numpy
 
-from src.geoapis import lidar
+from geoapis import lidar
 
 
 class OpenTopographyTestByName(unittest.TestCase):

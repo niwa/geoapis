@@ -13,7 +13,7 @@ import dotenv
 import os
 import geopandas
 
-from src.geoapis import vector
+from geoapis import vector
 
 
 class LinzVectorsTest(unittest.TestCase):
