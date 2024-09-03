@@ -1,13 +1,13 @@
 [build-system]
 requires = [
-    "setuptools>=61.0.0",
+    "setuptools>=64",
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "geoapis"
-version = "0.3.3"
+version = "0.3.4"
 description = "A package for downloading geospatial data from web APIs."
 readme = "README.md"
 authors = [{ name = "Rose pearson", email = "rose.pearson@niwa.co.nz" }]
@@ -30,9 +30,6 @@ dependencies = [
     'tomli; python_version < "3.6"',
 ]
 requires-python = ">=3.6"
-
-[tool.setuptools]
-packages = ["geoapis"]
 
 [project.optional-dependencies]
 dev = ["black", "python-dotenv", "pip-tools", "pytest"]

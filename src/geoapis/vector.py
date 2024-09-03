@@ -72,10 +72,23 @@ class WfsQueryBase(abc.ABC):
     def _set_up(self):
         """Ensure the bouding_polygon and CRS are in agreement."""
 
+        error_message = (
+            "Either the crs or the bounding_polygon with a CRS mus be specified."
+        )
+        if self.crs is None and self.bounding_polygon is None:
+            logging.error(error_message)
+            raise ValueError(error_message)
+
         # Set the crs from the bounding_polygon if it's not been set
-        if self.crs is None and self.bounding_polygon is not None:
-            self.crs = self.bounding_polygon.crs.to_epsg()
-        # Set the bounding_polygon crs from the crs if they differ
+        if self.bounding_polygon is not None:
+            if self.crs is None and self.bounding_polygon.crs is not None:
+                self.crs = self.bounding_polygon.crs.to_epsg()
+            elif self.crs is not None and self.bounding_polygon.crs is None:
+                self.bounding_polygon.set_crs(self.crs, inplace=True)
+            elif self.crs is None and self.bounding_polygon.crs is None:
+                logging.error(error_message)
+                raise ValueError(error_message)
+        # Convert the bounding_polygon crs from the crs if they differ
         if (
             self.bounding_polygon is not None
             and self.crs != self.bounding_polygon.crs.to_epsg()
@@ -153,10 +166,12 @@ class WfsQueryBase(abc.ABC):
                         logging.info(
                             f"Layer: {layer} is not `geometry_name`: {geometry_name}."
                         )
-            assert False, (
-                f"No geometry types matching that of layer: {layer} tried. The"
-                " geometry_name's tried are: +{geometry_type_list}"
+            message = (
+                f"No geometry types matching that of layer: {layer}. "
+                f"The geometry_name's tried are: {self.GEOMETRY_NAMES}."
             )
+            logging.error(message)
+            raise ValueError(message)
 
     def get_features_inside_catchment(
         self, layer: int, geometry_name: str

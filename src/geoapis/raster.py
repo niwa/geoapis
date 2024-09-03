@@ -148,7 +148,22 @@ class KoordinatesExportsQueryBase(abc.ABC):
         response = requests.post(
             url=f"{self.base_url}/exports/", headers=headers, json=api_query
         )
-        query_id = response.json()["id"]
+        json_query = response.json()
+        if "is_valid" in json_query.keys() and not json_query["is_valid"]:
+            message = f"Invalid initial query. Check layer {layer} exists and is within bounds."
+            if "invalid_reasons" in json_query.keys():
+                message = (
+                    message
+                    + f" json_query['invalid_reasons']: {json_query['invalid_reasons']}."
+                )
+            if "items" in json_query.keys():
+                message = (
+                    message
+                    + f" json_query['items'][0]['invalid_reasons']: {json_query['items'][0]['invalid_reasons']}"
+                )
+            logging.warning(message)
+            return []
+        query_id = json_query["id"]
 
         # Check the state of your exports until the triggered raster exports completes
         logging.info("Check status of download request")
@@ -173,7 +188,7 @@ class KoordinatesExportsQueryBase(abc.ABC):
                 logging.warning(
                     f"Could not download raster. Ended with status {element['state']}"
                 )
-                return
+                return []
         # Download the completed export
         logging.info(f"Downloading {element['download_url']} to {self.cache_path}")
         with requests.get(

@@ -19,36 +19,37 @@ jobs:
     steps:
 
     - name: Checkout github repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
+    - name: Create LFS file list
+      run: git lfs ls-files --long | cut -d ' ' -f1 | sort > .lfs-assets-id
 
-    - name: Cache conda
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-conda-env
+    - name: LFS Cache
+      uses: actions/cache@v3
       with:
-        path: ~/conda_pkgs_dir
-        key: ${{ runner.os }}-conda-${{ env.cache-name }}-${{ hashFiles('environment.yml') }}
+        path: .git/lfs/objects
+        key: ${{ matrix.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+        restore-keys: |
+          ${{ matrix.os }}-lfs-
 
+    - name: Git LFS Pull
+      run: git lfs pull
 
-    - name: Install package dependencies with setup-miniconda@v2
+    - name: Setup miniconda
       uses: conda-incubator/setup-miniconda@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        auto-update-conda: true
         miniforge-variant: Mambaforge
-        channels: conda-forge
-        channel-priority: true
+        channels: conda-forge # defaults automatically added
+        python-version: ${{ matrix.python-version }}
         activate-environment: geoapis
         environment-file: environment.yml
+        use-mamba: true
         auto-activate-base: false
-        use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
-    - run: |
-        conda info
-        conda list
-        conda config --show-sources
-        conda config --show
-        printenv | sort
 
+    - name: Conda list
+      shell: pwsh
+      run: conda list
 
     - name: Install test dependencies
       run: |
@@ -73,4 +74,5 @@ jobs:
 
     - name: Run tests with pytest
       run: |
+        pip install .
         pytest

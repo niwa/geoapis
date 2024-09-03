@@ -3,7 +3,6 @@
 name: geoapis
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - pip
   - geopandas
@@ -12,5 +11,3 @@ dependencies:
   - python-dotenv
   - pytest
   - tqdm
-
-prefix: C:\ProgramData\Anaconda3\envs\geoapis

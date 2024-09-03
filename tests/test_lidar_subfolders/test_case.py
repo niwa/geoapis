@@ -13,7 +13,7 @@ import geopandas
 import shutil
 import numpy
 
-from src.geoapis import lidar
+from geoapis import lidar
 
 
 class OpenTopographyTestSubfolders(unittest.TestCase):
@@ -51,7 +51,7 @@ class OpenTopographyTestSubfolders(unittest.TestCase):
             f"{DATASETS[3]}_TileIndex.zip": 120930,
         },
         DATASETS[4]: {
-            f"{DATASETS[4]}_TileIndex.zip": 3389130,
+            f"{DATASETS[4]}_TileIndex.zip": 4033009,
         },
     }
 

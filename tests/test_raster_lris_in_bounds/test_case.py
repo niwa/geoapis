@@ -15,10 +15,10 @@ import dotenv
 import os
 import logging
 
-from src.geoapis import raster
+from geoapis import raster
 
 
-class LinzRasterTest(unittest.TestCase):
+class LrisRasterTest(unittest.TestCase):
     """A class to test the basic raster.Linz functionality by downloading files from
     the dataservice within a small region.
 
@@ -30,7 +30,7 @@ class LinzRasterTest(unittest.TestCase):
     """
 
     # Datasets and files to be downloaded - used for comparison in the later tests
-    RASTER_1 = {"size": 1791242, "name": "MG.tif", "number": 1}
+    RASTER_1 = {"size": 4630, "name": "lenz-slope.tif", "number": 1}
 
     @classmethod
     def setUpClass(cls):
@@ -39,14 +39,14 @@ class LinzRasterTest(unittest.TestCase):
 
         # load in the test instructions
         file_path = pathlib.Path().cwd() / pathlib.Path(
-            "tests/test_raster_linz_in_bounds/instruction.json"
+            "tests/test_raster_lris_in_bounds/instruction.json"
         )
         with open(file_path, "r") as file_pointer:
             cls.instructions = json.load(file_pointer)
         # Load in environment variables to get and set the private API keys
         dotenv.load_dotenv()
-        linz_key = os.environ.get("LINZ_API", None)
-        cls.instructions["instructions"]["apis"]["linz"]["key"] = linz_key
+        lris_key = os.environ.get("LRIS_API", None)
+        cls.instructions["instructions"]["apis"]["lris"]["key"] = lris_key
 
         # define cache location - and catchment dirs
         cls.cache_dir = pathlib.Path(
@@ -71,8 +71,8 @@ class LinzRasterTest(unittest.TestCase):
         catchment.to_file(cls.cache_dir / "catchment.geojson")
 
         # Run pipeline - download files
-        cls.runner = raster.Linz(
-            key=cls.instructions["instructions"]["apis"]["linz"]["key"],
+        cls.runner = raster.Lris(
+            key=cls.instructions["instructions"]["apis"]["lris"]["key"],
             crs=None,
             bounding_polygon=catchment,
             cache_path=cls.cache_dir,
@@ -87,7 +87,7 @@ class LinzRasterTest(unittest.TestCase):
 
     def compare_to_benchmark(
         self,
-        file_names: list,
+        file_names: pathlib.Path,
         benchmark: dict,
         description: str,
     ):
@@ -118,12 +118,11 @@ class LinzRasterTest(unittest.TestCase):
         """Test expected features of layer loaded"""
 
         logging.info("In test_1")
-        print(self.instructions)
         file_names = self.runner.run(
-            self.instructions["instructions"]["apis"]["linz"]["1"]["layers"],
+            self.instructions["instructions"]["apis"]["lris"]["1"]["layers"],
         )
         benchmark = self.RASTER_1
-        description = "nz 8m DEM 2012"
+        description = "nz slopes"
         # check various shape attributes match those expected
         self.compare_to_benchmark(file_names, benchmark, description)
 
