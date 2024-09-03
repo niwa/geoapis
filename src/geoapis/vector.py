@@ -153,10 +153,12 @@ class WfsQueryBase(abc.ABC):
                         logging.info(
                             f"Layer: {layer} is not `geometry_name`: {geometry_name}."
                         )
-            assert False, (
-                f"No geometry types matching that of layer: {layer} tried. The"
-                " geometry_name's tried are: +{geometry_type_list}"
+            message =  (
+                f"No geometry types matching that of layer: {layer}. "
+                f"The geometry_name's tried are: {geometry_type_list}."
             )
+            logging.error(message)
+            raise ValueError(message)
 
     def get_features_inside_catchment(
         self, layer: int, geometry_name: str
