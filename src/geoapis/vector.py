@@ -168,7 +168,7 @@ class WfsQueryBase(abc.ABC):
                         )
             message = (
                 f"No geometry types matching that of layer: {layer}. "
-                f"The geometry_name's tried are: {geometry_type_list}."
+                f"The geometry_name's tried are: {self.GEOMETRY_NAMES}."
             )
             logging.error(message)
             raise ValueError(message)
