@@ -152,9 +152,15 @@ class KoordinatesExportsQueryBase(abc.ABC):
         if "is_valid" in json_query.keys() and not json_query["is_valid"]:
             message = f"Invalid initial query. Check layer {layer} exists and is within bounds."
             if "invalid_reasons" in json_query.keys():
-                message = message + f" json_query['invalid_reasons']: {json_query['invalid_reasons']}."
+                message = (
+                    message
+                    + f" json_query['invalid_reasons']: {json_query['invalid_reasons']}."
+                )
             if "items" in json_query.keys():
-                message = message + f" json_query['items'][0]['invalid_reasons']: {json_query['items'][0]['invalid_reasons']}"
+                message = (
+                    message
+                    + f" json_query['items'][0]['invalid_reasons']: {json_query['items'][0]['invalid_reasons']}"
+                )
             logging.warning(message)
             return []
         query_id = json_query["id"]
