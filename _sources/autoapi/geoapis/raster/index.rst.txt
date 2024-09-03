@@ -74,6 +74,14 @@ Module Contents
    Note that only rasters supporting the grid image/tiff geotiff are supported
 
 
+   .. py:attribute:: NETLOC_API
+      :value: 'data.linz.govt.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
 .. py:class:: Lris(key, cache_path, crs = None, bounding_polygon = None)
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
@@ -86,6 +94,14 @@ Module Contents
    Note that only rasters supporting the grid image/tiff geotiff are supported
 
 
+   .. py:attribute:: NETLOC_API
+      :value: 'lris.scinfo.org.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
 .. py:class:: StatsNz(key, cache_path, crs = None, bounding_polygon = None)
 
    Bases: :py:obj:`KoordinatesExportsQueryBase`
@@ -96,6 +112,14 @@ Module Contents
    Stats NZ data service can be accessed at: datafinder.stats.govt.nz
 
    Note that only rasters supporting the grid image/tiff geotiff are supported
+
+
+   .. py:attribute:: NETLOC_API
+      :value: 'datafinder.stats.govt.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
 
 
 .. py:class:: KoordinatesQuery(key, netloc_url, crs = None, bounding_polygon = None)

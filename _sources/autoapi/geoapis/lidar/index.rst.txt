@@ -103,3 +103,19 @@ Module Contents
    by name (either within a search polygon or the entire dataset).
 
 
+   .. py:attribute:: NETLOC_DATA
+      :value: 'opentopography.s3.sdsc.edu'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
+   .. py:attribute:: OT_BUCKET
+      :value: 'pc-bulk'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+

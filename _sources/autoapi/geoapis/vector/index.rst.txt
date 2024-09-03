@@ -122,6 +122,22 @@ Module Contents
    most other layers including Hydrographic and Topographic data.
 
 
+   .. py:attribute:: NETLOC_API
+      :value: 'data.linz.govt.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
+   .. py:attribute:: GEOMETRY_NAMES
+      :value: ['GEOMETRY', 'shape']
+
+
+      This should be instantiated in the base class. Define the 'geometry_name'
+      used when making a WFS 'cql_filter' query
+
+
 .. py:class:: Lris(key, crs = None, bounding_polygon = None, verbose = False)
 
    Bases: :py:obj:`WfsQueryBase`
@@ -134,6 +150,22 @@ Module Contents
    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies
    between layers. The LRIS generally follows the LINZ LDS but uses 'Shape' in place of
    'shape'. It still uses 'GEOMETRY'.
+
+
+   .. py:attribute:: NETLOC_API
+      :value: 'lris.scinfo.org.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
+   .. py:attribute:: GEOMETRY_NAMES
+      :value: ['GEOMETRY', 'Shape']
+
+
+      This should be instantiated in the base class. Define the 'geometry_name'
+      used when making a WFS 'cql_filter' query
 
 
 .. py:class:: StatsNz(key, crs = None, bounding_polygon = None, verbose = False)
@@ -149,6 +181,22 @@ Module Contents
    Note that the 'geometry_name' used when making a WFS 'cql_filter' queries varies
    between layers. StatsNZ generally follows the LINZ LDS but uses 'Shape' in place of
    'shape'. It still uses 'GEOMETRY'.
+
+
+   .. py:attribute:: NETLOC_API
+      :value: 'datafinder.stats.govt.nz'
+
+
+      This should be instantiated in the base class. Provide the netloc of the data
+      service.
+
+
+   .. py:attribute:: GEOMETRY_NAMES
+      :value: ['GEOMETRY', 'Shape']
+
+
+      This should be instantiated in the base class. Define the 'geometry_name'
+      used when making a WFS 'cql_filter' query
 
 
 .. py:class:: WfsQuery(key, netloc_url, geometry_names, crs = None, bounding_polygon = None, verbose = False)
